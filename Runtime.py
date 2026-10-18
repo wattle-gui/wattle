@@ -2312,7 +2312,12 @@ def _find_handler(name, module):
         if h is not None:
             return h
 
-    for m in [sys.modules.get("__main__")] + list(sys.modules.values()):
+    try:
+        import __main__ as main_script          # a script started from Thonny is NOT listed in sys.modules, but it can be imported by this name
+    except ImportError:
+        main_script = None
+
+    for m in [main_script, sys.modules.get("__main__")] + list(sys.modules.values()):
         h = getattr(m, name, None)
         if h is not None and callable(h):
             return h
