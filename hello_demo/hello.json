@@ -366,7 +366,7 @@
             "color": "black",
             "width": 0
           },
-          "text": "Open the Quick Guide on your computer",
+          "text": "Your own project replaces this demo.",
           "alignment": "center",
           "font_type": "Arial",
           "font_size": 16,
@@ -388,7 +388,7 @@
             "color": "black",
             "width": 0
           },
-          "text": "to design your own screens.",
+          "text": "In 10 seconds the screen goes blank",
           "alignment": "center",
           "font_type": "Arial",
           "font_size": 16,
@@ -399,7 +399,7 @@
           "widget": "label",
           "id": "label9",
           "x": 10,
-          "y": 150,
+          "y": 126,
           "w": 300,
           "h": 24,
           "visible": true,
@@ -410,7 +410,7 @@
             "color": "black",
             "width": 0
           },
-          "text": "Press RESET to see this demo again.",
+          "text": "and the board is free for you.",
           "alignment": "center",
           "font_type": "Arial",
           "font_size": 16,
