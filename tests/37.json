@@ -1,0 +1,592 @@
+{
+  "app": {
+    "name": "Test 37 stress",
+    "purpose": "test 37",
+    "version": "1.0",
+    "version_date": ""
+  },
+  "target": {
+    "model": "CYD 2.8 (ESP32 + ILI9341 + XPT2046)",
+    "processor": "ESP32",
+    "board": "board_cyd",
+    "display": {
+      "model": "ILI9341",
+      "width": 320,
+      "height": 240,
+      "interface": "SPI",
+      "driver": "ili9341.py"
+    },
+    "touch": {
+      "model": "XPT2046",
+      "type": "resistive",
+      "interface": "SPI",
+      "driver": "touch_xpt2046.py"
+    },
+    "fonts": [
+      {
+        "name": "default",
+        "sizes": [
+          8,
+          16,
+          24
+        ],
+        "styles": [
+          "bold",
+          "italic"
+        ]
+      },
+      {
+        "name": "Arial",
+        "sizes": [
+          12,
+          16,
+          20,
+          24,
+          32
+        ],
+        "styles": [
+          "bold",
+          "italic"
+        ]
+      },
+      {
+        "name": "Times New Roman",
+        "sizes": [
+          12,
+          16,
+          20,
+          24,
+          32
+        ],
+        "styles": [
+          "bold",
+          "italic"
+        ]
+      },
+      {
+        "name": "Comic Sans MS",
+        "sizes": [
+          12,
+          16,
+          20,
+          24,
+          32
+        ],
+        "styles": [
+          "bold",
+          "italic"
+        ]
+      },
+      {
+        "name": "DejaVu Sans",
+        "sizes": [
+          12,
+          16,
+          20,
+          24,
+          32
+        ],
+        "styles": [
+          "bold",
+          "italic"
+        ]
+      },
+      {
+        "name": "DejaVu Sans Mono",
+        "sizes": [
+          12,
+          16,
+          20,
+          24,
+          32
+        ],
+        "styles": [
+          "bold",
+          "italic"
+        ]
+      },
+      {
+        "name": "DejaVu Serif",
+        "sizes": [
+          12,
+          16,
+          20,
+          24,
+          32
+        ],
+        "styles": [
+          "bold",
+          "italic"
+        ]
+      }
+    ]
+  },
+  "screens": [
+    {
+      "id": "a",
+      "orientation": "landscape",
+      "width": 320,
+      "height": 240,
+      "background": "black",
+      "widgets": [
+        {
+          "widget": "gauge",
+          "id": "gauge1",
+          "x": 4,
+          "y": 4,
+          "w": 110,
+          "h": 110,
+          "visible": true,
+          "background": "gray",
+          "color": "red",
+          "min": 0,
+          "max": 100,
+          "value": 10,
+          "text": "A",
+          "show_value": true,
+          "ticks": 10,
+          "diameter": 0,
+          "sweep": 270,
+          "show_ticks": true,
+          "font_size": "default"
+        },
+        {
+          "widget": "gauge",
+          "id": "gauge2",
+          "x": 118,
+          "y": 4,
+          "w": 90,
+          "h": 90,
+          "visible": true,
+          "background": "gray",
+          "color": "red",
+          "min": 0,
+          "max": 100,
+          "value": 50,
+          "text": "B",
+          "show_value": false,
+          "ticks": 10,
+          "diameter": 0,
+          "sweep": 180,
+          "show_ticks": true,
+          "font_size": "default"
+        },
+        {
+          "widget": "waveform",
+          "id": "waveform1",
+          "x": 212,
+          "y": 4,
+          "w": 104,
+          "h": 70,
+          "visible": true,
+          "background": "black",
+          "color": "green",
+          "min": 0,
+          "max": 100,
+          "points": 30,
+          "style": "line",
+          "grid": true,
+          "title": "line",
+          "update_ms": 100,
+          "font_size": "default"
+        },
+        {
+          "widget": "waveform",
+          "id": "waveform2",
+          "x": 212,
+          "y": 78,
+          "w": 104,
+          "h": 60,
+          "visible": true,
+          "background": "black",
+          "color": "green",
+          "min": 0,
+          "max": 100,
+          "points": 30,
+          "style": "bars",
+          "grid": true,
+          "title": "",
+          "update_ms": 100,
+          "font_size": "default"
+        },
+        {
+          "widget": "barchart",
+          "id": "barchart1",
+          "x": 4,
+          "y": 118,
+          "w": 200,
+          "h": 76,
+          "visible": true,
+          "background": "black",
+          "color": "green",
+          "min": 0,
+          "max": 100,
+          "bars": 8,
+          "grid": true,
+          "title": "bars",
+          "labels": [],
+          "values": [],
+          "show_values": false,
+          "update_ms": 0,
+          "font_size": "default"
+        },
+        {
+          "widget": "progressbar",
+          "id": "progressbar1",
+          "x": 4,
+          "y": 200,
+          "w": 200,
+          "h": 16,
+          "visible": true,
+          "background": "gray",
+          "color": "green",
+          "max": 100,
+          "value": 40
+        },
+        {
+          "widget": "slider",
+          "id": "slider1",
+          "x": 4,
+          "y": 222,
+          "w": 200,
+          "h": 16,
+          "visible": true,
+          "enabled": true,
+          "background": "gray",
+          "color": "green",
+          "min": 0,
+          "max": 100,
+          "value": 50,
+          "step": 1,
+          "events": [
+            "changed"
+          ]
+        },
+        {
+          "widget": "label",
+          "id": "label1",
+          "x": 212,
+          "y": 142,
+          "w": 104,
+          "h": 40,
+          "visible": true,
+          "enabled": true,
+          "background": "black",
+          "color": "white",
+          "border": {
+            "color": "black",
+            "width": 0
+          },
+          "text": "00:00:00",
+          "alignment": "left",
+          "font_type": "default",
+          "font_size": 16,
+          "bold": false,
+          "italic": false
+        },
+        {
+          "widget": "stepper",
+          "id": "stepper1",
+          "x": 212,
+          "y": 190,
+          "w": 104,
+          "h": 40,
+          "visible": true,
+          "enabled": true,
+          "background": "transparent",
+          "color": "green",
+          "min": 0,
+          "max": 100,
+          "value": 20,
+          "step": 5,
+          "events": [
+            "changed"
+          ],
+          "font_type": "default",
+          "font_size": "default",
+          "bold": false,
+          "italic": false
+        }
+      ]
+    },
+    {
+      "id": "b",
+      "orientation": "landscape",
+      "width": 320,
+      "height": 240,
+      "background": "black",
+      "widgets": [
+        {
+          "widget": "switch",
+          "id": "switch1",
+          "x": 8,
+          "y": 8,
+          "w": 120,
+          "h": 28,
+          "visible": true,
+          "enabled": true,
+          "background": "transparent",
+          "color": "white",
+          "text": "Switch",
+          "value": false,
+          "events": [
+            "changed"
+          ],
+          "font_type": "default",
+          "font_size": "default",
+          "bold": false,
+          "italic": false
+        },
+        {
+          "widget": "checkbox",
+          "id": "checkbox1",
+          "x": 140,
+          "y": 8,
+          "w": 120,
+          "h": 24,
+          "visible": true,
+          "enabled": true,
+          "background": "transparent",
+          "color": "white",
+          "text": "Checkbox",
+          "value": false,
+          "events": [
+            "changed"
+          ],
+          "font_type": "default",
+          "font_size": "default",
+          "bold": false,
+          "italic": false
+        },
+        {
+          "widget": "choice",
+          "id": "choice1",
+          "x": 8,
+          "y": 44,
+          "w": 120,
+          "h": 90,
+          "visible": true,
+          "enabled": true,
+          "style": "radio",
+          "orientation": "vertical",
+          "items": [
+            "Red",
+            "Green",
+            "Blue"
+          ],
+          "selected": 0,
+          "background": "black",
+          "color": "white",
+          "border": {
+            "color": "gray",
+            "width": 1
+          },
+          "events": [
+            "changed"
+          ],
+          "font_type": "default",
+          "font_size": "default",
+          "bold": false,
+          "italic": false
+        },
+        {
+          "widget": "choice",
+          "id": "choice2",
+          "x": 140,
+          "y": 44,
+          "w": 120,
+          "h": 30,
+          "visible": true,
+          "enabled": true,
+          "style": "dropdown",
+          "orientation": "vertical",
+          "items": [
+            "One",
+            "Two",
+            "Three",
+            "Four",
+            "Five"
+          ],
+          "selected": 0,
+          "background": "black",
+          "color": "white",
+          "border": {
+            "color": "gray",
+            "width": 1
+          },
+          "events": [
+            "changed"
+          ],
+          "font_type": "default",
+          "font_size": "default",
+          "bold": false,
+          "italic": false
+        },
+        {
+          "widget": "tree",
+          "id": "tree1",
+          "x": 8,
+          "y": 140,
+          "w": 180,
+          "h": 96,
+          "visible": true,
+          "enabled": true,
+          "items": [
+            {
+              "text": "Display",
+              "items": [
+                {
+                  "text": "Brightness"
+                },
+                {
+                  "text": "Timeout"
+                }
+              ]
+            },
+            {
+              "text": "Network",
+              "items": [
+                {
+                  "text": "WiFi"
+                }
+              ]
+            },
+            {
+              "text": "About"
+            }
+          ],
+          "selected": "",
+          "background": "black",
+          "color": "white",
+          "border": {
+            "color": "gray",
+            "width": 1
+          },
+          "events": [
+            "selected"
+          ],
+          "font_type": "default",
+          "font_size": "default",
+          "bold": false,
+          "italic": false
+        },
+        {
+          "widget": "memo",
+          "id": "memo1",
+          "x": 196,
+          "y": 140,
+          "w": 118,
+          "h": 96,
+          "visible": true,
+          "enabled": true,
+          "background": "white",
+          "color": "black",
+          "border": {
+            "color": "#ffaa00",
+            "width": 2
+          },
+          "text": "memo",
+          "alignment": "left",
+          "accepts_input": true,
+          "events": [],
+          "font_type": "default",
+          "font_size": "default",
+          "bold": false,
+          "italic": false
+        },
+        {
+          "widget": "label",
+          "id": "label2",
+          "x": 140,
+          "y": 100,
+          "w": 170,
+          "h": 30,
+          "visible": true,
+          "enabled": true,
+          "background": "black",
+          "color": "white",
+          "border": {
+            "color": "black",
+            "width": 0
+          },
+          "text": "screen b",
+          "alignment": "left",
+          "font_type": "default",
+          "font_size": 16,
+          "bold": false,
+          "italic": false
+        }
+      ]
+    },
+    {
+      "id": "c",
+      "orientation": "landscape",
+      "width": 320,
+      "height": 240,
+      "background": "black",
+      "widgets": [
+        {
+          "widget": "waveform",
+          "id": "waveform3",
+          "x": 4,
+          "y": 4,
+          "w": 312,
+          "h": 120,
+          "visible": true,
+          "background": "black",
+          "color": "green",
+          "min": 0,
+          "max": 100,
+          "points": 120,
+          "style": "line",
+          "grid": true,
+          "title": "big",
+          "update_ms": 60,
+          "font_size": "default"
+        },
+        {
+          "widget": "barchart",
+          "id": "barchart2",
+          "x": 4,
+          "y": 128,
+          "w": 200,
+          "h": 108,
+          "visible": true,
+          "background": "black",
+          "color": "green",
+          "min": 0,
+          "max": 100,
+          "bars": 10,
+          "grid": true,
+          "title": "more bars",
+          "labels": [],
+          "values": [],
+          "show_values": false,
+          "update_ms": 0,
+          "font_size": "default"
+        },
+        {
+          "widget": "gauge",
+          "id": "gauge3",
+          "x": 208,
+          "y": 128,
+          "w": 108,
+          "h": 108,
+          "visible": true,
+          "background": "gray",
+          "color": "red",
+          "min": 0,
+          "max": 100,
+          "value": 70,
+          "text": "C",
+          "show_value": true,
+          "ticks": 20,
+          "diameter": 0,
+          "sweep": 270,
+          "show_ticks": true,
+          "font_size": "default"
+        }
+      ]
+    }
+  ]
+}

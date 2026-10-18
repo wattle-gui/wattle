@@ -1,0 +1,6 @@
+TEST 14 -- corners and edges
+ LOOK : four green buttons, one in each screen corner (TL, TR, BL, BR), "tap a corner" in the middle.
+ DO   : tap each corner button as close to the physical corner of the glass as you can,
+        and also the outer edge of each button.
+ PASS : the text names the corner you tapped ("top-left" ...), every time, in all four corners.
+ FAIL : a corner does not respond, or reports a different corner (touch calibration/edge clamping).

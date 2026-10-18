@@ -1,0 +1,15 @@
+TEST 22 -- tree (menu, 3 levels)
+ LOOK : a list: "+ Display", "+ Network", "+ Sound", "About"  (+ = closed parent, - = open parent),
+        the line "(nothing chosen)" below.
+ DO   : 1) tap "Display" -> it opens ("- Display") and Brightness, Timeout, "+ Theme" appear indented.
+        2) tap "Theme" -> Dark and Light appear, indented one more level (3 characters per level).
+        3) tap "Dark" -> the row turns INVERTED and the line below shows  Display/Theme/Dark .
+        4) tap "Light" -> the highlight moves to it; the line shows  Display/Theme/Light .
+        5) tap "Network" and "Sound" to open them too: there are now more rows than fit -> a scroll
+           bar appears on the right; the top / bottom ENDS of the bar move one row, a tap in the MIDDLE jumps to that place in the list.
+        6) tap "Display" again -> it closes; the rows below move up (the chosen row disappears with it).
+        7) tap "About" -> line shows  About .
+ PASS : each step behaves as written; only the rows that change are redrawn; nothing is left behind.
+ FAIL : wrong row opens/selects, wrong path text, highlight stuck on two rows, rows overlap or garble.
+ 8) close everything ("-" rows -> tap them), then tap the button "Pick WiFi": the "Network" branch
+    opens by itself and "WiFi" is shown highlighted (scrolled into view if needed).

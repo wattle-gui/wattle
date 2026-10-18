@@ -1,0 +1,13 @@
+TEST 28 -- backlight, screen saver, blanking, and the BOOT button (the small button on the back marked BOOT)
+ LOOK : "backlight tests", seven buttons, and a small "taps: 0" at the bottom.
+ DO   : 1) "Dim 20%" -> clearly dimmer.   "Full" -> full brightness again.
+        2) "Blank" -> the screen goes DARK (backlight off). Touch the screen ANYWHERE: it comes back to full
+           brightness, and that touch is NOT counted ("taps" stays). Do it again, but wake it with the BOOT button.
+        3) "Saver 5 s -> dim 10%", then do not touch anything for 6 seconds: it dims; one touch wakes it (not counted).
+        4) "Saver 5 s -> blank": after 6 idle seconds the screen goes DARK; touch (or BOOT) wakes it.
+        5) "Saver off" (wait 10 s: stays bright). Then "BOOT = power": press BOOT -> the screen goes dark;
+           press BOOT again -> it comes back.
+ PASS : each step as described; the dimming is smooth; a waking touch is never counted as a click.
+ FAIL : the screen cannot be woken, flicker, a counted wake-up touch, or BOOT doing nothing.
+ NOTE : BOOT only wakes the screen unless "BOOT = power" was tapped. The RESET button restarts the board and
+        cannot be used by the program.

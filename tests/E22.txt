@@ -1,0 +1,7 @@
+TEST E22 -- tree built in the Editor (small, default font, no event, no label)
+ LOOK : a small list: "+ Display", "+ Network", "+ Sound".
+ DO   : tap "Display" (opens, 3 indented items incl. "+ Theme"); tap "Theme" (Dark, Light, one more level in);
+        tap "Dark" (row turns inverted); tap "Light" (highlight moves); open Network and Sound too ->
+        more rows than fit -> a scroll bar on the right: tap its top / bottom end (one row) and its middle (jump); tap "Display" again to close it.
+ PASS : opens/closes, 3-character indent per level, only one inverted row, scroll bar works.
+ NOTE : no event is set, so the script is not told which item was chosen (nothing else on the screen changes).

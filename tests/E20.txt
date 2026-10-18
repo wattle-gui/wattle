@@ -1,0 +1,6 @@
+TEST E20 -- radio groups, design built in the Editor (compare with test 20)
+ EXPECT (as saved): top-left vertical group (Red / Green / Blue / Yellow) with RED chosen; a green word "Label";
+        a "Reset" button; below, a horizontal group Low / Mid / "Hight", and a label. choice2 has NO event.
+ DO   : tap items in the vertical group; then in the horizontal group; then "Reset".
+ LOOK : does the vertical group move its dot and change the word beside it? does the horizontal group
+        move its dot (it should) but NOT change its label (no event)?

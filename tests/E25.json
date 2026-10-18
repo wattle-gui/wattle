@@ -1,0 +1,147 @@
+{
+  "app": {
+    "name": "Design",
+    "purpose": "",
+    "version": "1.0",
+    "version_date": ""
+  },
+  "target": {
+    "model": "",
+    "processor": "",
+    "board": "",
+    "display": {
+      "model": "",
+      "width": 320,
+      "height": 240,
+      "interface": "",
+      "driver": ""
+    },
+    "touch": {
+      "model": "",
+      "type": "",
+      "interface": "",
+      "driver": ""
+    },
+    "fonts": [
+      {
+        "name": "default",
+        "sizes": [
+          8,
+          16,
+          24
+        ],
+        "styles": [
+          "bold",
+          "italic"
+        ]
+      }
+    ]
+  },
+  "screens": [
+    {
+      "id": "main",
+      "orientation": "landscape",
+      "width": 320,
+      "height": 240,
+      "background": "black",
+      "widgets": [
+        {
+          "widget": "gauge",
+          "id": "gauge1",
+          "x": 8,
+          "y": 8,
+          "w": 140,
+          "h": 140,
+          "visible": true,
+          "background": "gray",
+          "color": "red",
+          "min": 0,
+          "max": 100,
+          "value": 40,
+          "text": "SPEED",
+          "show_value": true,
+          "ticks": 10,
+          "diameter": 0,
+          "sweep": 270,
+          "show_ticks": true,
+          "font_size": "default"
+        },
+        {
+          "widget": "stepper",
+          "id": "stepper1",
+          "x": 160,
+          "y": 8,
+          "w": 140,
+          "h": 40,
+          "visible": true,
+          "enabled": true,
+          "background": "transparent",
+          "color": "green",
+          "min": 0,
+          "max": 100,
+          "value": 40,
+          "step": 5,
+          "events": [
+            "changed"
+          ],
+          "font_type": "default",
+          "font_size": 16,
+          "bold": false,
+          "italic": false
+        },
+        {
+          "widget": "waveform",
+          "id": "waveform1",
+          "x": 160,
+          "y": 56,
+          "w": 152,
+          "h": 92,
+          "visible": true,
+          "background": "black",
+          "color": "green",
+          "min": 0,
+          "max": 100,
+          "points": 40,
+          "style": "line",
+          "grid": true,
+          "title": "Wave",
+          "update_ms": 100,
+          "font_size": "default"
+        },
+        {
+          "widget": "barchart",
+          "id": "barchart1",
+          "x": 16,
+          "y": 144,
+          "w": 124,
+          "h": 84,
+          "visible": true,
+          "background": "black",
+          "color": "#aa5500",
+          "min": 0,
+          "max": 1000,
+          "bars": 5,
+          "grid": true,
+          "title": "Rainfall (mm)",
+          "labels": [
+            "2021",
+            "2022",
+            "2023",
+            "2024",
+            "2025"
+          ],
+          "values": [
+            640,
+            910,
+            520,
+            780,
+            430
+          ],
+          "show_values": true,
+          "update_ms": 0,
+          "font_size": "default"
+        }
+      ]
+    }
+  ]
+}

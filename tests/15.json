@@ -1,0 +1,309 @@
+{
+  "app": {
+    "name": "Test 15 disabled and hidden",
+    "purpose": "test 15",
+    "version": "1.0",
+    "version_date": ""
+  },
+  "target": {
+    "model": "CYD 2.8 (ESP32 + ILI9341 + XPT2046)",
+    "processor": "ESP32",
+    "board": "board_cyd",
+    "display": {
+      "model": "ILI9341",
+      "width": 320,
+      "height": 240,
+      "interface": "SPI",
+      "driver": "ili9341.py"
+    },
+    "touch": {
+      "model": "XPT2046",
+      "type": "resistive",
+      "interface": "SPI",
+      "driver": "touch_xpt2046.py"
+    },
+    "fonts": [
+      {
+        "name": "default",
+        "sizes": [
+          8,
+          16,
+          24
+        ],
+        "styles": [
+          "bold",
+          "italic"
+        ]
+      },
+      {
+        "name": "Arial",
+        "sizes": [
+          12,
+          16,
+          20,
+          24,
+          32
+        ],
+        "styles": [
+          "bold",
+          "italic"
+        ]
+      },
+      {
+        "name": "Times New Roman",
+        "sizes": [
+          12,
+          16,
+          20,
+          24,
+          32
+        ],
+        "styles": [
+          "bold",
+          "italic"
+        ]
+      },
+      {
+        "name": "Comic Sans MS",
+        "sizes": [
+          12,
+          16,
+          20,
+          24,
+          32
+        ],
+        "styles": [
+          "bold",
+          "italic"
+        ]
+      },
+      {
+        "name": "DejaVu Sans",
+        "sizes": [
+          12,
+          16,
+          20,
+          24,
+          32
+        ],
+        "styles": [
+          "bold",
+          "italic"
+        ]
+      },
+      {
+        "name": "DejaVu Sans Mono",
+        "sizes": [
+          12,
+          16,
+          20,
+          24,
+          32
+        ],
+        "styles": [
+          "bold",
+          "italic"
+        ]
+      },
+      {
+        "name": "DejaVu Serif",
+        "sizes": [
+          12,
+          16,
+          20,
+          24,
+          32
+        ],
+        "styles": [
+          "bold",
+          "italic"
+        ]
+      }
+    ]
+  },
+  "screens": [
+    {
+      "id": "main",
+      "orientation": "landscape",
+      "width": 320,
+      "height": 240,
+      "background": "black",
+      "widgets": [
+        {
+          "widget": "label",
+          "id": "behind",
+          "x": 170,
+          "y": 20,
+          "w": 130,
+          "h": 50,
+          "visible": true,
+          "enabled": true,
+          "background": "blue",
+          "color": "white",
+          "border": {
+            "color": "black",
+            "width": 0
+          },
+          "text": "behind",
+          "alignment": "center",
+          "font_type": "default",
+          "font_size": 16,
+          "bold": false,
+          "italic": false
+        },
+        {
+          "widget": "button",
+          "id": "btn_dis",
+          "x": 20,
+          "y": 20,
+          "w": 130,
+          "h": 50,
+          "visible": true,
+          "enabled": false,
+          "background": "green",
+          "color": "white",
+          "border": {
+            "color": "black",
+            "width": 1
+          },
+          "text": "Disabled",
+          "alignment": "center",
+          "accepts_input": false,
+          "events": [
+            "click"
+          ],
+          "font_type": "default",
+          "font_size": 16,
+          "bold": false,
+          "italic": false
+        },
+        {
+          "widget": "button",
+          "id": "btn_hid",
+          "x": 170,
+          "y": 20,
+          "w": 130,
+          "h": 50,
+          "visible": false,
+          "enabled": true,
+          "background": "red",
+          "color": "white",
+          "border": {
+            "color": "black",
+            "width": 1
+          },
+          "text": "Hidden",
+          "alignment": "center",
+          "accepts_input": false,
+          "events": [
+            "click"
+          ],
+          "font_type": "default",
+          "font_size": 16,
+          "bold": false,
+          "italic": false
+        },
+        {
+          "widget": "button",
+          "id": "btn_show",
+          "x": 20,
+          "y": 90,
+          "w": 130,
+          "h": 50,
+          "visible": true,
+          "enabled": true,
+          "background": "blue",
+          "color": "white",
+          "border": {
+            "color": "black",
+            "width": 1
+          },
+          "text": "Show it",
+          "alignment": "center",
+          "accepts_input": false,
+          "events": [
+            "click"
+          ],
+          "font_type": "default",
+          "font_size": 16,
+          "bold": false,
+          "italic": false
+        },
+        {
+          "widget": "button",
+          "id": "btn_hide",
+          "x": 170,
+          "y": 90,
+          "w": 130,
+          "h": 50,
+          "visible": true,
+          "enabled": true,
+          "background": "blue",
+          "color": "white",
+          "border": {
+            "color": "black",
+            "width": 1
+          },
+          "text": "Hide it",
+          "alignment": "center",
+          "accepts_input": false,
+          "events": [
+            "click"
+          ],
+          "font_type": "default",
+          "font_size": 16,
+          "bold": false,
+          "italic": false
+        },
+        {
+          "widget": "button",
+          "id": "btn_enable",
+          "x": 20,
+          "y": 150,
+          "w": 130,
+          "h": 50,
+          "visible": true,
+          "enabled": true,
+          "background": "blue",
+          "color": "white",
+          "border": {
+            "color": "black",
+            "width": 1
+          },
+          "text": "Enable",
+          "alignment": "center",
+          "accepts_input": false,
+          "events": [
+            "click"
+          ],
+          "font_type": "default",
+          "font_size": 16,
+          "bold": false,
+          "italic": false
+        },
+        {
+          "widget": "label",
+          "id": "status",
+          "x": 20,
+          "y": 212,
+          "w": 280,
+          "h": 20,
+          "visible": true,
+          "enabled": true,
+          "background": "black",
+          "color": "white",
+          "border": {
+            "color": "black",
+            "width": 0
+          },
+          "text": "status",
+          "alignment": "left",
+          "font_type": "default",
+          "font_size": 16,
+          "bold": false,
+          "italic": false
+        }
+      ]
+    }
+  ]
+}

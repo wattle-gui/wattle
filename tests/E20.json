@@ -1,0 +1,182 @@
+{
+  "app": {
+    "name": "Design",
+    "purpose": "",
+    "version": "1.0",
+    "version_date": ""
+  },
+  "target": {
+    "model": "",
+    "processor": "",
+    "board": "",
+    "display": {
+      "model": "",
+      "width": 320,
+      "height": 240,
+      "interface": "",
+      "driver": ""
+    },
+    "touch": {
+      "model": "",
+      "type": "",
+      "interface": "",
+      "driver": ""
+    },
+    "fonts": [
+      {
+        "name": "default",
+        "sizes": [
+          8,
+          16,
+          24
+        ],
+        "styles": [
+          "bold",
+          "italic"
+        ]
+      }
+    ]
+  },
+  "screens": [
+    {
+      "id": "main",
+      "orientation": "landscape",
+      "width": 320,
+      "height": 240,
+      "background": "black",
+      "widgets": [
+        {
+          "widget": "choice",
+          "id": "choice1",
+          "x": 16,
+          "y": 24,
+          "w": 140,
+          "h": 84,
+          "visible": true,
+          "enabled": true,
+          "style": "radio",
+          "orientation": "vertical",
+          "items": [
+            "Red",
+            "Green",
+            "Blue",
+            "Yellow"
+          ],
+          "selected": 0,
+          "background": "black",
+          "color": "#ff0000",
+          "border": {
+            "color": "gray",
+            "width": 1
+          },
+          "events": [
+            "changed"
+          ],
+          "font_type": "default",
+          "font_size": "default",
+          "bold": false,
+          "italic": false
+        },
+        {
+          "widget": "label",
+          "id": "label1",
+          "x": 192,
+          "y": 24,
+          "w": 96,
+          "h": 24,
+          "visible": true,
+          "enabled": true,
+          "background": "black",
+          "color": "#00aa00",
+          "border": {
+            "color": "black",
+            "width": 0
+          },
+          "text": "Label",
+          "alignment": "left",
+          "font_type": "default",
+          "font_size": "default",
+          "bold": false,
+          "italic": false
+        },
+        {
+          "widget": "button",
+          "id": "button1",
+          "x": 184,
+          "y": 64,
+          "w": 120,
+          "h": 40,
+          "visible": true,
+          "enabled": true,
+          "background": "green",
+          "color": "white",
+          "border": {
+            "color": "black",
+            "width": 1
+          },
+          "text": "Reset",
+          "alignment": "center",
+          "accepts_input": false,
+          "events": [
+            "click"
+          ],
+          "font_type": "default",
+          "font_size": "default",
+          "bold": false,
+          "italic": false
+        },
+        {
+          "widget": "choice",
+          "id": "choice2",
+          "x": 16,
+          "y": 128,
+          "w": 140,
+          "h": 84,
+          "visible": true,
+          "enabled": true,
+          "style": "radio",
+          "orientation": "horizontal",
+          "items": [
+            "Low",
+            "Mid",
+            "Hight"
+          ],
+          "selected": 0,
+          "background": "black",
+          "color": "white",
+          "border": {
+            "color": "gray",
+            "width": 1
+          },
+          "events": [],
+          "font_type": "default",
+          "font_size": "default",
+          "bold": false,
+          "italic": false
+        },
+        {
+          "widget": "label",
+          "id": "label2",
+          "x": 192,
+          "y": 144,
+          "w": 96,
+          "h": 24,
+          "visible": true,
+          "enabled": true,
+          "background": "black",
+          "color": "white",
+          "border": {
+            "color": "black",
+            "width": 0
+          },
+          "text": "Low",
+          "alignment": "left",
+          "font_type": "default",
+          "font_size": "default",
+          "bold": false,
+          "italic": false
+        }
+      ]
+    }
+  ]
+}

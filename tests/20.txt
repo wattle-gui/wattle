@@ -1,0 +1,9 @@
+TEST 20 -- radio groups
+ LOOK : top-left a vertical group  (o Red / (*) Green / o Blue / o Yellow)  with Green marked by a filled dot;
+        right of it the word "Green" and a "Reset" button;  below a HORIZONTAL group (*) Low  o Mid  o High,
+        and the word "Low".
+ DO   : tap different items in each group; then tap "Reset".
+ PASS : the dot moves to the tapped item at once (only one dot per group), and the word beside it
+        shows the item's name. Tapping the item that is already chosen changes nothing.
+        "Reset" moves both dots back to the first item and shows their names.
+ FAIL : two dots at once, the dot does not follow the tap, wrong name, or text cut off.

@@ -1,0 +1,9 @@
+TEST 06 -- typefaces (look only)
+ LOOK : eight lines, each in a different typeface/size, every line spelling out its own font:
+        Arial 32 (large), Times New Roman 20 italic (serif, leaning), Comic Sans MS 24 bold (yellow,
+        round and casual), DejaVu Sans 16, DejaVu Sans Mono 16 bold+italic (all letters equal width),
+        DejaVu Serif 12 (small, serif), "FreeSerif: no font file" (pink, the plain BLOCKY built-in
+        font -- no such typeface exists on the board), Arial 20 bold italic (cyan).
+ PASS : the lines look like different typefaces, edges are smooth (except the blocky FreeSerif line),
+        bold/italic are visible, nothing overlaps, no line is cut off.
+ FAIL : same look for different fonts, missing/cut lines, garbled letters.

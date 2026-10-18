@@ -1,0 +1,229 @@
+{
+  "app": {
+    "name": "Test 04 lines and image",
+    "purpose": "test 04",
+    "version": "1.0",
+    "version_date": ""
+  },
+  "target": {
+    "model": "CYD 2.8 (ESP32 + ILI9341 + XPT2046)",
+    "processor": "ESP32",
+    "board": "board_cyd",
+    "display": {
+      "model": "ILI9341",
+      "width": 320,
+      "height": 240,
+      "interface": "SPI",
+      "driver": "ili9341.py"
+    },
+    "touch": {
+      "model": "XPT2046",
+      "type": "resistive",
+      "interface": "SPI",
+      "driver": "touch_xpt2046.py"
+    },
+    "fonts": [
+      {
+        "name": "default",
+        "sizes": [
+          8,
+          16,
+          24
+        ],
+        "styles": [
+          "bold",
+          "italic"
+        ]
+      },
+      {
+        "name": "Arial",
+        "sizes": [
+          12,
+          16,
+          20,
+          24,
+          32
+        ],
+        "styles": [
+          "bold",
+          "italic"
+        ]
+      },
+      {
+        "name": "Times New Roman",
+        "sizes": [
+          12,
+          16,
+          20,
+          24,
+          32
+        ],
+        "styles": [
+          "bold",
+          "italic"
+        ]
+      },
+      {
+        "name": "Comic Sans MS",
+        "sizes": [
+          12,
+          16,
+          20,
+          24,
+          32
+        ],
+        "styles": [
+          "bold",
+          "italic"
+        ]
+      },
+      {
+        "name": "DejaVu Sans",
+        "sizes": [
+          12,
+          16,
+          20,
+          24,
+          32
+        ],
+        "styles": [
+          "bold",
+          "italic"
+        ]
+      },
+      {
+        "name": "DejaVu Sans Mono",
+        "sizes": [
+          12,
+          16,
+          20,
+          24,
+          32
+        ],
+        "styles": [
+          "bold",
+          "italic"
+        ]
+      },
+      {
+        "name": "DejaVu Serif",
+        "sizes": [
+          12,
+          16,
+          20,
+          24,
+          32
+        ],
+        "styles": [
+          "bold",
+          "italic"
+        ]
+      }
+    ]
+  },
+  "screens": [
+    {
+      "id": "main",
+      "orientation": "landscape",
+      "width": 320,
+      "height": 240,
+      "background": "black",
+      "widgets": [
+        {
+          "widget": "line",
+          "id": "line1",
+          "x": 10,
+          "y": 20,
+          "w": 120,
+          "h": 0,
+          "visible": true,
+          "color": "white",
+          "thickness": 1
+        },
+        {
+          "widget": "line",
+          "id": "line2",
+          "x": 10,
+          "y": 40,
+          "w": 120,
+          "h": 0,
+          "visible": true,
+          "color": "yellow",
+          "thickness": 3
+        },
+        {
+          "widget": "line",
+          "id": "line3",
+          "x": 150,
+          "y": 10,
+          "w": 0,
+          "h": 100,
+          "visible": true,
+          "color": "cyan",
+          "thickness": 2
+        },
+        {
+          "widget": "line",
+          "id": "line4",
+          "x": 10,
+          "y": 60,
+          "w": 120,
+          "h": 50,
+          "visible": true,
+          "color": "red",
+          "thickness": 2
+        },
+        {
+          "widget": "line",
+          "id": "line5",
+          "x": 10,
+          "y": 220,
+          "w": 130,
+          "h": -60,
+          "visible": true,
+          "color": "green",
+          "thickness": 2
+        },
+        {
+          "widget": "image",
+          "id": "image1",
+          "x": 180,
+          "y": 20,
+          "w": 128,
+          "h": 104,
+          "visible": true,
+          "enabled": true,
+          "background": "gray",
+          "source": "pictures/board_front.jpg",
+          "scale": "fit",
+          "transparent": true,
+          "events": [
+            "click"
+          ]
+        },
+        {
+          "widget": "label",
+          "id": "label1",
+          "x": 160,
+          "y": 140,
+          "w": 150,
+          "h": 20,
+          "visible": true,
+          "enabled": true,
+          "background": "black",
+          "color": "white",
+          "border": {
+            "color": "black",
+            "width": 0
+          },
+          "text": "tap the picture",
+          "alignment": "left",
+          "font_type": "default",
+          "font_size": 8,
+          "bold": false,
+          "italic": false
+        }
+      ]
+    }
+  ]
+}

@@ -1,0 +1,5 @@
+TEST 33 -- bar chart with fixed values from the design (rainfall 2021-2025)
+ LOOK   : a chart "Rainfall (mm)", five blue bars of different heights, the value above each bar (640, 910, 520, 780, 430)
+          and the years 2021 ... 2025 underneath.
+ DO     : nothing; it must stay still.
+ PASS   : bars proportional to the values (910 highest, 430 lowest); labels centred under their bars; numbers readable.

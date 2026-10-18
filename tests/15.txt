@@ -1,0 +1,10 @@
+TEST 15 -- disabled and hidden widgets (answer with the COLOUR of the top-right box at each step)
+ START: top-right box is BLUE and says "behind". Top-left green button "Disabled". Status: "status".
+ 1) tap "Disabled"            -> expect: nothing happens.                    Top-right box colour: ?
+ 2) tap the blue box          -> expect: nothing happens.                    Top-right box colour: ?
+ 3) tap "Show it"             -> expect: status "show tapped" and the top-right box turns RED
+                                 with the word "Hidden".                     Top-right box colour: ?
+ 4) tap the red box           -> expect: status "hidden button worked".      Top-right box colour: ?
+ 5) tap "Hide it"             -> expect: status "hide tapped" and the top-right box is BLUE "behind" again.
+                                                                              Top-right box colour: ?
+ 6) tap "Enable", tap "Disabled" -> expect: status "disabled button worked".

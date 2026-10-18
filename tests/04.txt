@@ -1,0 +1,8 @@
+TEST 04 -- lines and an image (look, then tap the picture)
+ LOOK : left: a thin white line, a thick yellow line under it, a red line sloping DOWN to the right,
+        and a green line sloping UP to the right near the bottom.
+        middle: a cyan vertical line.   right: a picture of a dog with a rose, "tap the picture" under it.
+ DO   : tap the picture a few times.
+ PASS : lines/picture look right (see above), and under the picture the text counts
+        "picture tapped 1", "picture tapped 2" ... one step per tap.
+ FAIL : lines or picture wrong, or the counter does not change when the picture is tapped.

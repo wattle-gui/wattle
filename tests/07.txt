@@ -1,0 +1,6 @@
+TEST 07 -- two screens
+ LOOK : a LIME-GREEN screen with "FIRST screen" and a green button "Go to 2nd".
+ DO   : tap "Go to 2nd", then tap "Back", and repeat a few times.
+ PASS : the whole screen changes to PINK with "SECOND screen" and a blue "Back" button, and back again.
+        No leftovers of the other screen (no button or text from it) show through.
+ FAIL : the screen does not change, or parts of the previous screen stay visible.

@@ -1,0 +1,10 @@
+TEST 30 -- Wi-Fi and the real time
+ BEFORE : put your network name and password on the board: python3 wifi_setup.py (it asks for both and writes the file
+          wifi.dat ON THE BOARD; nothing is saved on the computer). The program only reads the two lines. In 30.py change timezone(10) to your own hours from UTC.
+ LOOK   : a clock "--:--:--" (it runs from the board's own clock, which is wrong until it is set), a date, "not connected".
+ DO     : 1) tap "Connect and set the time": "connecting ..." then, after a few seconds, "time set; 192.168.x.x".
+          2) the clock and the date jump to the real local time and keep counting.
+          3) tap "Wi-Fi off": "Wi-Fi off" (the clock keeps running).
+          4) restart the board: the clock starts again from a wrong time until you connect (the board has no battery clock).
+ PASS   : the clock shows your real local time after step 1, and keeps time.
+ FAIL   : "no Wi-Fi (see wifi.dat)" (no wifi.dat, wrong name or password), "connected, no time" (no internet), a wrong hour (timezone).

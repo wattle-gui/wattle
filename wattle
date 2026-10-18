@@ -1,0 +1,45 @@
+#!/bin/bash
+# wattle -- one command for everything. Type  ./wattle help  to see what it can do.
+cd "$(dirname "$0")" || exit 1
+HERE="$PWD"
+if [ -x .venv/bin/python ]; then PY="$HERE/.venv/bin/python"; export PATH="$HERE/.venv/bin:$PATH"; else PY=python3; fi
+
+need_install() { if [ ! -x .venv/bin/mpremote ]; then echo "The tools are not installed yet. Run:  ./wattle install"; exit 1; fi; }
+
+case "$1" in
+  install)  shift; exec ./install.sh "$@" ;;
+  new)      # ./wattle new myproject  -> a folder with a ready-to-run starter (a label and a button)
+            [ -n "$2" ] || { echo "Give the project a name:  ./wattle new myproject"; exit 1; }
+            [ -e "$2" ] && { echo "'$2' already exists; choose another name."; exit 1; }
+            mkdir "$2" && cp tests/00.json "$2/$2.json" && cp tests/00.py "$2/Project_1.py" &&
+            echo "Created $2/ with $2.json (the design) and Project_1.py (the script)." &&
+            echo "Put it on the board:   ./wattle deploy $2" ;;
+  deploy)   need_install; shift
+            if [ -d "$1" ]; then d="$1"; set -- "$d"/*.json "$d/Project_1.py"; fi
+            exec "$PY" deploy.py "$@" ;;
+  check)    need_install; exec "$PY" check_script.py ;;
+  reset)    need_install; exec ./reset.sh "${@:2}" ;;
+  test)     need_install; exec "$PY" tests/run_test.py "${@:2}" ;;
+  fonts)    need_install; exec "$PY" make_fonts.py "${@:2}" ;;
+  images)   need_install; exec "$PY" make_images.py "${@:2}" ;;
+  pick)     need_install; exec "$PY" picker.py "${@:2}" ;;
+  wifi)     exec "$PY" wifi_setup.py "${@:2}" ;;     # needs only Python + pyserial, like install_wattle.py
+  help|""|-h|--help)
+cat <<'TXT'
+Wattle -- usage:  ./wattle <command>
+
+  install [--yes]    guided installation: tools, board port, MicroPython, program files, demo
+  new NAME           make a starter project in the folder NAME (a label and a button)
+  deploy NAME        copy the project NAME to the board, check it, and start it
+  deploy DESIGN.json SCRIPT.py     the same for two files
+  check              check the design and script that are on the board; explains mistakes
+  test N             load test number N (a ready-made example) onto the board
+  reset              restart the board
+  wifi               put your Wi-Fi name and password on the board (file wifi.dat; nothing is kept on the computer)
+  fonts / images / pick    the font converter, picture converter and hardware picker (see chapter 6)
+
+Examples:   ./wattle install     ./wattle new hello     ./wattle deploy hello
+TXT
+  ;;
+  *) echo "Unknown command '$1'. Type  ./wattle help"; exit 1 ;;
+esac

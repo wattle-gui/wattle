@@ -1,0 +1,196 @@
+{
+  "app": {
+    "name": "Design",
+    "purpose": "",
+    "version": "1.0",
+    "version_date": ""
+  },
+  "target": {
+    "model": "",
+    "processor": "",
+    "board": "",
+    "display": {
+      "model": "",
+      "width": 320,
+      "height": 240,
+      "interface": "",
+      "driver": ""
+    },
+    "touch": {
+      "model": "",
+      "type": "",
+      "interface": "",
+      "driver": ""
+    },
+    "fonts": [
+      {
+        "name": "default",
+        "sizes": [
+          8,
+          16,
+          24
+        ],
+        "styles": [
+          "bold",
+          "italic"
+        ]
+      }
+    ]
+  },
+  "screens": [
+    {
+      "id": "main",
+      "orientation": "portrait",
+      "width": 240,
+      "height": 320,
+      "background": "black",
+      "widgets": [
+        {
+          "widget": "button",
+          "id": "button1",
+          "x": 0,
+          "y": 0,
+          "w": 56,
+          "h": 40,
+          "visible": true,
+          "enabled": true,
+          "background": "green",
+          "color": "white",
+          "border": {
+            "color": "black",
+            "width": 1
+          },
+          "text": "TL",
+          "alignment": "center",
+          "accepts_input": false,
+          "events": [
+            "click"
+          ],
+          "font_type": "default",
+          "font_size": "default",
+          "bold": false,
+          "italic": false
+        },
+        {
+          "widget": "button",
+          "id": "button2",
+          "x": 184,
+          "y": 0,
+          "w": 56,
+          "h": 40,
+          "visible": true,
+          "enabled": true,
+          "background": "green",
+          "color": "white",
+          "border": {
+            "color": "black",
+            "width": 1
+          },
+          "text": "TR",
+          "alignment": "center",
+          "accepts_input": false,
+          "events": [
+            "click"
+          ],
+          "font_type": "default",
+          "font_size": "default",
+          "bold": false,
+          "italic": false
+        },
+        {
+          "widget": "button",
+          "id": "button3",
+          "x": 0,
+          "y": 280,
+          "w": 56,
+          "h": 40,
+          "visible": true,
+          "enabled": true,
+          "background": "green",
+          "color": "white",
+          "border": {
+            "color": "black",
+            "width": 1
+          },
+          "text": "BL",
+          "alignment": "center",
+          "accepts_input": false,
+          "events": [
+            "click"
+          ],
+          "font_type": "default",
+          "font_size": "default",
+          "bold": false,
+          "italic": false
+        },
+        {
+          "widget": "button",
+          "id": "button4",
+          "x": 184,
+          "y": 280,
+          "w": 56,
+          "h": 40,
+          "visible": true,
+          "enabled": true,
+          "background": "green",
+          "color": "white",
+          "border": {
+            "color": "black",
+            "width": 1
+          },
+          "text": "BT",
+          "alignment": "center",
+          "accepts_input": false,
+          "events": [
+            "click"
+          ],
+          "font_type": "default",
+          "font_size": "default",
+          "bold": false,
+          "italic": false
+        },
+        {
+          "widget": "label",
+          "id": "label1",
+          "x": 72,
+          "y": 8,
+          "w": 96,
+          "h": 24,
+          "visible": true,
+          "enabled": true,
+          "background": "black",
+          "color": "white",
+          "border": {
+            "color": "black",
+            "width": 0
+          },
+          "text": "Tap corner",
+          "alignment": "center",
+          "font_type": "default",
+          "font_size": "default",
+          "bold": false,
+          "italic": false
+        },
+        {
+          "widget": "slider",
+          "id": "slider1",
+          "x": 40,
+          "y": 128,
+          "w": 160,
+          "h": 24,
+          "visible": true,
+          "enabled": true,
+          "background": "gray",
+          "color": "green",
+          "min": 0,
+          "max": 100,
+          "value": 50,
+          "step": 1,
+          "events": [
+            "changed"
+          ]
+        }
+      ]
+    }
+  ]
+}

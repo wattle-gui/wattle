@@ -1,0 +1,12 @@
+TEST 23 -- errors in your script are shown on the screen
+ LOOK : the words "error tests" and three buttons.
+ DO   : 1) tap "Divide by zero".   2) tap the screen when it shows the error.
+        3) tap "Misspelt name", then tap the screen again.
+        4) tap "Failing task", wait about 2 seconds, then tap the screen again.
+ PASS : each time the screen turns DARK RED with "SCRIPT ERROR" at the top and, below it:
+        where it happened ("in handler button1_click" / "in handler button2_click" / "in periodic task tick (stopped)"),
+        the kind of error and its message ("ZeroDivisionError: divide by zero", "NameError: ... undefined_name ...",
+        "ValueError: this task fails on purpose"), and the place in your file ("File Project_1.py, line 7, in button1_click"), all in white under the red heading.
+        At the bottom: "tap to continue". A tap brings the normal screen back, and the other buttons still work.
+        (The same text also appears on the serial port.)
+ FAIL : the screen stays blank or frozen, the text is cut off in a confusing way, or a tap does not return.

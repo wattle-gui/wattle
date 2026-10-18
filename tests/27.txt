@@ -1,0 +1,7 @@
+TEST 27 -- a syntax error, and how to find out what is wrong
+ LOOK : the screen turns DARK RED straight after the start.
+ PASS : "SCRIPT ERROR", "while your script was starting", "SyntaxError: invalid syntax (line 6)", "in file Project_1.py",
+        and at the bottom "RUN CHECK_SCRIPT.PY ON THE PC". It stays like that.
+ THEN : on the computer run   python3 check_script.py   (it reads the files from the board, then restarts the board).
+        It must report:  ERROR  Project_1.py line 6: syntax error: expected ':'  with the line and a ^ under the spot.
+ FAIL : a blank screen, a missing line number, or a checker report that does not say what is wrong.

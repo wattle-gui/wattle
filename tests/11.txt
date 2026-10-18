@@ -1,0 +1,9 @@
+TEST 11 -- secret (PIN entry)
+ LOOK : the text "Enter PIN 1234" and a green button "PIN".
+ DO   : tap "PIN". A numeric keypad appears. 1) type 1 2 3 4   2) press OK.
+        Tap "PIN" again: 3) type 9 9   4) press OK.   Tap "PIN" again: 5) type 7 digits (it stops at 6)
+        6) press Esc.
+ PASS : while typing, the small memo shows ONLY asterisks (* * * *), never the digits;
+        1) 2) -> "PIN correct";  3) 4) -> "wrong PIN (2 digits)";  5) 6) -> "cancelled".
+        The digits are never shown anywhere on the main screen. The keypad stops at 6 characters.
+ FAIL : digits visible in the memo, wrong message, more than 6 characters accepted.

@@ -1,0 +1,20 @@
+{
+ "kind": "font",
+ "name": "Comic Sans MS",
+ "type": "anti-aliased bitmap (4-bit)",
+ "file": "comicsansms_<size>[b][i].fnt",
+ "sizes": [
+  10,
+  12,
+  14,
+  16,
+  20,
+  24,
+  32
+ ],
+ "styles": [
+  "bold",
+  "italic"
+ ],
+ "source": "Comic Relief (free look-alike)"
+}

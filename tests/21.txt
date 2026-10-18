@@ -1,0 +1,12 @@
+TEST 21 -- dropdown
+ LOOK : top: a field showing "Small" with a small arrow on its right, the word "Small" beside it,
+        a button "Under list" and "taps: 0"; at the bottom: a second field "Wed" and the word "Wed".
+ DO   : 1) tap the top field -> a list of rows opens BELOW it, covering the button; the current item
+           is highlighted (inverted). It has 6 items: a scroll bar appears if not all rows fit.
+        2) tap "Large" -> the list closes, the field shows "Large", the word beside it says "Large",
+           and the "Under list" button is whole again (nothing damaged). Tap the button: "taps: 1".
+        3) open the top field again and tap OUTSIDE the list -> it closes, nothing changes.
+        4) tap the bottom field -> its list opens UPWARD (no room below). Pick "Sun": field and word show it.
+        5) re-open a list, tap the scroll bar halves (if there is a bar) -> the rows move by one.
+ PASS : everything above; no leftover list pieces on the screen after closing.
+ FAIL : list in the wrong place, wrong item picked, damage under the list, no change after picking.

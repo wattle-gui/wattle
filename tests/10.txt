@@ -1,0 +1,14 @@
+TEST 10 -- numeric keyboard
+ LOOK : a white memo showing a large "0" and a green button "Number".
+ DO   : tap "Number". A 4x4 keypad appears under a small 2-line memo:
+          1 2 3 <-      (<- = backspace)
+          4 5 6 Esc     (Esc = cancel)
+          7 8 9 OK      (OK = Enter, tall key)
+          - 0 .
+        1) type 12.5   2) press "." again (must be ignored)   3) press "-" now (must be ignored)
+        4) press <- until empty, then press "-" (accepted), then OK (must be ignored), then "." (gives -0.)  5) type digits until it
+        stops at 8 characters.   6) press OK.   Tap "Number" again: the keypad memo must start EMPTY (not "12.5"). Type 7, press Esc.
+ PASS : keys respond and show in the memo; a 2nd "." and a "-" after a digit are ignored; a leading
+        "." becomes "0."; typing stops at 8 characters; OK puts the number into the big memo
+        (shown in large letters); Esc leaves the big memo unchanged; every time the keypad opens its memo is empty; OK with only "-" does nothing.
+ FAIL : wrong or missing keys, bad input accepted, text lost, screen not restored.

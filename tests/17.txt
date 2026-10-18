@@ -1,0 +1,9 @@
+TEST 17 -- image scaling (look only). Screen background is DARK BLUE.
+ LOOK : four boxes in a row, the same dog picture in each, names underneath:
+   1 "fit+transp." : the whole picture, WIDE and short, in the middle of the box; the empty space
+                     above and below is dark blue (same as the screen -- the box edges are invisible)
+   2 "fit"         : same picture and size, but the empty space above and below is GREY
+   3 "fill"        : the box is completely filled; the picture is cropped (left/right trimmed), not squashed
+   4 "stretch"     : the box is completely filled; the picture is squeezed narrow (distorted)
+ PASS : all four look as described; colours natural; no grey in box 1; grey bars in box 2.
+ FAIL : bars in the wrong colour, wrong crop/stretch, picture upside down or wrong colours.

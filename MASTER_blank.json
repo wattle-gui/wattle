@@ -1,0 +1,406 @@
+{
+  "app": {
+    "name": null,
+    "purpose": null,
+    "version": null,
+    "version_date": null
+  },
+  "target": {
+    "model": null,
+    "processor": null,
+    "board": null,
+    "display": {
+      "model": null,
+      "width": null,
+      "height": null,
+      "interface": null,
+      "driver": null
+    },
+    "touch": {
+      "model": null,
+      "type": null,
+      "interface": null,
+      "driver": null
+    },
+    "fonts": [
+      {
+        "name": null,
+        "sizes": [],
+        "styles": []
+      },
+      {
+        "name": null,
+        "sizes": [],
+        "styles": []
+      },
+      {
+        "name": null,
+        "sizes": [],
+        "styles": []
+      },
+      {
+        "name": null,
+        "sizes": [],
+        "styles": []
+      },
+      {
+        "name": null,
+        "sizes": [],
+        "styles": []
+      },
+      {
+        "name": null,
+        "sizes": [],
+        "styles": []
+      },
+      {
+        "name": null,
+        "sizes": [],
+        "styles": []
+      }
+    ]
+  },
+  "screens": [
+    {
+      "id": null,
+      "orientation": null,
+      "width": null,
+      "height": null,
+      "background": null,
+      "widgets": [
+        {
+          "widget": "label",
+          "id": null,
+          "x": null,
+          "y": null,
+          "w": null,
+          "h": null,
+          "visible": null,
+          "enabled": null,
+          "background": null,
+          "color": null,
+          "border": {
+            "color": null,
+            "width": null
+          },
+          "text": null,
+          "alignment": null,
+          "font_type": null,
+          "font_size": null,
+          "bold": null,
+          "italic": null
+        },
+        {
+          "widget": "button",
+          "id": null,
+          "x": null,
+          "y": null,
+          "w": null,
+          "h": null,
+          "visible": null,
+          "enabled": null,
+          "background": null,
+          "color": null,
+          "border": {
+            "color": null,
+            "width": null
+          },
+          "text": null,
+          "alignment": null,
+          "accepts_input": null,
+          "events": [],
+          "font_type": null,
+          "font_size": null,
+          "bold": null,
+          "italic": null
+        },
+        {
+          "widget": "memo",
+          "id": null,
+          "x": null,
+          "y": null,
+          "w": null,
+          "h": null,
+          "visible": null,
+          "enabled": null,
+          "background": null,
+          "color": null,
+          "border": {
+            "color": null,
+            "width": null
+          },
+          "text": null,
+          "alignment": null,
+          "accepts_input": null,
+          "events": [],
+          "font_type": null,
+          "font_size": null,
+          "bold": null,
+          "italic": null
+        },
+        {
+          "widget": "switch",
+          "id": null,
+          "x": null,
+          "y": null,
+          "w": null,
+          "h": null,
+          "visible": null,
+          "enabled": null,
+          "background": null,
+          "color": null,
+          "text": null,
+          "value": null,
+          "events": [],
+          "font_type": null,
+          "font_size": null,
+          "bold": null,
+          "italic": null
+        },
+        {
+          "widget": "checkbox",
+          "id": null,
+          "x": null,
+          "y": null,
+          "w": null,
+          "h": null,
+          "visible": null,
+          "enabled": null,
+          "background": null,
+          "color": null,
+          "text": null,
+          "value": null,
+          "events": [],
+          "font_type": null,
+          "font_size": null,
+          "bold": null,
+          "italic": null
+        },
+        {
+          "widget": "slider",
+          "id": null,
+          "x": null,
+          "y": null,
+          "w": null,
+          "h": null,
+          "visible": null,
+          "enabled": null,
+          "background": null,
+          "color": null,
+          "min": null,
+          "max": null,
+          "value": null,
+          "step": null,
+          "events": []
+        },
+        {
+          "widget": "progressbar",
+          "id": null,
+          "x": null,
+          "y": null,
+          "w": null,
+          "h": null,
+          "visible": null,
+          "background": null,
+          "color": null,
+          "max": null,
+          "value": null
+        },
+        {
+          "widget": "image",
+          "id": null,
+          "x": null,
+          "y": null,
+          "w": null,
+          "h": null,
+          "visible": null,
+          "enabled": null,
+          "background": null,
+          "source": null,
+          "scale": null,
+          "transparent": null,
+          "events": []
+        },
+        {
+          "widget": "line",
+          "id": null,
+          "x": null,
+          "y": null,
+          "w": null,
+          "h": null,
+          "visible": null,
+          "color": null,
+          "thickness": null
+        },
+        {
+          "widget": "keyboard",
+          "id": null,
+          "x": null,
+          "y": null,
+          "w": null,
+          "h": null,
+          "visible": null,
+          "enabled": null,
+          "background": null,
+          "color": null,
+          "border": {
+            "color": null,
+            "width": null
+          },
+          "layout": null,
+          "target": null,
+          "secret": null,
+          "max_length": null,
+          "input_event": null,
+          "hide_on_enter": null,
+          "linefeed": null,
+          "events": []
+        },
+        {
+          "widget": "choice",
+          "id": null,
+          "x": null,
+          "y": null,
+          "w": null,
+          "h": null,
+          "visible": null,
+          "enabled": null,
+          "style": null,
+          "orientation": null,
+          "items": [],
+          "selected": null,
+          "background": null,
+          "color": null,
+          "border": {
+            "color": null,
+            "width": null
+          },
+          "events": [],
+          "font_type": null,
+          "font_size": null,
+          "bold": null,
+          "italic": null
+        },
+        {
+          "widget": "tree",
+          "id": null,
+          "x": null,
+          "y": null,
+          "w": null,
+          "h": null,
+          "visible": null,
+          "enabled": null,
+          "items": [
+            {
+              "text": null,
+              "items": [
+                {
+                  "text": null,
+                  "items": [
+                    {
+                      "text": null
+                    }
+                  ]
+                }
+              ]
+            }
+          ],
+          "selected": null,
+          "background": null,
+          "color": null,
+          "border": {
+            "color": null,
+            "width": null
+          },
+          "events": [],
+          "font_type": null,
+          "font_size": null,
+          "bold": null,
+          "italic": null
+        },
+        {
+          "widget": "gauge",
+          "id": null,
+          "x": null,
+          "y": null,
+          "w": null,
+          "h": null,
+          "visible": null,
+          "background": null,
+          "color": null,
+          "min": null,
+          "max": null,
+          "value": null,
+          "text": null,
+          "show_value": null,
+          "ticks": null,
+          "diameter": null,
+          "sweep": null,
+          "show_ticks": null,
+          "font_size": null
+        },
+        {
+          "widget": "stepper",
+          "id": null,
+          "x": null,
+          "y": null,
+          "w": null,
+          "h": null,
+          "visible": null,
+          "enabled": null,
+          "background": null,
+          "color": null,
+          "min": null,
+          "max": null,
+          "value": null,
+          "step": null,
+          "events": [],
+          "font_type": null,
+          "font_size": null,
+          "bold": null,
+          "italic": null
+        },
+        {
+          "widget": "waveform",
+          "id": null,
+          "x": null,
+          "y": null,
+          "w": null,
+          "h": null,
+          "visible": null,
+          "background": null,
+          "color": null,
+          "min": null,
+          "max": null,
+          "points": null,
+          "style": null,
+          "grid": null,
+          "title": null,
+          "update_ms": null,
+          "font_size": null
+        },
+        {
+          "widget": "barchart",
+          "id": null,
+          "x": null,
+          "y": null,
+          "w": null,
+          "h": null,
+          "visible": null,
+          "background": null,
+          "color": null,
+          "min": null,
+          "max": null,
+          "bars": null,
+          "grid": null,
+          "title": null,
+          "labels": [],
+          "values": [],
+          "show_values": null,
+          "update_ms": null,
+          "font_size": null
+        }
+      ]
+    }
+  ]
+}

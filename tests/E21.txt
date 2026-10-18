@@ -1,0 +1,9 @@
+TEST E21 -- dropdowns, design built in the Editor (compare with test 21)
+ LOOK : top: a field (first item "Smal"), a label "small", a button "Button", "taps : 0";
+        bottom: a second dropdown (first item "Mon") and a label.
+ DO   : 1) tap the top field -> list opens BELOW, covering the button; pick "Large" -> field and the label beside it say Large;
+           the button is whole again; tap the button -> "taps: 1".
+        2) open it again, tap OUTSIDE the list -> closes, nothing changes.
+        3) tap the bottom field -> its list opens UPWARD; pick "Sun" -> field and its label show Sun.
+        4) scroll bar (if shown): tap its top / bottom end (one row) and its middle (jump).
+ PASS : as in test 21.

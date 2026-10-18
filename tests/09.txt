@@ -1,0 +1,12 @@
+TEST 09 -- full keyboard (letters, digits, LF, scrollbar)
+ LOOK : a white memo at the top saying "(empty)" and a green button "Type".
+ DO   : tap "Type". The keyboard takes over the screen (memo on top, keys below).
+        1) type HELLO, press Space, type 123.   2) press Bksp once.
+        3) press LF and type more lines until there are MORE THAN 5 lines (LF each time).
+        4) a scrollbar appears at the right of the memo: tap the top / bottom END of the bar to move one line, tap the MIDDLE to jump to that place in the text.
+        5) press Enter.   Then tap "Type" again, type X and press Esc.
+ PASS : each key press shows in the memo at once (only the new letter is drawn, no flicker);
+        LF starts a new line; the scrollbar appears after 5 lines and scrolls the text;
+        Enter closes the keyboard and the main screen's memo holds the text (several lines);
+        Esc closes it and leaves the memo as it was.
+ FAIL : keys miss or double-type, memo not updated, no scrollbar, text lost, screen not restored.

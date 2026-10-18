@@ -1,0 +1,10 @@
+TEST 29 -- long press (an experiment: does it feel reliable on this panel?)
+ LOOK : "short: 0   long: 0" and three buttons.
+ DO   : 1) "Tap, or hold": tap it briefly 5 times -> "short" goes 1..5 and "long" stays 0.
+        2) hold it with a steady finger (or the stylus) for about a second -> "long" goes up by ONE, "short" does not.
+           Repeat 5 times. Note: does a steady hold ever count as a tap, or count twice?
+        3) "Hold only": tap briefly -> nothing happens; hold -> "long" goes up.
+        4) "Tap only (unchanged)": must respond to a tap at once, as before.
+ PASS : taps are taps, holds are holds, at least 4 of 5 each way. (The panel is resistive: say honestly how it felt.)
+ FAIL : holds often turn into taps (the panel flickers), or taps feel delayed.
+ NOTE : the hold time is Runtime.LONG_PRESS_MS (700 ms); it can be changed in the script: Runtime.LONG_PRESS_MS = 500

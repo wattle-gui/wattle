@@ -1,0 +1,8 @@
+TEST 02 -- switch and checkbox
+ LOOK : a switch (white square on the left of a grey track) and a checkbox (empty white box),
+        plus the lines "Switch: OFF" and "Check: no".
+ DO   : tap the switch twice, then the checkbox twice.
+ PASS : switch ON  -> green track, knob moves right with a black X on it, label says "Switch: ON".
+        switch OFF -> grey track, knob on the left, no X, "Switch: OFF".
+        checkbox ON -> a white X appears in the box, "Check: yes"; tapping again clears it, "Check: no".
+ FAIL : no change, X missing or misplaced, or the labels do not follow.

@@ -1,0 +1,6 @@
+TEST 01 -- changing a widget's properties from the script
+ LOOK : a green button "Colour", a grey button "OFF", and the line "Tap each button".
+ DO   : tap "Colour" a few times, then the other button a few times.
+ PASS : "Colour" flips green <-> red on every tap. The other flips grey "OFF" <-> blue "ON".
+        Only the tapped button changes; the screen does not flicker or redraw everything.
+ FAIL : nothing changes, the wrong button changes, or colours/text stay stuck.

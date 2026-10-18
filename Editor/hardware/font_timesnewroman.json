@@ -1,0 +1,20 @@
+{
+ "kind": "font",
+ "name": "Times New Roman",
+ "type": "anti-aliased bitmap (4-bit)",
+ "file": "timesnewroman_<size>[b][i].fnt",
+ "sizes": [
+  10,
+  12,
+  14,
+  16,
+  20,
+  24,
+  32
+ ],
+ "styles": [
+  "bold",
+  "italic"
+ ],
+ "source": "Liberation Serif (free look-alike)"
+}

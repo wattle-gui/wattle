@@ -1,0 +1,119 @@
+{
+  "app": {
+    "name": "Design",
+    "purpose": "",
+    "version": "1.0",
+    "version_date": ""
+  },
+  "target": {
+    "model": "",
+    "processor": "",
+    "board": "",
+    "display": {
+      "model": "",
+      "width": 320,
+      "height": 240,
+      "interface": "",
+      "driver": ""
+    },
+    "touch": {
+      "model": "",
+      "type": "",
+      "interface": "",
+      "driver": ""
+    },
+    "fonts": [
+      {
+        "name": "default",
+        "sizes": [
+          8,
+          16,
+          24
+        ],
+        "styles": [
+          "bold",
+          "italic"
+        ]
+      }
+    ]
+  },
+  "screens": [
+    {
+      "id": "main",
+      "orientation": "landscape",
+      "width": 320,
+      "height": 240,
+      "background": "black",
+      "widgets": [
+        {
+          "widget": "tree",
+          "id": "tree1",
+          "x": 8,
+          "y": 8,
+          "w": 304,
+          "h": 224,
+          "visible": true,
+          "enabled": true,
+          "items": [
+            {
+              "text": "Display",
+              "items": [
+                {
+                  "text": "Brightness"
+                },
+                {
+                  "text": "Timeout"
+                },
+                {
+                  "text": "Theme",
+                  "items": [
+                    {
+                      "text": "Dark"
+                    },
+                    {
+                      "text": "Light"
+                    }
+                  ]
+                }
+              ]
+            },
+            {
+              "text": "Network",
+              "items": [
+                {
+                  "text": "WiFi"
+                },
+                {
+                  "text": "Bluetooth"
+                },
+                {
+                  "text": "Ethernet"
+                }
+              ]
+            },
+            {
+              "text": "Sound",
+              "items": [
+                {
+                  "text": "Volume"
+                }
+              ]
+            }
+          ],
+          "selected": "",
+          "background": "black",
+          "color": "white",
+          "border": {
+            "color": "gray",
+            "width": 1
+          },
+          "events": [],
+          "font_type": "default",
+          "font_size": 16,
+          "bold": false,
+          "italic": false
+        }
+      ]
+    }
+  ]
+}

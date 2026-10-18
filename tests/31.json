@@ -1,0 +1,271 @@
+{
+  "app": {
+    "name": "Test 31 gauge stepper waveform",
+    "purpose": "test 31",
+    "version": "1.0",
+    "version_date": ""
+  },
+  "target": {
+    "model": "CYD 2.8 (ESP32 + ILI9341 + XPT2046)",
+    "processor": "ESP32",
+    "board": "board_cyd",
+    "display": {
+      "model": "ILI9341",
+      "width": 320,
+      "height": 240,
+      "interface": "SPI",
+      "driver": "ili9341.py"
+    },
+    "touch": {
+      "model": "XPT2046",
+      "type": "resistive",
+      "interface": "SPI",
+      "driver": "touch_xpt2046.py"
+    },
+    "fonts": [
+      {
+        "name": "default",
+        "sizes": [
+          8,
+          16,
+          24
+        ],
+        "styles": [
+          "bold",
+          "italic"
+        ]
+      },
+      {
+        "name": "Arial",
+        "sizes": [
+          12,
+          16,
+          20,
+          24,
+          32
+        ],
+        "styles": [
+          "bold",
+          "italic"
+        ]
+      },
+      {
+        "name": "Times New Roman",
+        "sizes": [
+          12,
+          16,
+          20,
+          24,
+          32
+        ],
+        "styles": [
+          "bold",
+          "italic"
+        ]
+      },
+      {
+        "name": "Comic Sans MS",
+        "sizes": [
+          12,
+          16,
+          20,
+          24,
+          32
+        ],
+        "styles": [
+          "bold",
+          "italic"
+        ]
+      },
+      {
+        "name": "DejaVu Sans",
+        "sizes": [
+          12,
+          16,
+          20,
+          24,
+          32
+        ],
+        "styles": [
+          "bold",
+          "italic"
+        ]
+      },
+      {
+        "name": "DejaVu Sans Mono",
+        "sizes": [
+          12,
+          16,
+          20,
+          24,
+          32
+        ],
+        "styles": [
+          "bold",
+          "italic"
+        ]
+      },
+      {
+        "name": "DejaVu Serif",
+        "sizes": [
+          12,
+          16,
+          20,
+          24,
+          32
+        ],
+        "styles": [
+          "bold",
+          "italic"
+        ]
+      }
+    ]
+  },
+  "screens": [
+    {
+      "id": "main",
+      "orientation": "landscape",
+      "width": 320,
+      "height": 240,
+      "background": "black",
+      "widgets": [
+        {
+          "widget": "gauge",
+          "id": "gauge1",
+          "x": 4,
+          "y": 4,
+          "w": 130,
+          "h": 130,
+          "visible": true,
+          "background": "gray",
+          "color": "red",
+          "min": 0,
+          "max": 100,
+          "value": 40,
+          "text": "SPEED",
+          "show_value": true,
+          "ticks": 12,
+          "diameter": 0,
+          "sweep": 270,
+          "show_ticks": true,
+          "font_size": "default"
+        },
+        {
+          "widget": "stepper",
+          "id": "stepper1",
+          "x": 140,
+          "y": 8,
+          "w": 176,
+          "h": 40,
+          "visible": true,
+          "enabled": true,
+          "background": "transparent",
+          "color": "green",
+          "min": 0,
+          "max": 100,
+          "value": 40,
+          "step": 5,
+          "events": [
+            "changed"
+          ],
+          "font_type": "default",
+          "font_size": 16,
+          "bold": false,
+          "italic": false
+        },
+        {
+          "widget": "waveform",
+          "id": "waveform1",
+          "x": 140,
+          "y": 56,
+          "w": 176,
+          "h": 110,
+          "visible": true,
+          "background": "black",
+          "color": "green",
+          "min": 0,
+          "max": 100,
+          "points": 40,
+          "style": "line",
+          "grid": true,
+          "title": "Waveform",
+          "update_ms": 50,
+          "font_size": "default"
+        },
+        {
+          "widget": "gauge",
+          "id": "gauge2",
+          "x": 4,
+          "y": 140,
+          "w": 96,
+          "h": 96,
+          "visible": true,
+          "background": "gray",
+          "color": "yellow",
+          "min": 0,
+          "max": 10,
+          "value": 2,
+          "text": "HALF",
+          "show_value": false,
+          "ticks": 5,
+          "diameter": 90,
+          "sweep": 180,
+          "show_ticks": true,
+          "font_size": "default"
+        },
+        {
+          "widget": "button",
+          "id": "button1",
+          "x": 110,
+          "y": 180,
+          "w": 100,
+          "h": 50,
+          "visible": true,
+          "enabled": true,
+          "background": "green",
+          "color": "black",
+          "border": {
+            "color": "black",
+            "width": 1
+          },
+          "text": "Clear chart",
+          "alignment": "center",
+          "accepts_input": false,
+          "events": [
+            "click"
+          ],
+          "font_type": "default",
+          "font_size": 8,
+          "bold": false,
+          "italic": false
+        },
+        {
+          "widget": "button",
+          "id": "button2",
+          "x": 216,
+          "y": 180,
+          "w": 100,
+          "h": 50,
+          "visible": true,
+          "enabled": true,
+          "background": "green",
+          "color": "black",
+          "border": {
+            "color": "black",
+            "width": 1
+          },
+          "text": "Add noise",
+          "alignment": "center",
+          "accepts_input": false,
+          "events": [
+            "click"
+          ],
+          "font_type": "default",
+          "font_size": 8,
+          "bold": false,
+          "italic": false
+        }
+      ]
+    }
+  ]
+}

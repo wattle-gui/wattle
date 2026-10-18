@@ -1,0 +1,4 @@
+TEST 34 -- a miniature scope (a sine wave from the script, no hardware)
+ LOOK   : a green wave scrolling across "Signal generator", a frequency slider, a Clear button.
+ DO     : move the slider: the wave gets tighter or wider. Tap Clear. 
+ PASS   : the wave moves smoothly, the slider and the button still respond while it runs.

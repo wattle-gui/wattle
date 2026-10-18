@@ -1,0 +1,6 @@
+[
+ {"kind": "touch", "name": "XPT2046", "file": "touch_xpt2046.py", "type": "resistive", "interface": "SPI", "needs_calibration": true},
+ {"kind": "touch", "name": "FT6336",  "file": "", "type": "capacitive", "interface": "I2C", "needs_calibration": false},
+ {"kind": "touch", "name": "CST816S", "file": "", "type": "capacitive", "interface": "I2C", "needs_calibration": false},
+ {"kind": "touch", "name": "GT911",   "file": "", "type": "capacitive", "interface": "I2C", "needs_calibration": false}
+]

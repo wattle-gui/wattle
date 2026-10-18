@@ -1,0 +1,4 @@
+E26 -- the design made in the Editor after Cursor's list fix (lists typed in the Editor, no hand editing)
+ LOOK   : a dial SPEED at 40, a stepper, an empty waveform "Wave", a rainfall bar chart with years under and numbers above the bars.
+ DO     : tap + and - on the stepper.
+ PASS   : as in tests 31 and 33.

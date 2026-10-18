@@ -1,0 +1,6 @@
+TEST 26 -- an error while the script starts
+ LOOK : nothing normal: the screen turns DARK RED straight after the start.
+ PASS : "SCRIPT ERROR", "while your script was starting", "NameError: undefined_function", the place
+        "File Project_1.py, line 6, in <module>", and at the bottom "RUN CHECK_SCRIPT.PY ON THE PC". It stays like that
+        (a tap does nothing). Loading another test with run_test.py (which resets the board) brings the board back.
+ FAIL : a blank screen, or the board restarting again and again.

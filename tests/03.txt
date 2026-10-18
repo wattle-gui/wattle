@@ -1,0 +1,10 @@
+TEST 03 -- sliders and progress bars (horizontal and vertical)
+ LOOK : left: a slider with a bar under it (both about 1/3 full), "H: 30", "V: 70".
+        right: a vertical bar (about 70%, filled from the BOTTOM) and a vertical slider (70%).
+ DO   : 1) drag the horizontal slider left and right.   2) drag the vertical slider up and down.
+        3) tap "To 0", then "To 100".
+ PASS : while you drag, the slider's white thumb follows the finger AND the number in the label
+        changes with it (live). When you lift the finger, the matching bar jumps to the same level.
+        Vertical: up = more (fills from the bottom). "To 0" empties all four, "To 100" fills all four.
+ FAIL : the thumb does not follow, the number does not update, the bar does not match,
+        direction reversed, or the buttons do nothing.

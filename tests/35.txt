@@ -1,0 +1,4 @@
+TEST 35 -- one big gauge
+ LOOK   : a large dial (scale 0 at the lower left, 100 at the lower right, a mark every 10), needle at 40, "+" and "-" buttons.
+ DO     : tap + and - and watch the circle and the needle.
+ PASS   : the circle stays closed; the needle points to the right place (40 = the fourth mark after 0).

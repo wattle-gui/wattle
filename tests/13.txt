@@ -1,0 +1,7 @@
+TEST 13 -- keyboard that stays open (hide_on_enter false)
+ LOOK : a memo showing "-", the text "sent: 0" and a green button "Chat".
+ DO   : tap "Chat". 1) type AB, press Enter.  2) the keyboard memo must become EMPTY and the
+        keyboard must STAY open.  3) type CD, press Enter.  4) press Esc.
+ PASS : after Esc the main screen shows  "sent: 2  last: CD"  and the big memo shows "CD".
+        Tap "Chat", press Esc at once: "sent: 2  last: None".
+ FAIL : keyboard closes after the first Enter, memo not cleared, wrong count or text.

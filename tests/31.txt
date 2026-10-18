@@ -1,0 +1,8 @@
+TEST 31 -- gauge, stepper, chart (new widgets, drawn by the Runtime)
+ LOOK   : big round dial "SPEED" (scale 270 degrees, needle at 40, number 40), a "- 40 +" stepper, a waveform box with a
+          line that grows from the left, a small HALF-circle yellow dial "HALF" (no number), two buttons.
+ DO     : 1) tap "+" : value goes 45, 50 ...; the big needle follows; the half dial follows; the waveform steps up (five points a second).
+          2) tap "-" until 0, and "+" until 100: it stops at both ends.
+          3) tap "Add noise" a few times: spikes in the chart. "Clear chart": it empties.
+          4) leave it for 40+ seconds: the line scrolls (the oldest points drop out).
+ PASS   : all of the above; the needle is clear; the number and "SPEED" are not crossed by the needle; no flicker problems.

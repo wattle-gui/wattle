@@ -1,0 +1,209 @@
+{
+  "app": {
+    "name": "Test 10 numeric keyboard",
+    "purpose": "test 10",
+    "version": "1.0",
+    "version_date": ""
+  },
+  "target": {
+    "model": "CYD 2.8 (ESP32 + ILI9341 + XPT2046)",
+    "processor": "ESP32",
+    "board": "board_cyd",
+    "display": {
+      "model": "ILI9341",
+      "width": 320,
+      "height": 240,
+      "interface": "SPI",
+      "driver": "ili9341.py"
+    },
+    "touch": {
+      "model": "XPT2046",
+      "type": "resistive",
+      "interface": "SPI",
+      "driver": "touch_xpt2046.py"
+    },
+    "fonts": [
+      {
+        "name": "default",
+        "sizes": [
+          8,
+          16,
+          24
+        ],
+        "styles": [
+          "bold",
+          "italic"
+        ]
+      },
+      {
+        "name": "Arial",
+        "sizes": [
+          12,
+          16,
+          20,
+          24,
+          32
+        ],
+        "styles": [
+          "bold",
+          "italic"
+        ]
+      },
+      {
+        "name": "Times New Roman",
+        "sizes": [
+          12,
+          16,
+          20,
+          24,
+          32
+        ],
+        "styles": [
+          "bold",
+          "italic"
+        ]
+      },
+      {
+        "name": "Comic Sans MS",
+        "sizes": [
+          12,
+          16,
+          20,
+          24,
+          32
+        ],
+        "styles": [
+          "bold",
+          "italic"
+        ]
+      },
+      {
+        "name": "DejaVu Sans",
+        "sizes": [
+          12,
+          16,
+          20,
+          24,
+          32
+        ],
+        "styles": [
+          "bold",
+          "italic"
+        ]
+      },
+      {
+        "name": "DejaVu Sans Mono",
+        "sizes": [
+          12,
+          16,
+          20,
+          24,
+          32
+        ],
+        "styles": [
+          "bold",
+          "italic"
+        ]
+      },
+      {
+        "name": "DejaVu Serif",
+        "sizes": [
+          12,
+          16,
+          20,
+          24,
+          32
+        ],
+        "styles": [
+          "bold",
+          "italic"
+        ]
+      }
+    ]
+  },
+  "screens": [
+    {
+      "id": "main",
+      "orientation": "landscape",
+      "width": 320,
+      "height": 240,
+      "background": "black",
+      "widgets": [
+        {
+          "widget": "memo",
+          "id": "memo1",
+          "x": 10,
+          "y": 10,
+          "w": 300,
+          "h": 50,
+          "visible": true,
+          "enabled": true,
+          "background": "white",
+          "color": "black",
+          "border": {
+            "color": "#ffaa00",
+            "width": 2
+          },
+          "text": "0",
+          "alignment": "left",
+          "accepts_input": true,
+          "events": [],
+          "font_type": "default",
+          "font_size": 24,
+          "bold": false,
+          "italic": false
+        },
+        {
+          "widget": "button",
+          "id": "button1",
+          "x": 90,
+          "y": 120,
+          "w": 140,
+          "h": 60,
+          "visible": true,
+          "enabled": true,
+          "background": "green",
+          "color": "white",
+          "border": {
+            "color": "black",
+            "width": 1
+          },
+          "text": "Number",
+          "alignment": "center",
+          "accepts_input": false,
+          "events": [
+            "click"
+          ],
+          "font_type": "default",
+          "font_size": 16,
+          "bold": false,
+          "italic": false
+        },
+        {
+          "widget": "keyboard",
+          "id": "keyboard1",
+          "x": 0,
+          "y": 0,
+          "w": 320,
+          "h": 240,
+          "visible": true,
+          "enabled": true,
+          "background": "gray",
+          "color": "black",
+          "border": {
+            "color": "black",
+            "width": 1
+          },
+          "layout": "numeric",
+          "target": "memo1",
+          "secret": false,
+          "max_length": 8,
+          "input_event": false,
+          "hide_on_enter": true,
+          "linefeed": false,
+          "events": []
+        }
+      ]
+    }
+  ]
+}

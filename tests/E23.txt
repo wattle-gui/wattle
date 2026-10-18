@@ -1,0 +1,7 @@
+TEST E23 -- portrait orientation (240 x 320), USB socket at the BOTTOM
+ LOOK : the screen is TALL; the text reads the right way up. Four corner buttons (TL, TR, BL, "BT"),
+        the text "Tap corner" at the top, a slider in the middle.
+ DO   : tap each corner button as close to the corner as you can; drag the slider.
+ PASS : the text names the corner you tapped (top-left, top-right, bottom-left, bottom-right) --
+        the same corner you touched; the slider thumb follows the finger and the number follows it.
+ FAIL : upside down / mirrored picture, a tap lands on a different corner or is off by a lot.

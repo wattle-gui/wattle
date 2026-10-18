@@ -1,0 +1,7 @@
+TEST 12 -- keyboard events (per-key and enter)
+ LOOK : "keys: -", "enter: -" and a green button "Type".
+ DO   : tap "Type", type ABC, press Bksp once, type D, press Enter.
+ PASS : after Enter the main screen shows  "enter: ABD"  and  "keys: 5 (len 3)"
+        (A, B, C, Bksp, D = 5 key presses; the text then has 3 letters).
+        Tap "Type", press Esc at once: "enter:" stays unchanged (no enter event on Esc).
+ FAIL : counts wrong, no enter text, or enter text shown after Esc.

@@ -1,0 +1,6 @@
+TEST 32 -- bar charts (moving and stationary)
+ LOOK   : a wide chart "Waveform" that fills with bars from the left, and a smaller "Barchart" chart (orange, 8 slots, empty).
+ DO     : 1) watch the top chart: the new bars arrive 33 times a second but the display is refreshed only about 6 times a second (update_ms = 150 in the design), so the bars flow in small jumps; after 40 bars the whole chart moves left.
+          2) tap "Random bar" several times: bars appear in random places of the orange chart; the same slot changes again later.
+          3) tap "Clear both": both charts empty (the top one starts again).
+ PASS   : all of the above; the bars are clean (no stray pixels), the updates are not too slow.

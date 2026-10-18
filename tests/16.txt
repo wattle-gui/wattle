@@ -1,0 +1,9 @@
+TEST 16 -- periodic tasks: every() and stop()
+ LOOK : "seconds: 0", a bar, and two buttons. WITHOUT touching anything:
+ PASS : "seconds" counts up by one every second, and the bar sweeps from empty to full
+        about every second (5 steps a second) and starts again.
+ DO   : tap "Tap me" several times while the clock runs -> its counter goes up 1,2,3...,
+        and the clock keeps counting. Tap "Stop clock" -> the number freezes (the bar keeps
+        sweeping), the button says "Start clock"; tap again -> the count continues.
+ FAIL : nothing moves by itself, the clock is far from 1 second, taps are ignored or slow
+        (more than half a second), or stopping the clock stops the bar too.

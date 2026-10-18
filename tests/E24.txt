@@ -1,0 +1,4 @@
+E24 -- gauge, stepper, waveform, barchart made in the Editor
+ LOOK   : a dial "SPEED" at 40, a "- 40 +" stepper, an empty waveform "Wave", an orange rainfall bar chart with years and numbers.
+ DO     : tap + and - on the stepper (steps of 5): the needle moves and the waveform gets a new value each tap.
+ PASS   : as in tests 31 and 33.

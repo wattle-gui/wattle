@@ -1,0 +1,266 @@
+{
+  "app": {
+    "name": "Test 08 change a hidden screen",
+    "purpose": "test 08",
+    "version": "1.0",
+    "version_date": ""
+  },
+  "target": {
+    "model": "CYD 2.8 (ESP32 + ILI9341 + XPT2046)",
+    "processor": "ESP32",
+    "board": "board_cyd",
+    "display": {
+      "model": "ILI9341",
+      "width": 320,
+      "height": 240,
+      "interface": "SPI",
+      "driver": "ili9341.py"
+    },
+    "touch": {
+      "model": "XPT2046",
+      "type": "resistive",
+      "interface": "SPI",
+      "driver": "touch_xpt2046.py"
+    },
+    "fonts": [
+      {
+        "name": "default",
+        "sizes": [
+          8,
+          16,
+          24
+        ],
+        "styles": [
+          "bold",
+          "italic"
+        ]
+      },
+      {
+        "name": "Arial",
+        "sizes": [
+          12,
+          16,
+          20,
+          24,
+          32
+        ],
+        "styles": [
+          "bold",
+          "italic"
+        ]
+      },
+      {
+        "name": "Times New Roman",
+        "sizes": [
+          12,
+          16,
+          20,
+          24,
+          32
+        ],
+        "styles": [
+          "bold",
+          "italic"
+        ]
+      },
+      {
+        "name": "Comic Sans MS",
+        "sizes": [
+          12,
+          16,
+          20,
+          24,
+          32
+        ],
+        "styles": [
+          "bold",
+          "italic"
+        ]
+      },
+      {
+        "name": "DejaVu Sans",
+        "sizes": [
+          12,
+          16,
+          20,
+          24,
+          32
+        ],
+        "styles": [
+          "bold",
+          "italic"
+        ]
+      },
+      {
+        "name": "DejaVu Sans Mono",
+        "sizes": [
+          12,
+          16,
+          20,
+          24,
+          32
+        ],
+        "styles": [
+          "bold",
+          "italic"
+        ]
+      },
+      {
+        "name": "DejaVu Serif",
+        "sizes": [
+          12,
+          16,
+          20,
+          24,
+          32
+        ],
+        "styles": [
+          "bold",
+          "italic"
+        ]
+      }
+    ]
+  },
+  "screens": [
+    {
+      "id": "first",
+      "orientation": "landscape",
+      "width": 320,
+      "height": 240,
+      "background": "#aaff00",
+      "widgets": [
+        {
+          "widget": "label",
+          "id": "label1",
+          "x": 20,
+          "y": 20,
+          "w": 280,
+          "h": 30,
+          "visible": true,
+          "enabled": true,
+          "background": "black",
+          "color": "black",
+          "border": {
+            "color": "black",
+            "width": 0
+          },
+          "text": "FIRST screen",
+          "alignment": "center",
+          "font_type": "default",
+          "font_size": 16,
+          "bold": false,
+          "italic": false
+        },
+        {
+          "widget": "button",
+          "id": "button1",
+          "x": 60,
+          "y": 70,
+          "w": 200,
+          "h": 50,
+          "visible": true,
+          "enabled": true,
+          "background": "green",
+          "color": "white",
+          "border": {
+            "color": "black",
+            "width": 1
+          },
+          "text": "Change",
+          "alignment": "center",
+          "accepts_input": false,
+          "events": [
+            "click"
+          ],
+          "font_type": "default",
+          "font_size": 16,
+          "bold": false,
+          "italic": false
+        },
+        {
+          "widget": "button",
+          "id": "button2",
+          "x": 60,
+          "y": 140,
+          "w": 200,
+          "h": 50,
+          "visible": true,
+          "enabled": true,
+          "background": "blue",
+          "color": "white",
+          "border": {
+            "color": "black",
+            "width": 1
+          },
+          "text": "Go to 2nd",
+          "alignment": "center",
+          "accepts_input": false,
+          "events": [
+            "click"
+          ],
+          "font_type": "default",
+          "font_size": 16,
+          "bold": false,
+          "italic": false
+        }
+      ]
+    },
+    {
+      "id": "second",
+      "orientation": "landscape",
+      "width": 320,
+      "height": 240,
+      "background": "#ffaaff",
+      "widgets": [
+        {
+          "widget": "label",
+          "id": "label2",
+          "x": 20,
+          "y": 70,
+          "w": 280,
+          "h": 40,
+          "visible": true,
+          "enabled": true,
+          "background": "black",
+          "color": "black",
+          "border": {
+            "color": "black",
+            "width": 0
+          },
+          "text": "original text",
+          "alignment": "center",
+          "font_type": "default",
+          "font_size": 16,
+          "bold": false,
+          "italic": false
+        },
+        {
+          "widget": "button",
+          "id": "button3",
+          "x": 90,
+          "y": 150,
+          "w": 140,
+          "h": 50,
+          "visible": true,
+          "enabled": true,
+          "background": "blue",
+          "color": "white",
+          "border": {
+            "color": "black",
+            "width": 1
+          },
+          "text": "Back",
+          "alignment": "center",
+          "accepts_input": false,
+          "events": [
+            "click"
+          ],
+          "font_type": "default",
+          "font_size": 16,
+          "bold": false,
+          "italic": false
+        }
+      ]
+    }
+  ]
+}

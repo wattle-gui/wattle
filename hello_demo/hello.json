@@ -1,0 +1,423 @@
+{
+  "app": {
+    "name": "Wattle demo",
+    "purpose": "Shown after installation: proves the board, the design, the script and the touch panel work",
+    "version": "1.0",
+    "version_date": ""
+  },
+  "target": {
+    "model": "CYD 2.8 (ESP32 + ILI9341 + XPT2046)",
+    "processor": "ESP32",
+    "board": "board_cyd",
+    "display": {
+      "model": "ILI9341",
+      "width": 320,
+      "height": 240,
+      "interface": "SPI",
+      "driver": "ili9341.py"
+    },
+    "touch": {
+      "model": "XPT2046",
+      "type": "resistive",
+      "interface": "SPI",
+      "driver": "touch_xpt2046.py"
+    },
+    "fonts": [
+      {
+        "name": "default",
+        "sizes": [
+          8,
+          16,
+          24
+        ],
+        "styles": [
+          "bold",
+          "italic"
+        ]
+      },
+      {
+        "name": "Arial",
+        "sizes": [
+          12,
+          16,
+          20,
+          24,
+          32
+        ],
+        "styles": [
+          "bold",
+          "italic"
+        ]
+      },
+      {
+        "name": "Times New Roman",
+        "sizes": [
+          12,
+          16,
+          20,
+          24,
+          32
+        ],
+        "styles": [
+          "bold",
+          "italic"
+        ]
+      },
+      {
+        "name": "Comic Sans MS",
+        "sizes": [
+          12,
+          16,
+          20,
+          24,
+          32
+        ],
+        "styles": [
+          "bold",
+          "italic"
+        ]
+      },
+      {
+        "name": "DejaVu Sans",
+        "sizes": [
+          12,
+          16,
+          20,
+          24,
+          32
+        ],
+        "styles": [
+          "bold",
+          "italic"
+        ]
+      },
+      {
+        "name": "DejaVu Sans Mono",
+        "sizes": [
+          12,
+          16,
+          20,
+          24,
+          32
+        ],
+        "styles": [
+          "bold",
+          "italic"
+        ]
+      },
+      {
+        "name": "DejaVu Serif",
+        "sizes": [
+          12,
+          16,
+          20,
+          24,
+          32
+        ],
+        "styles": [
+          "bold",
+          "italic"
+        ]
+      }
+    ]
+  },
+  "screens": [
+    {
+      "id": "main",
+      "orientation": "landscape",
+      "width": 320,
+      "height": 240,
+      "background": "black",
+      "widgets": [
+        {
+          "widget": "label",
+          "id": "label2",
+          "x": 10,
+          "y": 14,
+          "w": 300,
+          "h": 38,
+          "visible": true,
+          "enabled": true,
+          "background": "black",
+          "color": "cyan",
+          "border": {
+            "color": "black",
+            "width": 0
+          },
+          "text": "Wattle is running!",
+          "alignment": "center",
+          "font_type": "Arial",
+          "font_size": 24,
+          "bold": true,
+          "italic": false
+        },
+        {
+          "widget": "label",
+          "id": "label3",
+          "x": 10,
+          "y": 56,
+          "w": 300,
+          "h": 24,
+          "visible": true,
+          "enabled": true,
+          "background": "black",
+          "color": "white",
+          "border": {
+            "color": "black",
+            "width": 0
+          },
+          "text": "Design, script and touch all work.",
+          "alignment": "center",
+          "font_type": "Arial",
+          "font_size": 16,
+          "bold": false,
+          "italic": false
+        },
+        {
+          "widget": "label",
+          "id": "label1",
+          "x": 60,
+          "y": 100,
+          "w": 200,
+          "h": 36,
+          "visible": true,
+          "enabled": true,
+          "background": "black",
+          "color": "white",
+          "border": {
+            "color": "black",
+            "width": 0
+          },
+          "text": "Taps: 0",
+          "alignment": "center",
+          "font_type": "Arial",
+          "font_size": 24,
+          "bold": false,
+          "italic": false
+        },
+        {
+          "widget": "button",
+          "id": "button1",
+          "x": 100,
+          "y": 160,
+          "w": 120,
+          "h": 50,
+          "visible": true,
+          "enabled": true,
+          "background": "green",
+          "color": "black",
+          "border": {
+            "color": "black",
+            "width": 1
+          },
+          "text": "Tap me",
+          "alignment": "center",
+          "accepts_input": false,
+          "events": [
+            "click"
+          ],
+          "font_type": "Arial",
+          "font_size": 16,
+          "bold": false,
+          "italic": false
+        }
+      ]
+    },
+    {
+      "id": "done",
+      "orientation": "landscape",
+      "width": 320,
+      "height": 240,
+      "background": "black",
+      "widgets": [
+        {
+          "widget": "label",
+          "id": "label5",
+          "x": 10,
+          "y": 8,
+          "w": 300,
+          "h": 26,
+          "visible": true,
+          "enabled": true,
+          "background": "black",
+          "color": "white",
+          "border": {
+            "color": "black",
+            "width": 0
+          },
+          "text": "Running live on this little board.",
+          "alignment": "center",
+          "font_type": "Arial",
+          "font_size": 16,
+          "bold": false,
+          "italic": false
+        },
+        {
+          "widget": "gauge",
+          "id": "gauge1",
+          "x": 6,
+          "y": 40,
+          "w": 150,
+          "h": 150,
+          "visible": true,
+          "background": "gray",
+          "color": "red",
+          "min": 0,
+          "max": 100,
+          "value": 40,
+          "text": "LIVE",
+          "show_value": true,
+          "ticks": 12,
+          "diameter": 0,
+          "sweep": 270,
+          "show_ticks": true,
+          "font_size": 12,
+          "font_type": "Arial"
+        },
+        {
+          "widget": "waveform",
+          "id": "waveform1",
+          "x": 164,
+          "y": 46,
+          "w": 150,
+          "h": 138,
+          "visible": true,
+          "background": "black",
+          "color": "green",
+          "min": 0,
+          "max": 100,
+          "points": 140,
+          "style": "line",
+          "grid": true,
+          "title": "Live chart",
+          "update_ms": 100,
+          "font_size": 12,
+          "font_type": "Arial"
+        },
+        {
+          "widget": "button",
+          "id": "button2",
+          "x": 20,
+          "y": 198,
+          "w": 280,
+          "h": 36,
+          "visible": true,
+          "enabled": true,
+          "background": "green",
+          "color": "black",
+          "border": {
+            "color": "black",
+            "width": 1
+          },
+          "text": "Exit - and design your own",
+          "alignment": "center",
+          "accepts_input": false,
+          "events": [
+            "click"
+          ],
+          "font_type": "Arial",
+          "font_size": 16,
+          "bold": true,
+          "italic": false
+        }
+      ]
+    },
+    {
+      "id": "yours",
+      "orientation": "landscape",
+      "width": 320,
+      "height": 240,
+      "background": "black",
+      "widgets": [
+        {
+          "widget": "label",
+          "id": "label6",
+          "x": 10,
+          "y": 14,
+          "w": 300,
+          "h": 38,
+          "visible": true,
+          "enabled": true,
+          "background": "black",
+          "color": "cyan",
+          "border": {
+            "color": "black",
+            "width": 0
+          },
+          "text": "Your turn!",
+          "alignment": "center",
+          "font_type": "Arial",
+          "font_size": 24,
+          "bold": true,
+          "italic": false
+        },
+        {
+          "widget": "label",
+          "id": "label7",
+          "x": 10,
+          "y": 70,
+          "w": 300,
+          "h": 24,
+          "visible": true,
+          "enabled": true,
+          "background": "black",
+          "color": "white",
+          "border": {
+            "color": "black",
+            "width": 0
+          },
+          "text": "Open the Quick Guide on your computer",
+          "alignment": "center",
+          "font_type": "Arial",
+          "font_size": 16,
+          "bold": false,
+          "italic": false
+        },
+        {
+          "widget": "label",
+          "id": "label8",
+          "x": 10,
+          "y": 98,
+          "w": 300,
+          "h": 24,
+          "visible": true,
+          "enabled": true,
+          "background": "black",
+          "color": "white",
+          "border": {
+            "color": "black",
+            "width": 0
+          },
+          "text": "to design your own screens.",
+          "alignment": "center",
+          "font_type": "Arial",
+          "font_size": 16,
+          "bold": false,
+          "italic": false
+        },
+        {
+          "widget": "label",
+          "id": "label9",
+          "x": 10,
+          "y": 150,
+          "w": 300,
+          "h": 24,
+          "visible": true,
+          "enabled": true,
+          "background": "black",
+          "color": "gray",
+          "border": {
+            "color": "black",
+            "width": 0
+          },
+          "text": "Press RESET to see this demo again.",
+          "alignment": "center",
+          "font_type": "Arial",
+          "font_size": 16,
+          "bold": false,
+          "italic": false
+        }
+      ]
+    }
+  ]
+}

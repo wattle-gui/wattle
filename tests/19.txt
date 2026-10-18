@@ -1,0 +1,8 @@
+TEST 19 -- touch interval (LOW_POWER). Delay between touch checks: 50, 100, 150, 250, 400, 600, 1000, 1500 ms,
+           each for 5 seconds, then it starts again from 50.
+ LOOK : the current delay in yellow, "hits: N", a list of results, and a big button "TAP FAST".
+ DO   : press the button as fast as you can, the whole time. Count roughly how many presses you made
+        in 5 s if you like -- or just compare the hit numbers.
+ PASS : the shorter the delay, the more of your presses are recognised; at 1000-1500 ms only
+        a few (one per check). The results list fills up as the delay changes.
+ USE  : choose poll_ms for your own project: small = snappy, large = less power.

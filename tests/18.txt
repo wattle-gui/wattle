@@ -1,0 +1,9 @@
+TEST 18 -- LOW_POWER (processor sleeps between touch checks)
+ LOOK : "ticks: 0" counting up by itself, a bar stepping 10 % per second, a button "Taps: 0".
+ DO   : watch the ticks for 20 s (PERIOD in 18.py is the time between ticks), then tap the button about 10 times (normal taps, not very fast).
+ PASS : the ticks keep coming at the PERIOD set in 18.py; each tap is counted ("Taps: N")
+        - a tap may feel a little slower than usual (up to ~0.15 s), but none is lost.
+ FAIL : the clock stops or runs wrong, the screen freezes/garbles after a few seconds,
+        or taps are missed/delayed by more than half a second.
+ NOTE : to load another test, run_test.py resets the board first (a sleeping board will not
+        answer mpremote otherwise).

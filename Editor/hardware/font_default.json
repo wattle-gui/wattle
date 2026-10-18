@@ -1,0 +1,2 @@
+{ "kind": "font", "name": "default", "type": "bitmap 8x8 (built in)",
+  "file": "", "sizes": [8, 16, 24], "styles": ["bold", "italic"] }

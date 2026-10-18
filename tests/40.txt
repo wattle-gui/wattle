@@ -1,0 +1,8 @@
+TEST 40 -- stress test 2 (runs for hours, nobody needs to touch it)
+ LOOK   : three screens in turn, changing every 15 seconds: four pictures; big text in four typefaces with a gauge and a waveform; a typing screen.
+          Every 50 seconds a pop-up box appears and answers itself ("Yes"), then the keyboard opens and types ABC and Enter by itself.
+ DO     : leave it running and do not use mpremote. Once a minute it adds a line to stress_log.txt on the board.
+ PASS   : after hours the display is still alive; the log has one BOOT line, no ERROR lines and no CHECK FAILED lines; free memory is steady,
+          "runs" keeps growing and "msg" and "kb" show equal numbers (for example kb 120/120).
+
+ ADDED : a slider (s1) at the bottom of the pictures screen, moved by the program about ten times a second (tests the round-knob slider drawing).

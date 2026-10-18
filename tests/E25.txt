@@ -1,0 +1,4 @@
+E25 -- the design from the Editor (NEW_widgets.json), with the barchart lists added by hand
+ LOOK   : a dial SPEED at 40, a stepper, an empty waveform "Wave", a rainfall bar chart (colour #aa5500).
+ DO     : tap + and - on the stepper.
+ PASS   : as in tests 31 and 33.

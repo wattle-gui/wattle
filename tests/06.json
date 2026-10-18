@@ -1,0 +1,311 @@
+{
+  "app": {
+    "name": "Test 06 typefaces",
+    "purpose": "test 06",
+    "version": "1.0",
+    "version_date": ""
+  },
+  "target": {
+    "model": "CYD 2.8 (ESP32 + ILI9341 + XPT2046)",
+    "processor": "ESP32",
+    "board": "board_cyd",
+    "display": {
+      "model": "ILI9341",
+      "width": 320,
+      "height": 240,
+      "interface": "SPI",
+      "driver": "ili9341.py"
+    },
+    "touch": {
+      "model": "XPT2046",
+      "type": "resistive",
+      "interface": "SPI",
+      "driver": "touch_xpt2046.py"
+    },
+    "fonts": [
+      {
+        "name": "default",
+        "sizes": [
+          8,
+          16,
+          24
+        ],
+        "styles": [
+          "bold",
+          "italic"
+        ]
+      },
+      {
+        "name": "Arial",
+        "sizes": [
+          12,
+          16,
+          20,
+          24,
+          32
+        ],
+        "styles": [
+          "bold",
+          "italic"
+        ]
+      },
+      {
+        "name": "Times New Roman",
+        "sizes": [
+          12,
+          16,
+          20,
+          24,
+          32
+        ],
+        "styles": [
+          "bold",
+          "italic"
+        ]
+      },
+      {
+        "name": "Comic Sans MS",
+        "sizes": [
+          12,
+          16,
+          20,
+          24,
+          32
+        ],
+        "styles": [
+          "bold",
+          "italic"
+        ]
+      },
+      {
+        "name": "DejaVu Sans",
+        "sizes": [
+          12,
+          16,
+          20,
+          24,
+          32
+        ],
+        "styles": [
+          "bold",
+          "italic"
+        ]
+      },
+      {
+        "name": "DejaVu Sans Mono",
+        "sizes": [
+          12,
+          16,
+          20,
+          24,
+          32
+        ],
+        "styles": [
+          "bold",
+          "italic"
+        ]
+      },
+      {
+        "name": "DejaVu Serif",
+        "sizes": [
+          12,
+          16,
+          20,
+          24,
+          32
+        ],
+        "styles": [
+          "bold",
+          "italic"
+        ]
+      }
+    ]
+  },
+  "screens": [
+    {
+      "id": "main",
+      "orientation": "landscape",
+      "width": 320,
+      "height": 240,
+      "background": "black",
+      "widgets": [
+        {
+          "widget": "label",
+          "id": "f1",
+          "x": 8,
+          "y": 2,
+          "w": 304,
+          "h": 36,
+          "visible": true,
+          "enabled": true,
+          "background": "black",
+          "color": "white",
+          "border": {
+            "color": "black",
+            "width": 0
+          },
+          "text": "Arial 32",
+          "alignment": "left",
+          "font_type": "Arial",
+          "font_size": 32,
+          "bold": false,
+          "italic": false
+        },
+        {
+          "widget": "label",
+          "id": "f2",
+          "x": 8,
+          "y": 40,
+          "w": 304,
+          "h": 26,
+          "visible": true,
+          "enabled": true,
+          "background": "black",
+          "color": "white",
+          "border": {
+            "color": "black",
+            "width": 0
+          },
+          "text": "Times New Roman 20 italic",
+          "alignment": "left",
+          "font_type": "Times New Roman",
+          "font_size": 20,
+          "bold": false,
+          "italic": true
+        },
+        {
+          "widget": "label",
+          "id": "f3",
+          "x": 8,
+          "y": 68,
+          "w": 304,
+          "h": 30,
+          "visible": true,
+          "enabled": true,
+          "background": "black",
+          "color": "yellow",
+          "border": {
+            "color": "black",
+            "width": 0
+          },
+          "text": "Comic Sans MS 24 bold",
+          "alignment": "left",
+          "font_type": "Comic Sans MS",
+          "font_size": 24,
+          "bold": true,
+          "italic": false
+        },
+        {
+          "widget": "label",
+          "id": "f4",
+          "x": 8,
+          "y": 100,
+          "w": 304,
+          "h": 22,
+          "visible": true,
+          "enabled": true,
+          "background": "black",
+          "color": "white",
+          "border": {
+            "color": "black",
+            "width": 0
+          },
+          "text": "DejaVu Sans 16",
+          "alignment": "left",
+          "font_type": "DejaVu Sans",
+          "font_size": 16,
+          "bold": false,
+          "italic": false
+        },
+        {
+          "widget": "label",
+          "id": "f5",
+          "x": 8,
+          "y": 124,
+          "w": 304,
+          "h": 22,
+          "visible": true,
+          "enabled": true,
+          "background": "black",
+          "color": "white",
+          "border": {
+            "color": "black",
+            "width": 0
+          },
+          "text": "DejaVu Sans Mono 16 b+i",
+          "alignment": "left",
+          "font_type": "DejaVu Sans Mono",
+          "font_size": 16,
+          "bold": true,
+          "italic": true
+        },
+        {
+          "widget": "label",
+          "id": "f6",
+          "x": 8,
+          "y": 148,
+          "w": 304,
+          "h": 18,
+          "visible": true,
+          "enabled": true,
+          "background": "black",
+          "color": "white",
+          "border": {
+            "color": "black",
+            "width": 0
+          },
+          "text": "DejaVu Serif 12 (small)",
+          "alignment": "left",
+          "font_type": "DejaVu Serif",
+          "font_size": 12,
+          "bold": false,
+          "italic": false
+        },
+        {
+          "widget": "label",
+          "id": "f7",
+          "x": 8,
+          "y": 168,
+          "w": 304,
+          "h": 22,
+          "visible": true,
+          "enabled": true,
+          "background": "black",
+          "color": "#ff8080",
+          "border": {
+            "color": "black",
+            "width": 0
+          },
+          "text": "FreeSerif: no font file",
+          "alignment": "left",
+          "font_type": "FreeSerif",
+          "font_size": 16,
+          "bold": false,
+          "italic": false
+        },
+        {
+          "widget": "label",
+          "id": "f8",
+          "x": 8,
+          "y": 194,
+          "w": 304,
+          "h": 26,
+          "visible": true,
+          "enabled": true,
+          "background": "black",
+          "color": "cyan",
+          "border": {
+            "color": "black",
+            "width": 0
+          },
+          "text": "Arial 20 bold italic",
+          "alignment": "left",
+          "font_type": "Arial",
+          "font_size": 20,
+          "bold": true,
+          "italic": true
+        }
+      ]
+    }
+  ]
+}

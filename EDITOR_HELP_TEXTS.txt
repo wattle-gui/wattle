@@ -1,0 +1,96 @@
+HELP TEXTS FOR THE EDITOR (one short note per widget, shown at the bottom of the property panel)
+=================================================================================================
+
+Plain text, 3 to 6 lines each. Lines starting with "Script:" show what the user types in the
+program. Use the names exactly as written (they are the names in the JSON file). Where a note
+mentions an on-screen label (for example "Redraw at most every"), it must be the label the Editor
+shows.
+
+------------------------------------------------------------------------------------------------
+LABEL
+  Static text. Use it for captions and for results your program shows.
+  The text is cut off at the widget's edge, so make the widget wide enough for the longest text.
+  Add "click" to the events if a tap on the text should do something.
+  Script: label1.text = "Hello"
+
+BUTTON
+  A tappable rectangle with text.
+  Add "click" to the events, or the button does nothing. "longpress" is also available (hold about
+  0.7 seconds); it is less reliable than a tap on this touch panel.
+  Script: def button1_click():   and   button1.background = "red"
+
+MEMO
+  Several lines of text, drawn from the top left corner. Lines are separated by a line break.
+  Lines that do not fit are cut off. A memo can be the target of a keyboard.
+  Script: memo1.text = "Line 1\nLine 2"
+
+SWITCH
+  An on/off toggle. It reacts to a tap by itself; the "changed" event only tells your program.
+  Script: switch1.value = True   and   def switch1_changed(value):
+
+CHECKBOX
+  A box that is checked or not. It works like the switch.
+  Script: checkbox1.value = True   and   def checkbox1_changed(value):
+
+SLIDER
+  A thumb the user drags. Wider than tall = horizontal, taller than wide = vertical.
+  "changed" is sent when the finger is lifted; the program may also define slider1_changing(value)
+  to follow the thumb while it moves.
+  Script: slider1.value = 40   and   def slider1_changed(value):
+
+PROGRESSBAR
+  A filled bar showing value out of max. It cannot be touched.
+  Wider than tall = horizontal; taller than wide = vertical (fills from the bottom).
+  Script: progressbar1.value = 70
+
+IMAGE
+  A picture. The board cannot read JPEG or PNG: make_images.py converts it on the computer.
+  Scale: fit keeps the shape, fill covers the box and crops, stretch distorts.
+  Add "click" to the events to make the picture tappable.
+
+LINE
+  A straight line from (Left, Top) to (Left + Width, Top + Height).
+  Width or Height may be 0 (horizontal or vertical line) or negative. A line cannot be touched.
+
+KEYBOARD
+  An on-screen keyboard. It is not drawn with the screen: the program opens it, it takes over the
+  whole screen, and the screen comes back when it closes. Left, Top, Width and Height are ignored.
+  Target = the id of the widget that receives the typed text.
+  Script: text = keyboard1.show()   (returns None if the user pressed Esc)
+
+CHOICE
+  Pick one item of a list: "radio" shows all items, "dropdown" shows one field that opens a list.
+  Selected = the number of the chosen item (the first is 0 and is the default).
+  It reacts to a tap by itself; the "changed" event only tells your program.
+  Script: choice1.selected = 2   and   def choice1_changed(index):
+
+TREE
+  A menu of up to three levels. Tapping a parent opens or closes it; tapping an end item selects it.
+  The program receives the text path of the chosen item, for example "Display/Theme/Dark".
+  Script: def tree1_selected(path):
+
+GAUGE
+  A round dial with a needle, for a value that changes (speed, temperature, level). It cannot be
+  touched. The scale starts at "Lowest value" at the lower left and ends at "Highest value" at
+  the lower right (for the default angle of 270 degrees).
+  Number of marks = intervals between the marks. Circle size 0 = the largest circle that fits.
+  Script: gauge1.value = 40   (only the needle is redrawn)
+
+STEPPER
+  A "-" button, the number and a "+" button. Each tap changes the number by "Step". The number
+  stops at "Lowest value" and "Highest value". The widget must be at least about 100 wide.
+  It reacts to a tap by itself; the "changed" event only tells your program.
+  Script: def stepper1_changed(value):   and   stepper1.value = 20
+
+WAVEFORM
+  A moving trace, like a slow oscilloscope: your program adds values, they appear on the right and
+  older ones move to the left. Style: "line" or "bars". Points = how many values are shown.
+  Redraw at most every (ms): very small values keep the board busy drawing and slow down touch
+  and timers. 50 to 200 is a good range.
+  Script: waveform1.add(3.7)   and   waveform1.clear()
+
+BARCHART
+  A stationary chart of vertical bars (for example rainfall per year). It can be filled from the
+  design alone: type one number per bar under "Bar heights" and one text per bar under
+  "Text under the bars", both left to right. "Numbers above the bars" prints each value.
+  Script: barchart1.set(2, 70)  (bar number 2; the first is 0)   or   barchart1.values = [...]

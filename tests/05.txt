@@ -1,0 +1,8 @@
+TEST 05 -- built-in font (look only)
+ LOOK : nine lines, top to bottom: size 8, size 16, size 24 (each one bigger), "bold 16" (thicker),
+        "italic 16" (leaning right), "bold italic 16" in yellow, "centred" on a blue strip,
+        "right" on a purple strip pushed to the right edge, and at the bottom a red-framed box
+        (only half the screen wide) holding "too long: this text is wider ..." cut off at the right.
+ PASS : sizes grow 1x / 2x / 3x, bold and italic are visible and readable, alignment is right,
+        and the long text is cut at the box edge INSIDE the red frame (the frame is not overwritten).
+ FAIL : wrong sizes, overlapping lines, bold/italic not different, text drawn over the red frame.

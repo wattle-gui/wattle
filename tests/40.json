@@ -1,0 +1,560 @@
+{
+  "app": {
+    "name": "Test 40 stress test with a slider",
+    "purpose": "test 40",
+    "version": "1.0",
+    "version_date": ""
+  },
+  "target": {
+    "model": "CYD 2.8 (ESP32 + ILI9341 + XPT2046)",
+    "processor": "ESP32",
+    "board": "board_cyd",
+    "display": {
+      "model": "ILI9341",
+      "width": 320,
+      "height": 240,
+      "interface": "SPI",
+      "driver": "ili9341.py"
+    },
+    "touch": {
+      "model": "XPT2046",
+      "type": "resistive",
+      "interface": "SPI",
+      "driver": "touch_xpt2046.py"
+    },
+    "fonts": [
+      {
+        "name": "default",
+        "sizes": [
+          8,
+          16,
+          24
+        ],
+        "styles": [
+          "bold",
+          "italic"
+        ]
+      },
+      {
+        "name": "Arial",
+        "sizes": [
+          12,
+          16,
+          20,
+          24,
+          32
+        ],
+        "styles": [
+          "bold",
+          "italic"
+        ]
+      },
+      {
+        "name": "Times New Roman",
+        "sizes": [
+          12,
+          16,
+          20,
+          24,
+          32
+        ],
+        "styles": [
+          "bold",
+          "italic"
+        ]
+      },
+      {
+        "name": "Comic Sans MS",
+        "sizes": [
+          12,
+          16,
+          20,
+          24,
+          32
+        ],
+        "styles": [
+          "bold",
+          "italic"
+        ]
+      },
+      {
+        "name": "DejaVu Sans",
+        "sizes": [
+          12,
+          16,
+          20,
+          24,
+          32
+        ],
+        "styles": [
+          "bold",
+          "italic"
+        ]
+      },
+      {
+        "name": "DejaVu Sans Mono",
+        "sizes": [
+          12,
+          16,
+          20,
+          24,
+          32
+        ],
+        "styles": [
+          "bold",
+          "italic"
+        ]
+      },
+      {
+        "name": "DejaVu Serif",
+        "sizes": [
+          12,
+          16,
+          20,
+          24,
+          32
+        ],
+        "styles": [
+          "bold",
+          "italic"
+        ]
+      }
+    ]
+  },
+  "screens": [
+    {
+      "id": "pics",
+      "orientation": "landscape",
+      "width": 320,
+      "height": 240,
+      "background": "#000040",
+      "widgets": [
+        {
+          "widget": "image",
+          "id": "image1",
+          "x": 8,
+          "y": 20,
+          "w": 72,
+          "h": 110,
+          "visible": true,
+          "enabled": true,
+          "background": "gray",
+          "source": "pictures/board_front.jpg",
+          "scale": "fit",
+          "transparent": true,
+          "events": []
+        },
+        {
+          "widget": "label",
+          "id": "name1",
+          "x": 8,
+          "y": 136,
+          "w": 72,
+          "h": 14,
+          "visible": true,
+          "enabled": true,
+          "background": "black",
+          "color": "white",
+          "border": {
+            "color": "black",
+            "width": 0
+          },
+          "text": "fit+transp.",
+          "alignment": "center",
+          "font_type": "default",
+          "font_size": "default",
+          "bold": false,
+          "italic": false
+        },
+        {
+          "widget": "image",
+          "id": "image2",
+          "x": 88,
+          "y": 20,
+          "w": 72,
+          "h": 110,
+          "visible": true,
+          "enabled": true,
+          "background": "gray",
+          "source": "pictures/board_front.jpg",
+          "scale": "fit",
+          "transparent": false,
+          "events": []
+        },
+        {
+          "widget": "label",
+          "id": "name2",
+          "x": 88,
+          "y": 136,
+          "w": 72,
+          "h": 14,
+          "visible": true,
+          "enabled": true,
+          "background": "black",
+          "color": "white",
+          "border": {
+            "color": "black",
+            "width": 0
+          },
+          "text": "fit",
+          "alignment": "center",
+          "font_type": "default",
+          "font_size": "default",
+          "bold": false,
+          "italic": false
+        },
+        {
+          "widget": "image",
+          "id": "image3",
+          "x": 168,
+          "y": 20,
+          "w": 72,
+          "h": 110,
+          "visible": true,
+          "enabled": true,
+          "background": "gray",
+          "source": "pictures/board_front.jpg",
+          "scale": "fill",
+          "transparent": true,
+          "events": []
+        },
+        {
+          "widget": "label",
+          "id": "name3",
+          "x": 168,
+          "y": 136,
+          "w": 72,
+          "h": 14,
+          "visible": true,
+          "enabled": true,
+          "background": "black",
+          "color": "white",
+          "border": {
+            "color": "black",
+            "width": 0
+          },
+          "text": "fill",
+          "alignment": "center",
+          "font_type": "default",
+          "font_size": "default",
+          "bold": false,
+          "italic": false
+        },
+        {
+          "widget": "image",
+          "id": "image4",
+          "x": 248,
+          "y": 20,
+          "w": 72,
+          "h": 110,
+          "visible": true,
+          "enabled": true,
+          "background": "gray",
+          "source": "pictures/board_front.jpg",
+          "scale": "stretch",
+          "transparent": true,
+          "events": []
+        },
+        {
+          "widget": "label",
+          "id": "name4",
+          "x": 248,
+          "y": 136,
+          "w": 72,
+          "h": 14,
+          "visible": true,
+          "enabled": true,
+          "background": "black",
+          "color": "white",
+          "border": {
+            "color": "black",
+            "width": 0
+          },
+          "text": "stretch",
+          "alignment": "center",
+          "font_type": "default",
+          "font_size": "default",
+          "bold": false,
+          "italic": false
+        },
+        {
+          "widget": "label",
+          "id": "info",
+          "x": 8,
+          "y": 170,
+          "w": 304,
+          "h": 42,
+          "visible": true,
+          "enabled": true,
+          "background": "black",
+          "color": "white",
+          "border": {
+            "color": "black",
+            "width": 0
+          },
+          "text": "same picture, four ways",
+          "alignment": "center",
+          "font_type": "default",
+          "font_size": 16,
+          "bold": false,
+          "italic": false
+        },
+        {
+          "widget": "slider",
+          "id": "s1",
+          "x": 8,
+          "y": 214,
+          "w": 304,
+          "h": 24,
+          "visible": true,
+          "enabled": true,
+          "background": "gray",
+          "color": "green",
+          "min": 0,
+          "max": 100,
+          "value": 50,
+          "step": 1,
+          "events": []
+        }
+      ]
+    },
+    {
+      "id": "fonts",
+      "orientation": "landscape",
+      "width": 320,
+      "height": 240,
+      "background": "black",
+      "widgets": [
+        {
+          "widget": "label",
+          "id": "f1",
+          "x": 8,
+          "y": 6,
+          "w": 304,
+          "h": 40,
+          "visible": true,
+          "enabled": true,
+          "background": "black",
+          "color": "white",
+          "border": {
+            "color": "black",
+            "width": 0
+          },
+          "text": "Arial 32 bold",
+          "alignment": "left",
+          "font_type": "Arial",
+          "font_size": 32,
+          "bold": true,
+          "italic": false
+        },
+        {
+          "widget": "label",
+          "id": "f2",
+          "x": 8,
+          "y": 50,
+          "w": 304,
+          "h": 32,
+          "visible": true,
+          "enabled": true,
+          "background": "black",
+          "color": "white",
+          "border": {
+            "color": "black",
+            "width": 0
+          },
+          "text": "Times 24 italic",
+          "alignment": "left",
+          "font_type": "Times New Roman",
+          "font_size": 24,
+          "bold": false,
+          "italic": true
+        },
+        {
+          "widget": "label",
+          "id": "f3",
+          "x": 8,
+          "y": 86,
+          "w": 304,
+          "h": 32,
+          "visible": true,
+          "enabled": true,
+          "background": "black",
+          "color": "white",
+          "border": {
+            "color": "black",
+            "width": 0
+          },
+          "text": "Comic Sans 24",
+          "alignment": "left",
+          "font_type": "Comic Sans MS",
+          "font_size": 24,
+          "bold": false,
+          "italic": false
+        },
+        {
+          "widget": "label",
+          "id": "f4",
+          "x": 8,
+          "y": 122,
+          "w": 304,
+          "h": 24,
+          "visible": true,
+          "enabled": true,
+          "background": "black",
+          "color": "white",
+          "border": {
+            "color": "black",
+            "width": 0
+          },
+          "text": "DejaVu Mono 16 bold",
+          "alignment": "left",
+          "font_type": "DejaVu Sans Mono",
+          "font_size": 16,
+          "bold": true,
+          "italic": false
+        },
+        {
+          "widget": "gauge",
+          "id": "g1",
+          "x": 4,
+          "y": 150,
+          "w": 90,
+          "h": 90,
+          "visible": true,
+          "background": "gray",
+          "color": "red",
+          "min": 0,
+          "max": 100,
+          "value": 10,
+          "text": "A",
+          "show_value": true,
+          "ticks": 10,
+          "diameter": 0,
+          "sweep": 270,
+          "show_ticks": true,
+          "font_size": "default"
+        },
+        {
+          "widget": "waveform",
+          "id": "w1",
+          "x": 100,
+          "y": 150,
+          "w": 212,
+          "h": 86,
+          "visible": true,
+          "background": "black",
+          "color": "green",
+          "min": 0,
+          "max": 100,
+          "points": 30,
+          "style": "line",
+          "grid": true,
+          "title": "line",
+          "update_ms": 100,
+          "font_size": "default"
+        }
+      ]
+    },
+    {
+      "id": "typing",
+      "orientation": "landscape",
+      "width": 320,
+      "height": 240,
+      "background": "black",
+      "widgets": [
+        {
+          "widget": "label",
+          "id": "t1",
+          "x": 10,
+          "y": 20,
+          "w": 300,
+          "h": 24,
+          "visible": true,
+          "enabled": true,
+          "background": "black",
+          "color": "white",
+          "border": {
+            "color": "black",
+            "width": 0
+          },
+          "text": "typed: -",
+          "alignment": "left",
+          "font_type": "default",
+          "font_size": "default",
+          "bold": false,
+          "italic": false
+        },
+        {
+          "widget": "label",
+          "id": "t2",
+          "x": 10,
+          "y": 60,
+          "w": 300,
+          "h": 24,
+          "visible": true,
+          "enabled": true,
+          "background": "black",
+          "color": "white",
+          "border": {
+            "color": "black",
+            "width": 0
+          },
+          "text": "message: -",
+          "alignment": "left",
+          "font_type": "default",
+          "font_size": "default",
+          "bold": false,
+          "italic": false
+        },
+        {
+          "widget": "label",
+          "id": "t3",
+          "x": 10,
+          "y": 100,
+          "w": 300,
+          "h": 24,
+          "visible": true,
+          "enabled": true,
+          "background": "black",
+          "color": "white",
+          "border": {
+            "color": "black",
+            "width": 0
+          },
+          "text": "checks: 0",
+          "alignment": "left",
+          "font_type": "default",
+          "font_size": "default",
+          "bold": false,
+          "italic": false
+        },
+        {
+          "widget": "keyboard",
+          "id": "keyboard1",
+          "x": 0,
+          "y": 0,
+          "w": 320,
+          "h": 240,
+          "visible": true,
+          "enabled": true,
+          "background": "gray",
+          "color": "black",
+          "border": {
+            "color": "black",
+            "width": 1
+          },
+          "layout": "full",
+          "target": "",
+          "secret": false,
+          "max_length": 0,
+          "input_event": true,
+          "hide_on_enter": true,
+          "linefeed": false,
+          "events": [
+            "enter"
+          ]
+        }
+      ]
+    }
+  ]
+}

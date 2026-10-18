@@ -1,0 +1,12 @@
+TEST wifi_pick -- Pick WiFi (a working network chooser: choice dropdown + secret keyboard + network module)
+ LOOK : cyan title "Pick WiFi", a dropdown field "(press Scan)", the line "Press Scan to look for networks.",
+        and two green buttons "Scan" and "Connect".
+ DO   : 1) tap "Scan": after a few seconds the line says how many networks were found (at most 8, strongest first).
+        2) tap the dropdown field and pick one network from the list.
+        3) tap "Connect": the keyboard opens, typed characters show as *. Type the password, press Enter.
+           (Esc instead gives "Cancelled.")
+        4) wait up to 10 seconds: "Connected and saved! IP ..." or "Could not connect. Wrong password?"
+ PASS : each step behaves as written; the password is never shown. After "Connected and saved!" the sealed file wifi.dat
+        exists on the board (look with: mpremote fs ls) and the board can join by itself with Runtime's wifi().
+ FAIL : no networks listed, list does not open, keyboard does not open, screen garbled.
+ NOTE : the board needs the "network" module (all ESP32 MicroPython builds have it). Do not photograph the list: it shows real network names.

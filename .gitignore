@@ -1,0 +1,29 @@
+# Generated or downloaded -- recreate with the tools, do not commit
+__pycache__/
+*.bak
+*.raw
+*.mpy
+# ...except the two precompiled program files, which the installer copies to the board (see install_wattle.py)
+!Runtime.mpy
+!ili9341.mpy
+fonts/*
+# ...except the finished font files and their size tables: all fonts ship with Wattle, so a font chosen in the Editor just works
+!fonts/*.fnt
+!fonts/metrics_*.json
+tests/_build/
+tests/design.txt
+_tools/
+manual/_pdf_build/
+# generated documents (make them with manual/make_pdfs.py)
+*.pdf
+
+# identity and secrets: never commit
+ID.dat
+wifi.dat
+Secret.dat
+wattle.port
+.venv/
+
+# generated manuals (web pages, PDFs, videos): rebuilt by manual/make_manuals.py; shipped as a release file, not kept in git
+manual/books/
+manual/images/editor_storyboard_trial.png

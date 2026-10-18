@@ -1,0 +1,190 @@
+{
+  "app": {
+    "name": "Test 33 bar chart without updates",
+    "purpose": "test 33",
+    "version": "1.0",
+    "version_date": ""
+  },
+  "target": {
+    "model": "CYD 2.8 (ESP32 + ILI9341 + XPT2046)",
+    "processor": "ESP32",
+    "board": "board_cyd",
+    "display": {
+      "model": "ILI9341",
+      "width": 320,
+      "height": 240,
+      "interface": "SPI",
+      "driver": "ili9341.py"
+    },
+    "touch": {
+      "model": "XPT2046",
+      "type": "resistive",
+      "interface": "SPI",
+      "driver": "touch_xpt2046.py"
+    },
+    "fonts": [
+      {
+        "name": "default",
+        "sizes": [
+          8,
+          16,
+          24
+        ],
+        "styles": [
+          "bold",
+          "italic"
+        ]
+      },
+      {
+        "name": "Arial",
+        "sizes": [
+          12,
+          16,
+          20,
+          24,
+          32
+        ],
+        "styles": [
+          "bold",
+          "italic"
+        ]
+      },
+      {
+        "name": "Times New Roman",
+        "sizes": [
+          12,
+          16,
+          20,
+          24,
+          32
+        ],
+        "styles": [
+          "bold",
+          "italic"
+        ]
+      },
+      {
+        "name": "Comic Sans MS",
+        "sizes": [
+          12,
+          16,
+          20,
+          24,
+          32
+        ],
+        "styles": [
+          "bold",
+          "italic"
+        ]
+      },
+      {
+        "name": "DejaVu Sans",
+        "sizes": [
+          12,
+          16,
+          20,
+          24,
+          32
+        ],
+        "styles": [
+          "bold",
+          "italic"
+        ]
+      },
+      {
+        "name": "DejaVu Sans Mono",
+        "sizes": [
+          12,
+          16,
+          20,
+          24,
+          32
+        ],
+        "styles": [
+          "bold",
+          "italic"
+        ]
+      },
+      {
+        "name": "DejaVu Serif",
+        "sizes": [
+          12,
+          16,
+          20,
+          24,
+          32
+        ],
+        "styles": [
+          "bold",
+          "italic"
+        ]
+      }
+    ]
+  },
+  "screens": [
+    {
+      "id": "main",
+      "orientation": "landscape",
+      "width": 320,
+      "height": 240,
+      "background": "black",
+      "widgets": [
+        {
+          "widget": "barchart",
+          "id": "barchart1",
+          "x": 10,
+          "y": 10,
+          "w": 300,
+          "h": 170,
+          "visible": true,
+          "background": "black",
+          "color": "blue",
+          "min": 0,
+          "max": 1000,
+          "bars": 5,
+          "grid": true,
+          "title": "Rainfall (mm)",
+          "labels": [
+            "2021",
+            "2022",
+            "2023",
+            "2024",
+            "2025"
+          ],
+          "values": [
+            640,
+            910,
+            520,
+            780,
+            430
+          ],
+          "show_values": true,
+          "update_ms": 0,
+          "font_size": 16
+        },
+        {
+          "widget": "label",
+          "id": "label1",
+          "x": 10,
+          "y": 190,
+          "w": 300,
+          "h": 40,
+          "visible": true,
+          "enabled": true,
+          "background": "black",
+          "color": "gray",
+          "border": {
+            "color": "black",
+            "width": 0
+          },
+          "text": "Set in the design. The script does nothing.",
+          "alignment": "left",
+          "font_type": "default",
+          "font_size": 8,
+          "bold": false,
+          "italic": false
+        }
+      ]
+    }
+  ]
+}

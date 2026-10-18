@@ -1,0 +1,305 @@
+{
+  "app": {
+    "name": "Test 17 image scaling",
+    "purpose": "test 17",
+    "version": "1.0",
+    "version_date": ""
+  },
+  "target": {
+    "model": "CYD 2.8 (ESP32 + ILI9341 + XPT2046)",
+    "processor": "ESP32",
+    "board": "board_cyd",
+    "display": {
+      "model": "ILI9341",
+      "width": 320,
+      "height": 240,
+      "interface": "SPI",
+      "driver": "ili9341.py"
+    },
+    "touch": {
+      "model": "XPT2046",
+      "type": "resistive",
+      "interface": "SPI",
+      "driver": "touch_xpt2046.py"
+    },
+    "fonts": [
+      {
+        "name": "default",
+        "sizes": [
+          8,
+          16,
+          24
+        ],
+        "styles": [
+          "bold",
+          "italic"
+        ]
+      },
+      {
+        "name": "Arial",
+        "sizes": [
+          12,
+          16,
+          20,
+          24,
+          32
+        ],
+        "styles": [
+          "bold",
+          "italic"
+        ]
+      },
+      {
+        "name": "Times New Roman",
+        "sizes": [
+          12,
+          16,
+          20,
+          24,
+          32
+        ],
+        "styles": [
+          "bold",
+          "italic"
+        ]
+      },
+      {
+        "name": "Comic Sans MS",
+        "sizes": [
+          12,
+          16,
+          20,
+          24,
+          32
+        ],
+        "styles": [
+          "bold",
+          "italic"
+        ]
+      },
+      {
+        "name": "DejaVu Sans",
+        "sizes": [
+          12,
+          16,
+          20,
+          24,
+          32
+        ],
+        "styles": [
+          "bold",
+          "italic"
+        ]
+      },
+      {
+        "name": "DejaVu Sans Mono",
+        "sizes": [
+          12,
+          16,
+          20,
+          24,
+          32
+        ],
+        "styles": [
+          "bold",
+          "italic"
+        ]
+      },
+      {
+        "name": "DejaVu Serif",
+        "sizes": [
+          12,
+          16,
+          20,
+          24,
+          32
+        ],
+        "styles": [
+          "bold",
+          "italic"
+        ]
+      }
+    ]
+  },
+  "screens": [
+    {
+      "id": "main",
+      "orientation": "landscape",
+      "width": 320,
+      "height": 240,
+      "background": "#000040",
+      "widgets": [
+        {
+          "widget": "image",
+          "id": "image1",
+          "x": 8,
+          "y": 20,
+          "w": 72,
+          "h": 110,
+          "visible": true,
+          "enabled": true,
+          "background": "gray",
+          "source": "pictures/board_front.jpg",
+          "scale": "fit",
+          "transparent": true,
+          "events": []
+        },
+        {
+          "widget": "label",
+          "id": "name1",
+          "x": 8,
+          "y": 136,
+          "w": 72,
+          "h": 14,
+          "visible": true,
+          "enabled": true,
+          "background": "black",
+          "color": "white",
+          "border": {
+            "color": "black",
+            "width": 0
+          },
+          "text": "fit+transp.",
+          "alignment": "center",
+          "font_type": "default",
+          "font_size": "default",
+          "bold": false,
+          "italic": false
+        },
+        {
+          "widget": "image",
+          "id": "image2",
+          "x": 88,
+          "y": 20,
+          "w": 72,
+          "h": 110,
+          "visible": true,
+          "enabled": true,
+          "background": "gray",
+          "source": "pictures/board_front.jpg",
+          "scale": "fit",
+          "transparent": false,
+          "events": []
+        },
+        {
+          "widget": "label",
+          "id": "name2",
+          "x": 88,
+          "y": 136,
+          "w": 72,
+          "h": 14,
+          "visible": true,
+          "enabled": true,
+          "background": "black",
+          "color": "white",
+          "border": {
+            "color": "black",
+            "width": 0
+          },
+          "text": "fit",
+          "alignment": "center",
+          "font_type": "default",
+          "font_size": "default",
+          "bold": false,
+          "italic": false
+        },
+        {
+          "widget": "image",
+          "id": "image3",
+          "x": 168,
+          "y": 20,
+          "w": 72,
+          "h": 110,
+          "visible": true,
+          "enabled": true,
+          "background": "gray",
+          "source": "pictures/board_front.jpg",
+          "scale": "fill",
+          "transparent": true,
+          "events": []
+        },
+        {
+          "widget": "label",
+          "id": "name3",
+          "x": 168,
+          "y": 136,
+          "w": 72,
+          "h": 14,
+          "visible": true,
+          "enabled": true,
+          "background": "black",
+          "color": "white",
+          "border": {
+            "color": "black",
+            "width": 0
+          },
+          "text": "fill",
+          "alignment": "center",
+          "font_type": "default",
+          "font_size": "default",
+          "bold": false,
+          "italic": false
+        },
+        {
+          "widget": "image",
+          "id": "image4",
+          "x": 248,
+          "y": 20,
+          "w": 72,
+          "h": 110,
+          "visible": true,
+          "enabled": true,
+          "background": "gray",
+          "source": "pictures/board_front.jpg",
+          "scale": "stretch",
+          "transparent": true,
+          "events": []
+        },
+        {
+          "widget": "label",
+          "id": "name4",
+          "x": 248,
+          "y": 136,
+          "w": 72,
+          "h": 14,
+          "visible": true,
+          "enabled": true,
+          "background": "black",
+          "color": "white",
+          "border": {
+            "color": "black",
+            "width": 0
+          },
+          "text": "stretch",
+          "alignment": "center",
+          "font_type": "default",
+          "font_size": "default",
+          "bold": false,
+          "italic": false
+        },
+        {
+          "widget": "label",
+          "id": "info",
+          "x": 8,
+          "y": 170,
+          "w": 304,
+          "h": 50,
+          "visible": true,
+          "enabled": true,
+          "background": "black",
+          "color": "white",
+          "border": {
+            "color": "black",
+            "width": 0
+          },
+          "text": "same picture, four ways",
+          "alignment": "center",
+          "font_type": "default",
+          "font_size": 16,
+          "bold": false,
+          "italic": false
+        }
+      ]
+    }
+  ]
+}

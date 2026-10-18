@@ -1,0 +1,5 @@
+TEST 00 -- hello: a label and a button
+ LOOK : the word "Hello" (large, white, centred) and a green button "Tap me".
+ DO   : tap the button three times.
+ PASS : the label changes to "Tapped 1", "Tapped 2", "Tapped 3" -- one step per tap.
+ FAIL : nothing changes, text is cut off, or the screen is blank.

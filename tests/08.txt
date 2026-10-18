@@ -1,0 +1,6 @@
+TEST 08 -- changing a widget on a screen that is not showing
+ LOOK : a LIME screen with two buttons: green "Change" and blue "Go to 2nd".
+ DO   : tap the green "Change" button twice (nothing visible changes on this screen). Then tap "Go to 2nd".
+ PASS : the pink screen shows "changed 2 time(s)" (NOT "original text"). Tap Back, tap
+        "Change" once more, go to 2nd again: now "changed 3 time(s)".
+ FAIL : the pink screen still says "original text", or the lime screen gets damaged by the change.

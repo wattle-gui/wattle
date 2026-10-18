@@ -1,0 +1,10 @@
+TEST 24 -- message(): pop-up boxes
+ LOOK : "message tests" and four buttons.
+ DO   : tap each button, answer the pop-up, and read the line at the top.
+ PASS : "Info"            -> a box with "Saved!" and one OK button; after OK the top line says "info closed".
+        "Ask: Yes / No"   -> a box "Reset the counter?" with Yes and No; the top line says "you chose Yes" or "you chose No".
+        "Three buttons"   -> three buttons (Save, Discard, Cancel), all readable; the chosen one is reported.
+        "Long text"       -> the text is wrapped over several lines (smaller letters), the box fits the screen.
+        After every answer the box disappears completely and the buttons underneath are whole again.
+        Tapping OUTSIDE the box does nothing: you must answer.
+ FAIL : a box that does not close, a wrong answer reported, text cut off, damage left under the box.

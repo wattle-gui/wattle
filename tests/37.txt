@@ -1,0 +1,4 @@
+TEST 37 -- stress test (runs for hours, nobody needs to touch it)
+ LOOK   : three screens in turn (a, b, c), changing every 15 seconds; gauges, waveforms and bars keep moving.
+ DO     : leave it running. Once a minute it adds a line to stress_log.txt on the board.
+ PASS   : after hours the display is still alive and the log shows free memory steady and "runs" still growing.

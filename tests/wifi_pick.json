@@ -1,0 +1,284 @@
+{
+  "app": {
+    "name": "Pick WiFi",
+    "purpose": "working WiFi chooser",
+    "version": "1.0",
+    "version_date": ""
+  },
+  "target": {
+    "model": "CYD 2.8 (ESP32 + ILI9341 + XPT2046)",
+    "processor": "ESP32",
+    "board": "board_cyd",
+    "display": {
+      "model": "ILI9341",
+      "width": 320,
+      "height": 240,
+      "interface": "SPI",
+      "driver": "ili9341.py"
+    },
+    "touch": {
+      "model": "XPT2046",
+      "type": "resistive",
+      "interface": "SPI",
+      "driver": "touch_xpt2046.py"
+    },
+    "fonts": [
+      {
+        "name": "default",
+        "sizes": [
+          8,
+          16,
+          24
+        ],
+        "styles": [
+          "bold",
+          "italic"
+        ]
+      },
+      {
+        "name": "Arial",
+        "sizes": [
+          12,
+          16,
+          20,
+          24,
+          32
+        ],
+        "styles": [
+          "bold",
+          "italic"
+        ]
+      },
+      {
+        "name": "Times New Roman",
+        "sizes": [
+          12,
+          16,
+          20,
+          24,
+          32
+        ],
+        "styles": [
+          "bold",
+          "italic"
+        ]
+      },
+      {
+        "name": "Comic Sans MS",
+        "sizes": [
+          12,
+          16,
+          20,
+          24,
+          32
+        ],
+        "styles": [
+          "bold",
+          "italic"
+        ]
+      },
+      {
+        "name": "DejaVu Sans",
+        "sizes": [
+          12,
+          16,
+          20,
+          24,
+          32
+        ],
+        "styles": [
+          "bold",
+          "italic"
+        ]
+      },
+      {
+        "name": "DejaVu Sans Mono",
+        "sizes": [
+          12,
+          16,
+          20,
+          24,
+          32
+        ],
+        "styles": [
+          "bold",
+          "italic"
+        ]
+      },
+      {
+        "name": "DejaVu Serif",
+        "sizes": [
+          12,
+          16,
+          20,
+          24,
+          32
+        ],
+        "styles": [
+          "bold",
+          "italic"
+        ]
+      }
+    ]
+  },
+  "screens": [
+    {
+      "id": "main",
+      "orientation": "landscape",
+      "width": 320,
+      "height": 240,
+      "background": "black",
+      "widgets": [
+        {
+          "widget": "label",
+          "id": "label1",
+          "x": 8,
+          "y": 8,
+          "w": 304,
+          "h": 30,
+          "visible": true,
+          "enabled": true,
+          "background": "black",
+          "color": "cyan",
+          "border": {
+            "color": "black",
+            "width": 0
+          },
+          "text": "Pick WiFi",
+          "alignment": "center",
+          "font_type": "Arial",
+          "font_size": 24,
+          "bold": true,
+          "italic": false
+        },
+        {
+          "widget": "choice",
+          "id": "choice1",
+          "x": 8,
+          "y": 46,
+          "w": 304,
+          "h": 34,
+          "visible": true,
+          "enabled": true,
+          "style": "dropdown",
+          "orientation": "vertical",
+          "items": [
+            "(press Scan)"
+          ],
+          "selected": 0,
+          "background": "black",
+          "color": "white",
+          "border": {
+            "color": "gray",
+            "width": 1
+          },
+          "events": [
+            "changed"
+          ],
+          "font_type": "Arial",
+          "font_size": 16,
+          "bold": false,
+          "italic": false
+        },
+        {
+          "widget": "label",
+          "id": "label2",
+          "x": 8,
+          "y": 150,
+          "w": 304,
+          "h": 40,
+          "visible": true,
+          "enabled": true,
+          "background": "black",
+          "color": "white",
+          "border": {
+            "color": "black",
+            "width": 0
+          },
+          "text": "Press Scan to look for networks.",
+          "alignment": "center",
+          "font_type": "Arial",
+          "font_size": 16,
+          "bold": false,
+          "italic": false
+        },
+        {
+          "widget": "button",
+          "id": "button1",
+          "x": 8,
+          "y": 196,
+          "w": 148,
+          "h": 36,
+          "visible": true,
+          "enabled": true,
+          "background": "green",
+          "color": "black",
+          "border": {
+            "color": "black",
+            "width": 1
+          },
+          "text": "Scan",
+          "alignment": "center",
+          "accepts_input": false,
+          "events": [
+            "click"
+          ],
+          "font_type": "Arial",
+          "font_size": 16,
+          "bold": true,
+          "italic": false
+        },
+        {
+          "widget": "button",
+          "id": "button2",
+          "x": 164,
+          "y": 196,
+          "w": 148,
+          "h": 36,
+          "visible": true,
+          "enabled": true,
+          "background": "green",
+          "color": "black",
+          "border": {
+            "color": "black",
+            "width": 1
+          },
+          "text": "Connect",
+          "alignment": "center",
+          "accepts_input": false,
+          "events": [
+            "click"
+          ],
+          "font_type": "Arial",
+          "font_size": 16,
+          "bold": true,
+          "italic": false
+        },
+        {
+          "widget": "keyboard",
+          "id": "keyboard1",
+          "x": 0,
+          "y": 0,
+          "w": 320,
+          "h": 240,
+          "visible": true,
+          "enabled": true,
+          "background": "gray",
+          "color": "black",
+          "border": {
+            "color": "black",
+            "width": 1
+          },
+          "layout": "full",
+          "target": "",
+          "secret": true,
+          "max_length": 63,
+          "input_event": false,
+          "hide_on_enter": true,
+          "linefeed": false,
+          "events": []
+        }
+      ]
+    }
+  ]
+}

@@ -1,0 +1,227 @@
+{
+  "app": {
+    "name": "Test 32 waveform bars and barchart",
+    "purpose": "test 32",
+    "version": "1.0",
+    "version_date": ""
+  },
+  "target": {
+    "model": "CYD 2.8 (ESP32 + ILI9341 + XPT2046)",
+    "processor": "ESP32",
+    "board": "board_cyd",
+    "display": {
+      "model": "ILI9341",
+      "width": 320,
+      "height": 240,
+      "interface": "SPI",
+      "driver": "ili9341.py"
+    },
+    "touch": {
+      "model": "XPT2046",
+      "type": "resistive",
+      "interface": "SPI",
+      "driver": "touch_xpt2046.py"
+    },
+    "fonts": [
+      {
+        "name": "default",
+        "sizes": [
+          8,
+          16,
+          24
+        ],
+        "styles": [
+          "bold",
+          "italic"
+        ]
+      },
+      {
+        "name": "Arial",
+        "sizes": [
+          12,
+          16,
+          20,
+          24,
+          32
+        ],
+        "styles": [
+          "bold",
+          "italic"
+        ]
+      },
+      {
+        "name": "Times New Roman",
+        "sizes": [
+          12,
+          16,
+          20,
+          24,
+          32
+        ],
+        "styles": [
+          "bold",
+          "italic"
+        ]
+      },
+      {
+        "name": "Comic Sans MS",
+        "sizes": [
+          12,
+          16,
+          20,
+          24,
+          32
+        ],
+        "styles": [
+          "bold",
+          "italic"
+        ]
+      },
+      {
+        "name": "DejaVu Sans",
+        "sizes": [
+          12,
+          16,
+          20,
+          24,
+          32
+        ],
+        "styles": [
+          "bold",
+          "italic"
+        ]
+      },
+      {
+        "name": "DejaVu Sans Mono",
+        "sizes": [
+          12,
+          16,
+          20,
+          24,
+          32
+        ],
+        "styles": [
+          "bold",
+          "italic"
+        ]
+      },
+      {
+        "name": "DejaVu Serif",
+        "sizes": [
+          12,
+          16,
+          20,
+          24,
+          32
+        ],
+        "styles": [
+          "bold",
+          "italic"
+        ]
+      }
+    ]
+  },
+  "screens": [
+    {
+      "id": "main",
+      "orientation": "landscape",
+      "width": 320,
+      "height": 240,
+      "background": "black",
+      "widgets": [
+        {
+          "widget": "waveform",
+          "id": "waveform1",
+          "x": 4,
+          "y": 4,
+          "w": 312,
+          "h": 100,
+          "visible": true,
+          "background": "black",
+          "color": "green",
+          "min": 0,
+          "max": 100,
+          "points": 40,
+          "style": "bars",
+          "grid": true,
+          "title": "Waveform, style bars",
+          "update_ms": 150,
+          "font_size": "default"
+        },
+        {
+          "widget": "barchart",
+          "id": "barchart1",
+          "x": 4,
+          "y": 112,
+          "w": 200,
+          "h": 120,
+          "visible": true,
+          "background": "black",
+          "color": "orange",
+          "min": 0,
+          "max": 100,
+          "bars": 8,
+          "grid": true,
+          "title": "Barchart",
+          "labels": [],
+          "values": [],
+          "show_values": false,
+          "update_ms": 0,
+          "font_size": "default"
+        },
+        {
+          "widget": "button",
+          "id": "button1",
+          "x": 212,
+          "y": 112,
+          "w": 104,
+          "h": 56,
+          "visible": true,
+          "enabled": true,
+          "background": "green",
+          "color": "black",
+          "border": {
+            "color": "black",
+            "width": 1
+          },
+          "text": "Random bar",
+          "alignment": "center",
+          "accepts_input": false,
+          "events": [
+            "click"
+          ],
+          "font_type": "default",
+          "font_size": 8,
+          "bold": false,
+          "italic": false
+        },
+        {
+          "widget": "button",
+          "id": "button2",
+          "x": 212,
+          "y": 176,
+          "w": 104,
+          "h": 56,
+          "visible": true,
+          "enabled": true,
+          "background": "green",
+          "color": "black",
+          "border": {
+            "color": "black",
+            "width": 1
+          },
+          "text": "Clear both",
+          "alignment": "center",
+          "accepts_input": false,
+          "events": [
+            "click"
+          ],
+          "font_type": "default",
+          "font_size": 8,
+          "bold": false,
+          "italic": false
+        }
+      ]
+    }
+  ]
+}

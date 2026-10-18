@@ -1,0 +1,3 @@
+TEST 36 -- a design written by the Editor (gauge, stepper, waveform, barchart)
+ LOOK   : the screen "master_displays": a gauge SPEED at 40, a stepper, an empty waveform, a rainfall bar chart with years.
+ PASS   : the same as test 31 / 33 look.
