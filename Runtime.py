@@ -2268,7 +2268,7 @@ def get_event():
     return None
 
 
-def wait_event(timeout_ms=None, poll_ms=150):
+def wait_event(timeout_ms=None, poll_ms=50):
     """Blocks, light-sleeping poll_ms between checks, until an event is
     queued or timeout_ms elapses (returns None on timeout). No timeout =
     wait forever. poll_ms trades responsiveness for power: longer =
@@ -2325,7 +2325,7 @@ def _find_handler(name, module):
     return None
 
 
-_poll = 150
+_poll = 50
 
 
 def set_longpress_ms(ms):
@@ -2717,11 +2717,11 @@ def _prealloc_buffers():
             _gauge_buf[w["id"]] = bytearray(need)
 
 
-def run(module=None, poll_ms=150):
+def run(module=None, poll_ms=50):
     """Runs forever: waits for events and calls the matching handler.
     module = the USER script's module (optional; by default the script
     that is running, then any imported module, is searched).
-    poll_ms = how often the touch screen is checked (default 150 ms). A longer
+    poll_ms = how often the touch screen is checked (default 50 ms; 150 ms could miss a quick tap). A longer
     interval saves power (especially with LOW_POWER) but taps are noticed later."""
 
     print("Runtime: running")

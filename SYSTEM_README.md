@@ -134,7 +134,7 @@ run()                                  # always the last line
 - **Every widget is a name** in your script (also those of hidden screens). Its properties are attributes, lower-case,
   same as the JSON: `label1.text`, `slider1.value = 40`, `choice1.selected = 2`, `tree1.selected = "Network/WiFi"`
   (this also opens the branches above it), `choice1.items`. Setting one redraws the widget.
-- **`run(module=None, poll_ms=150)`** — the event loop; never returns. `poll_ms` = how often the screen is checked for a touch.
+- **`run(module=None, poll_ms=50)`** — the event loop; never returns. `poll_ms` = how often the screen is checked for a touch.
 - **`Screen("id")`** — show another screen.
 - **`every(ms, function)`** / **`stop(function)`** — periodic tasks (see section 7).
 - **`set_poll_ms(ms)`** — change the touch interval while running.
@@ -157,7 +157,7 @@ run()                                  # always the last line
   dictionaries) is stored in the file `data_<name>.json` on the board; `load` returns it, or `default` if nothing was saved (or the file
   is damaged). `name` may contain letters, digits and `_`. Flash memory wears out: save when something changed, not every second.
 - **`fatal(exception)`** — used by `main.py` to show an error that stopped the script from starting.
-- **`get_event()`** / **`wait_event(timeout_ms=None, poll_ms=150)`** — for scripts that want their own loop; they return
+- **`get_event()`** / **`wait_event(timeout_ms=None, poll_ms=50)`** — for scripts that want their own loop; they return
   `(widget_id, event, value)` tuples (or `None`). `redraw_widget(widget_id)` redraws after you changed `widgets[id][key]` directly.
 - **`widgets`** — the raw widget dictionaries by id; **`widget_objs`** — the widget objects by id (useful with a string id).
 - Settings you may change in the script: `Runtime.LOW_POWER`, `Runtime.LOW_POWER_GRACE_MS`.
@@ -224,13 +224,13 @@ middle zone is the very start of the list, its end the very end).
   inside the event loop, so they never overlap handlers. A slow task only makes the next call late; an error inside a task
   is printed and the loop goes on. Registering the same function again changes its period.
 - **Touch interval:** touch is **polled**, not interrupt-driven (`Pin.irq()` does not fire on this board's touch pin; a
-  `machine.Timer` interrupt does work). `run(poll_ms=150)`: longer = less power, slower response (a tap is noticed within
+  `machine.Timer` interrupt does work). `run(poll_ms=50)`: longer = less power, slower response (a tap is noticed within
   `poll_ms`). It is independent of the `every()` periods.
 
 | `poll_ms` | feels like | use it for |
 |---|---|---|
-| 50 – 100 | very snappy | games, sliders, fast typing (more current) |
-| 150 (default) | normal | most applications |
+| 50 (default) | snappy | most applications: even a quick tap is noticed |
+| 100 – 150 | normal | settings screens; a very quick tap can be missed (found with a real app in 2026-10: buttons did not react at 150) |
 | 250 – 400 | slightly slow | settings screens, menus |
 | 600 – 1500 | slow; quick taps may be lost | rarely touched, battery-powered panels |
 
