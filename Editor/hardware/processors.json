@@ -1,7 +1,0 @@
-[
- {"kind": "processor", "name": "ESP32",    "firmware": "MicroPython (standard)"},
- {"kind": "processor", "name": "ESP32-S2", "firmware": "MicroPython (standard)"},
- {"kind": "processor", "name": "ESP32-S3", "firmware": "MicroPython (standard); RGB panels need lvgl_micropython"},
- {"kind": "processor", "name": "ESP32-C3", "firmware": "MicroPython (standard)"},
- {"kind": "processor", "name": "ESP32-C6", "firmware": "MicroPython (standard)"}
-]

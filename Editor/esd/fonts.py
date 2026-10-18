@@ -280,7 +280,9 @@ def catalog_from_system() -> FontCatalog:
 
 def catalog_from_hardware() -> FontCatalog:
     cat = FontCatalog()
-    folder = _ROOT / "hardware"
+    folder = _ROOT.parent / "hardware"          # the project's own hardware folder
+    if not folder.is_dir():
+        folder = _ROOT / "hardware"
     if not folder.is_dir():
         return cat
     for path in sorted(folder.glob("*.json")):

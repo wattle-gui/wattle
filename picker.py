@@ -120,7 +120,7 @@ def gui():
     app = QApplication(sys.argv)
     app.setStyleSheet(STYLE)
     win = QWidget()
-    win.setWindowTitle("ESD Target Picker")
+    win.setWindowTitle("Wattle Target Picker")
     win.resize(640, 560)
     grid = QGridLayout(win)
 

@@ -1,8 +1,0 @@
-[
- {"kind": "display", "name": "ILI9341", "file": "ili9341.py", "interface": "SPI", "colour": "RGB565", "sizes": ["320x240"]},
- {"kind": "display", "name": "ST7789",  "file": "", "interface": "SPI", "colour": "RGB565", "sizes": ["320x240", "240x240", "240x135"]},
- {"kind": "display", "name": "ST7796",  "file": "", "interface": "SPI", "colour": "RGB565", "sizes": ["480x320"]},
- {"kind": "display", "name": "ILI9488", "file": "", "interface": "SPI", "colour": "RGB565 (18-bit on the wire)", "sizes": ["480x320"]},
- {"kind": "display", "name": "GC9A01",  "file": "", "interface": "SPI", "colour": "RGB565", "sizes": ["240x240"]},
- {"kind": "display", "name": "RGB parallel panel (ST7262 etc.)", "file": "", "interface": "RGB parallel", "colour": "RGB565", "sizes": ["800x480"]}
-]

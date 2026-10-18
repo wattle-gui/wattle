@@ -80,7 +80,17 @@ from esd.inspector_widgets import (
 )
 from esd.json_io import load_design, save_design
 from esd.notes import component_note, property_note
-from esd.recorder import make_recorder
+try:
+    from esd.recorder import make_recorder
+except ImportError:                  # the recording tools are not part of the public release
+    class _NoRecorder:
+        active = False
+
+        def log(self, *args, **fields):
+            pass
+
+    def make_recorder():
+        return _NoRecorder()
 from esd.model import (
     Design,
     clamp_widget,
