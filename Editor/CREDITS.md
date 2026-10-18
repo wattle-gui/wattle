@@ -1,6 +1,6 @@
 # Credits
 
-The ESP32 Editor (`esd/`, `ESP32_Editor.py`, `picker.py`,
+The ESP32 Editor (`esd/`, `ESP32_Editor.py`,
 `wattle_*.py`, and everything else in this directory as of the
 2026-10-09 import) was developed using **Cursor**.
 

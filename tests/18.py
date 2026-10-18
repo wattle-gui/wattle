@@ -1,6 +1,6 @@
 # Test 18 -- LOW_POWER: between touch checks the processor sleeps (lightsleep) instead of waiting.
 # Everything else works as before; taps are noticed within about 0.15 second.
-# (A board in this mode ignores the computer's stop request -- reset it with reset.sh.)
+# (A board in this mode ignores the computer's stop request -- reset it with ./wattle reset.)
 import Runtime
 Runtime.LOW_POWER = True          # set BEFORE the loop starts
 

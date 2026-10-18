@@ -20,7 +20,7 @@ introductions; every property of every widget is also listed in `MASTER_schema.j
 | **Your script** (`Project_1.py`) | The application: handler functions, nothing else. Ends with `run()`. | board |
 | **`main.py`** | Starts the project at power-up (`PROJECT = "Project_1"`). | board |
 | **Board profile** (`board_cyd.py`) + drivers | Pins, rotation, touch calibration; `ili9341.py` (display), `touch_xpt2046.py` (touch). | board |
-| **Desktop tools** | `deploy.py`, `check_script.py`, `picker.py`, `make_fonts.py`, `make_images.py`, `make_mpy.py`, `reset.sh`, `calibrate_touch.py` / `calibrate_fit.py`, `tests/run_test.py`. | computer |
+| **Desktop tools** (folder `tools/`) | `deploy.py`, `check_script.py`, `picker.py`, `make_fonts.py`, `make_images.py`, `make_mpy.py`, `./wattle reset`, `calibrate_touch.py` / `calibrate_fit.py`, `tests/run_test.py`. | computer |
 
 ### Files on the board
 
@@ -245,7 +245,7 @@ there is little gain below ~100 ms, while above ~250 ms quick taps start to be l
 
 - **`LOW_POWER`** (`Runtime.LOW_POWER = True` in the script, or the constant in `Runtime.py`): the processor sleeps between
   checks (`lightsleep`). It starts sleeping `LOW_POWER_GRACE_MS` (10 s) after start-up, so a computer can still connect after
-  a reset. A sleeping board **cannot be stopped with Ctrl-C**: reset it (`./reset.sh`, or `tests/run_test.py`, which resets
+  a reset. A sleeping board **cannot be stopped with Ctrl-C**: reset it (`./wattle reset`, or `tests/run_test.py`, which resets
   the board and sends Ctrl-C while it boots).
 - **Speed:** start-up measured on the CYD: 5.0 s → 1.7 s (the first screen draws in about 0.3 s) by precompiling
   `Runtime.py` and `ili9341.py` (`make_mpy.py`; the board's MicroPython version and the compiler must match: MicroPython 1.24 →
@@ -265,11 +265,11 @@ pixel when it is too wide. The designer should warn when text does not fit.
   Serif, Comic Sans MS = Comic Relief) in sizes 10, 12, 14, 16, 20, 24, 32, each with regular / bold / italic / bold-italic.
   A file is `fonts/<name>_<size>[b][i].fnt` on the board (name = lower-case letters and digits of the font name). The runtime
   loads the file with the nearest size; **if no file exists it falls back silently to the built-in font**.
-  `python3 make_fonts.py` creates the files (and the catalogue entries in `hardware/`); `python3 make_fonts.py --upload design.json`
+  `python3 tools/make_fonts.py` creates the files (and the catalogue entries in `hardware/`); `python3 tools/make_fonts.py --upload design.json`
   copies only the files that design uses (all of them together are 2.4 MB).
 - **Characters:** the typeface fonts cover ASCII 32–126; any other character is shown as `?`. The built-in font draws ASCII only.
 
-**Pictures.** The board cannot decode JPEG or PNG. `python3 make_images.py design.json upload` converts every image widget into
+**Pictures.** The board cannot decode JPEG or PNG. `python3 tools/make_images.py design.json upload` converts every image widget into
 `<widget id>.raw` (RGB565, exactly *w* × *h*) and copies it to the board. `scale`: `fit` (keeps the shape, empty space around),
 `fill` (covers the box, crops), `stretch` (distorts). `transparent: true` paints the empty space in the screen colour, `false` in the
 widget's own background. A missing `.raw` file shows an empty box.
@@ -303,7 +303,7 @@ else `board_cyd`. A profile `board_<name>.py` provides `NAME`, `make_display(wid
 | `make_fonts.py` | TrueType → `.fnt` files; `--upload design.json` copies the ones a design uses |
 | `make_images.py design.json [upload]` | pictures → `.raw` files |
 | `make_mpy.py` | precompile `Runtime.py`, `ili9341.py` and copy them to the board |
-| `reset.sh` | hard reset over USB (works on a sleeping board) |
+| `./wattle reset` | hard reset over USB (works on a sleeping board) |
 | `calibrate_touch.py` | touch calibration (runs on the board) |
 | `tests/compare_json.py A B` | lists every difference between two design files (also types and key order) |
 | `tests/run_test.py N` | loads test *N* onto the board: cleans it, uploads design, script, fonts and pictures, restarts |

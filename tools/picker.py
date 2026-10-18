@@ -8,7 +8,7 @@
 #   python3 picker.py --board board_cyd --write 999.json    no window
 import json, glob, os, shutil, sys
 
-HERE = os.path.dirname(os.path.abspath(__file__))
+HERE = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))     # the Wattle folder (this file is in tools/)
 CATALOGUE = os.path.join(HERE, "hardware")
 
 

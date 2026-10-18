@@ -43,7 +43,7 @@ if [ -e "$DIR" ]; then
     mv "$DIR" "$OLD" && echo "  An older Wattle folder was found. It was kept as: $OLD"
 fi
 mv "$SRC" "$DIR" || fail "could not create $DIR"
-chmod +x "$DIR/install.sh" "$DIR/wattle" "$DIR/reset.sh" 2>/dev/null
+chmod +x "$DIR/install.sh" "$DIR/wattle" "$DIR/tools/reset.sh" 2>/dev/null
 echo "  Wattle is in: $DIR"
 
 cd "$DIR" || exit 1

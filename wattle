@@ -16,13 +16,13 @@ case "$1" in
             echo "Put it on the board:   ./wattle deploy $2" ;;
   deploy)   need_install; shift
             if [ -d "$1" ]; then d="$1"; set -- "$d"/*.json "$d/Project_1.py"; fi
-            exec "$PY" deploy.py "$@" ;;
-  check)    need_install; exec "$PY" check_script.py ;;
-  reset)    need_install; exec ./reset.sh "${@:2}" ;;
+            exec "$PY" tools/deploy.py "$@" ;;
+  check)    need_install; exec "$PY" tools/check_script.py ;;
+  reset)    need_install; exec tools/reset.sh "${@:2}" ;;
   test)     need_install; exec "$PY" tests/run_test.py "${@:2}" ;;
-  fonts)    need_install; exec "$PY" make_fonts.py "${@:2}" ;;
-  images)   need_install; exec "$PY" make_images.py "${@:2}" ;;
-  pick)     need_install; exec "$PY" picker.py "${@:2}" ;;
+  fonts)    need_install; exec "$PY" tools/make_fonts.py "${@:2}" ;;
+  images)   need_install; exec "$PY" tools/make_images.py "${@:2}" ;;
+  pick)     need_install; exec "$PY" tools/picker.py "${@:2}" ;;
   wifi)     exec "$PY" wifi_setup.py "${@:2}" ;;     # needs only Python + pyserial, like install_wattle.py
   help|""|-h|--help)
 cat <<'TXT'

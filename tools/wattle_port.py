@@ -4,7 +4,7 @@
 #   3. /dev/ttyUSB0
 import os
 
-HERE = os.path.dirname(os.path.abspath(__file__))
+HERE = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))     # the Wattle folder (this file is in tools/)
 
 
 def _saved():

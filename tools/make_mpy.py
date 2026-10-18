@@ -11,7 +11,7 @@
 # Run this tool again (or delete the .mpy) after changing the source.
 import glob, os, shutil, subprocess, sys
 
-HERE = os.path.dirname(os.path.abspath(__file__))
+HERE = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))     # the Wattle folder (this file is in tools/)
 import wattle_port
 PORT = wattle_port.PORT     # ESP_PORT, or wattle.port, or /dev/ttyUSB0
 FILES = ["Runtime", "ili9341"]

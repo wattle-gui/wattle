@@ -13,7 +13,7 @@ import re
 import sys
 import zlib
 
-HERE = os.path.dirname(os.path.abspath(__file__))
+HERE = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))     # the Wattle folder (this file is in tools/)
 sys.path.insert(0, HERE)
 import install_wattle as iw
 

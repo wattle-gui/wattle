@@ -1,7 +1,7 @@
 TEST 25 -- save() / load()
  LOOK : "count: 0" (or a number saved earlier) and two buttons.
  DO   : 1) tap "Add one" three times -> count: 3.
-        2) RESET the board (./reset.sh, or unplug and replug the USB cable) and wait for the screen.
+        2) RESET the board (./wattle reset, or unplug and replug the USB cable) and wait for the screen.
         3) tap "Add one" once more.   4) tap "Clear", reset again.
  PASS : after the reset the screen shows "count: 3" at once (not 0); one more tap gives 4;
         after "Clear" and a reset it shows "count: 0".

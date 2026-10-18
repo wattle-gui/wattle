@@ -13,13 +13,13 @@ import json, os, subprocess, sys, tempfile
 
 import boardlink
 
-HERE = os.path.dirname(os.path.abspath(__file__))
+HERE = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))     # the Wattle folder (this file is in tools/)
 
 
 def main():
     args = [a for a in sys.argv[1:] if not a.startswith("--")]
     if len(args) != 2:
-        sys.exit("usage: python3 deploy.py design.json script.py [--no-check]")
+        sys.exit("usage: python3 tools/deploy.py design.json script.py [--no-check]")
     design_path, script_path = args
     check = "--no-check" not in sys.argv
     for p in (design_path, script_path):
@@ -59,10 +59,10 @@ def main():
             boardlink.put(errfont, "fonts/dejavusansmono_12.fnt")
         if fonts:
             print("copying fonts: " + ", ".join(sorted(fonts)))
-            subprocess.run([sys.executable, os.path.join(HERE, "make_fonts.py"), "--upload", design_path], check=True)
+            subprocess.run([sys.executable, os.path.join(HERE, "tools", "make_fonts.py"), "--upload", design_path], check=True)
         if any(w.get("widget") == "image" for w in widgets):
             print("converting and copying pictures ...")
-            subprocess.run([sys.executable, os.path.join(HERE, "make_images.py"), os.path.abspath(design_path), "upload"],
+            subprocess.run([sys.executable, os.path.join(HERE, "tools", "make_images.py"), os.path.abspath(design_path), "upload"],
                            check=True, cwd=tmp)
 
     if check:

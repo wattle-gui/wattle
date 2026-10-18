@@ -11,7 +11,7 @@
 # The port is /dev/ttyUSB0 unless the environment variable ESP_PORT says otherwise (Windows: set ESP_PORT=COM5).
 import os, shutil, subprocess, sys
 
-HERE = os.path.dirname(os.path.abspath(__file__))
+HERE = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))     # the Wattle folder (this file is in tools/)
 sys.path.insert(0, HERE)
 # Runtime and the display driver go to the board PRECOMPILED (.mpy): a board cannot compile the 92 KB Runtime.py source itself
 # (MemoryError at start-up, black screen). The .mpy files come with the package; make_mpy.py makes them after a source change.
@@ -70,4 +70,4 @@ boardlink.restart()
 if os.environ.get("WATTLE_FROM_INSTALLER"):
     print("Done. The board has restarted.")
 else:
-    print("Done. The board has restarted. Next: python3 deploy.py yourdesign.json Project_1.py")
+    print("Done. The board has restarted. Next: ./wattle deploy yourproject  (or: python3 tools/deploy.py yourdesign.json Project_1.py)")

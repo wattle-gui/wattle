@@ -141,7 +141,7 @@ EOF
 )
 if [ -z "$VER" ]; then
     # a running program may block mpremote: stop it the same way Wattle's tools do, and try once more
-    "$PY" -c 'import boardlink; boardlink.halt()' 2>/dev/null
+    "$PY" -c 'import sys; sys.path.insert(0, "tools"); import boardlink; boardlink.halt()' 2>/dev/null
     VER=$(mpremote connect "$PORT" exec "import sys; print(sys.version)" 2>/dev/null)
 fi
 if echo "$VER" | grep -q "MicroPython"; then
@@ -181,17 +181,17 @@ if [ "$CHECK" = 1 ]; then
     exit 0
 fi
 say "5. Copying the Wattle files to the board"
-WATTLE_FROM_INSTALLER=1 "$PY" install_board.py || fail "copying failed. Read the message above, then run ./install.sh again."
+WATTLE_FROM_INSTALLER=1 "$PY" tools/install_board.py || fail "copying failed. Read the message above, then run ./install.sh again."
 
 # ---------------------------------------------------------------- 6. demo
 say "6. The demo"
 DEMO_OK=0
 if [ "$DEMO" = 1 ]; then
     echo "  Loading the demo onto the board: please wait ..."
-    if "$PY" deploy.py hello_demo/hello.json hello_demo/Project_1.py >/dev/null 2>&1; then
+    if "$PY" tools/deploy.py hello_demo/hello.json hello_demo/Project_1.py >/dev/null 2>&1; then
         DEMO_OK=1; ok "The demo is on the board."
     else
-        warn "the demo could not be loaded (the files are on the board; try: .venv/bin/python deploy.py hello_demo/hello.json hello_demo/Project_1.py)"
+        warn "the demo could not be loaded (the files are on the board; try: .venv/bin/python tools/deploy.py hello_demo/hello.json hello_demo/Project_1.py)"
     fi
 fi
 

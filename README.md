@@ -32,6 +32,14 @@ and share it for any **non-commercial** purpose (hobby, learning, school, resear
 in a commercial product or service. The full terms are in [LICENSE](LICENSE) (PolyForm Noncommercial 1.0.0). Parts made by others
 keep their own licences: see [THIRD_PARTY_NOTICES.md](THIRD_PARTY_NOTICES.md).
 
+## What is where
+
+- `Runtime.py` (and `Runtime.mpy`, the precompiled copy): the program that runs on the board. The other board files next to it are the display and touch drivers, `board_cyd.py`, `main.py` and `wifi_cipher.py`.
+- `Editor/`: the design program.
+- `tools/`: the helper scripts that run on your computer (`./wattle` starts them for you).
+- `fonts/`, `hardware/`, `hello_demo/`: the typefaces, the list of supported hardware, and the demo that is put on the board.
+- `tests/`: numbered example programs, which are also the manual's working examples.
+
 ## What you get
 
 - 16 widgets: label, button, memo, switch, checkbox, slider, progressbar, image, line, keyboard, choice, tree,

@@ -19,7 +19,7 @@ from PIL import Image, ImageDraw, ImageFont
 
 import wattle_port
 PORT = wattle_port.PORT   # ESP_PORT, or wattle.port, or /dev/ttyUSB0
-HERE = os.path.dirname(os.path.abspath(__file__))
+HERE = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))     # the Wattle folder (this file is in tools/)
 OUT = os.path.join(HERE, "fonts")
 HW = os.path.join(HERE, "hardware")
 SIZES = [10, 12, 14, 16, 20, 24, 32]

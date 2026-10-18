@@ -8,6 +8,7 @@ import json, os, subprocess, sys
 HERE = os.path.dirname(os.path.abspath(__file__))
 ROOT = os.path.dirname(HERE)
 sys.path.insert(0, ROOT)
+sys.path.insert(0, os.path.join(ROOT, "tools"))
 import wattle_port
 PORT = wattle_port.PORT
 KEEP = ("boot.py", "main.py", "Runtime.mpy", "Runtime.py", "ili9341.mpy", "ili9341.py",
@@ -66,12 +67,12 @@ def main():
     kinds = {w["widget"] for s in design["screens"] for w in s["widgets"]}
     fonts = {w.get("font_type", "default") for s in design["screens"] for w in s["widgets"]}
     if fonts - {"default", ""}:
-        subprocess.run([sys.executable, os.path.join(ROOT, "make_fonts.py"), "--upload", design_path],
+        subprocess.run([sys.executable, os.path.join(ROOT, "tools", "make_fonts.py"), "--upload", design_path],
                        check=True, env=dict(os.environ, ESP_PORT=PORT))
     if "image" in kinds:
         build = os.path.join(HERE, "_build")
         os.makedirs(build, exist_ok=True)
-        subprocess.run([sys.executable, os.path.join(ROOT, "make_images.py"), design_path, "upload"],
+        subprocess.run([sys.executable, os.path.join(ROOT, "tools", "make_images.py"), design_path, "upload"],
                        check=True, cwd=build, env=dict(os.environ, ESP_PORT=PORT))
 
     subprocess.run(["esptool", "--port", PORT, "--after", "hard_reset", "chip_id"],
