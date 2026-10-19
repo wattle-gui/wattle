@@ -12,7 +12,6 @@ from PyQt6.QtGui import (
     QFont,
     QFontDatabase,
     QFontMetrics,
-    QFontMetricsF,
     QImage,
     QPainter,
     QPainterPath,
@@ -300,24 +299,31 @@ class DesignCanvas(QWidget):
             font.setItalic(True)
         return font
 
-    @staticmethod
-    def _board_default_font(inst: dict) -> QFont:
-        """The board's built-in font is an 8x8 grid scaled 1, 2 or 3 times (size 8, 16, 24), 8 pixels per letter
-        (9 when bold, 10 when italic) times the scale. This font has the same width per letter, so a text fits
-        in the preview exactly when it fits on the board."""
+    _board_fonts: dict = {}
+
+    @classmethod
+    def _board_default_font(cls, inst: dict) -> QFont:
+        """The board's built-in font is an 8x8 pixel grid scaled 1, 2 or 3 times (size 8, 16, 24). The fonts in
+        Editor/fonts/ (made by packaging/make_board_font.py) hold the board's own letter shapes, so a text looks the
+        same and fits the same in the preview as on the board. Bold and italic have their own fonts, as on the board."""
         try:
             scale = max(1, min(3, int(inst.get("font_size", 8)) // 8))
         except (TypeError, ValueError):
             scale = 1
-        font = QFontDatabase.systemFont(QFontDatabase.SystemFont.FixedFont)
-        font.setPixelSize(9 * scale)
-        if inst.get("bold"):
-            font.setBold(True)
-        if inst.get("italic"):
-            font.setItalic(True)
-        cell = (10 if inst.get("italic") else 9 if inst.get("bold") else 8) * scale
-        natural = QFontMetricsF(font).horizontalAdvance("M")
-        font.setLetterSpacing(QFont.SpacingType.AbsoluteSpacing, cell - natural)
+        bold, italic = bool(inst.get("bold")), bool(inst.get("italic"))
+        name = "WattleBoard" + ("Bold" if bold else "") + ("Italic" if italic else "")
+        if name not in cls._board_fonts:
+            path = Path(__file__).resolve().parent.parent / "fonts" / (name + ".ttf")
+            fid = QFontDatabase.addApplicationFont(str(path)) if path.exists() else -1
+            cls._board_fonts[name] = name if fid >= 0 else None
+        family = cls._board_fonts[name]
+        if family is None:                               # font file missing: fall back to a plain fixed font
+            font = QFontDatabase.systemFont(QFontDatabase.SystemFont.FixedFont)
+            font.setPixelSize(9 * scale)
+            return font
+        font = QFont(family)
+        font.setPixelSize(8 * scale)
+        font.setHintingPreference(QFont.HintingPreference.PreferNoHinting)
         return font
 
     @staticmethod
