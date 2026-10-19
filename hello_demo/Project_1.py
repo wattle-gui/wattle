@@ -33,7 +33,8 @@ def tick():                      # about 10 times a second
         leaving += 1                     # so the board is free (Thonny or mpremote can connect)
         if leaving > 100:
             backlight(0)
-            raise SystemExit
+            print("Demo finished: the board is free.")
+            raise KeyboardInterrupt      # stops at the prompt (SystemExit would make the board restart the demo)
     if live:
         gauge1.value = 50 + 40 * math.sin(phase)
         waveform1.add(50 + 35 * math.sin(phase * 1.7) + 10 * math.sin(phase * 0.5))
