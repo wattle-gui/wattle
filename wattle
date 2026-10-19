@@ -22,7 +22,14 @@ case "$1" in
                 args+=("$f")
             done
             set -- "${args[@]}"
-            if [ -d "$1" ]; then d="$1"; set -- "$d"/*.json "$d/Project_1.py"; fi
+            if [ $# -eq 1 ]; then      # one name: it must be the folder that holds your design and your script
+                d="$1"
+                [ -d "$d" ] || { echo "I cannot find the folder '$d'."; echo "Give the full path of the folder that holds your design (.json file) and your script (Project_1.py)."; exit 1; }
+                n=$(ls "$d"/*.json 2>/dev/null | wc -l)
+                [ "$n" = 1 ] || { echo "The folder $d must hold exactly one design (.json file); it holds $n."; exit 1; }
+                [ -f "$d/Project_1.py" ] || { echo "The folder $d has no Project_1.py (your script). Write it there first (chapter 5, step 5)."; exit 1; }
+                set -- "$d"/*.json "$d/Project_1.py"
+            fi
             exec "$PY" tools/deploy.py "$@" ;;
   check)    need_install; exec "$PY" tools/check_script.py ;;
   reset)    need_install; exec tools/reset.sh "${@:2}" ;;

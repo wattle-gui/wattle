@@ -10,7 +10,9 @@ from PyQt6.QtCore import QPoint, QRect, QRectF, QUrl, Qt, pyqtSignal
 from PyQt6.QtGui import (
     QColor,
     QFont,
+    QFontDatabase,
     QFontMetrics,
+    QFontMetricsF,
     QImage,
     QPainter,
     QPainterPath,
@@ -286,8 +288,9 @@ class DesignCanvas(QWidget):
         cat.register_files()
         font = QFont()
         face = str(inst.get("font_type") or "default").strip()
-        if face and face.lower() != "default":
-            font.setFamily(face)
+        if not face or face.lower() == "default":
+            return self._board_default_font(inst)
+        font.setFamily(face)
         px = cat.preview_size(face, inst.get("font_size"))
         if px is not None:
             font.setPixelSize(px)
@@ -295,6 +298,26 @@ class DesignCanvas(QWidget):
             font.setBold(True)
         if inst.get("italic"):
             font.setItalic(True)
+        return font
+
+    @staticmethod
+    def _board_default_font(inst: dict) -> QFont:
+        """The board's built-in font is an 8x8 grid scaled 1, 2 or 3 times (size 8, 16, 24), 8 pixels per letter
+        (9 when bold, 10 when italic) times the scale. This font has the same width per letter, so a text fits
+        in the preview exactly when it fits on the board."""
+        try:
+            scale = max(1, min(3, int(inst.get("font_size", 8)) // 8))
+        except (TypeError, ValueError):
+            scale = 1
+        font = QFontDatabase.systemFont(QFontDatabase.SystemFont.FixedFont)
+        font.setPixelSize(9 * scale)
+        if inst.get("bold"):
+            font.setBold(True)
+        if inst.get("italic"):
+            font.setItalic(True)
+        cell = (10 if inst.get("italic") else 9 if inst.get("bold") else 8) * scale
+        natural = QFontMetricsF(font).horizontalAdvance("M")
+        font.setLetterSpacing(QFont.SpacingType.AbsoluteSpacing, cell - natural)
         return font
 
     @staticmethod
