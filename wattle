@@ -12,23 +12,33 @@ case "$1" in
   new)      # ./wattle new myproject  -> a folder with a ready-to-run starter (a label and a button)
             [ -n "$2" ] || { echo "Give the project a name:  ./wattle new myproject"; exit 1; }
             [ -e "$2" ] && { echo "'$2' already exists; choose another name."; exit 1; }
-            mkdir "$2" && cp tests/00.json "$2/$2.json" && cp tests/00.py "$2/Project_1.py" &&
-            echo "Created $2/ with $2.json (the design) and Project_1.py (the script)." &&
+            mkdir "$2" && cp tests/00.json "$2/$2.json" && cp tests/00.py "$2/$2.py" &&
+            echo "Created $2/ with $2.json (the design) and $2.py (the script)." &&
             echo "Put it on the board:   ./wattle deploy $2" ;;
   deploy)   need_install; shift
             args=()
             for f in "$@"; do          # a name that exists in the folder you typed the command in means that file
-                case "$f" in --*|/*) ;; *) [ -e "$CALLER/$f" ] && f="$CALLER/$f" ;; esac
+                case "$f" in --*|/*) ;; *) for c in "$f" "$f.json"; do [ -e "$CALLER/$c" ] && { f="$CALLER/$f"; break; }; done ;; esac
                 args+=("$f")
             done
             set -- "${args[@]}"
-            if [ $# -eq 1 ]; then      # one name: it must be the folder that holds your design and your script
-                d="$1"
-                [ -d "$d" ] || { echo "I cannot find the folder '$d'."; echo "Give the full path of the folder that holds your design (.json file) and your script (Project_1.py)."; exit 1; }
-                n=$(ls "$d"/*.json 2>/dev/null | wc -l)
-                [ "$n" = 1 ] || { echo "The folder $d must hold exactly one design (.json file); it holds $n."; exit 1; }
-                [ -f "$d/Project_1.py" ] || { echo "The folder $d has no Project_1.py (your script). Write it there first (chapter 5, step 5)."; exit 1; }
-                set -- "$d"/*.json "$d/Project_1.py"
+            if [ $# -eq 1 ]; then      # one name: a folder, or a design (dad.json or just dad)
+                one="$1"
+                if [ -d "$one" ]; then
+                    dir="$one"
+                    n=$(ls "$dir"/*.json 2>/dev/null | wc -l)
+                    [ "$n" -ge 1 ] || { echo "The folder $dir holds no design (.json file)."; exit 1; }
+                    [ "$n" = 1 ] || { echo "The folder $dir holds $n designs. Name the one you want, for example:  ./wattle deploy $dir/NAME  (NAME is the design's name without .json)."; exit 1; }
+                    design=$(ls "$dir"/*.json)
+                else
+                    design="$one"; [ -f "$design" ] || design="$one.json"
+                    [ -f "$design" ] || { echo "I cannot find '$one' (a design, or a folder that holds one)."; echo "Give the full path, for example:  ./wattle deploy /home/you/Documents/dad"; exit 1; }
+                fi
+                base="${design%.json}"
+                if [ -f "$base.py" ]; then script="$base.py"
+                elif [ -f "$(dirname "$design")/Project_1.py" ]; then script="$(dirname "$design")/Project_1.py"
+                else echo "There is no script for $(basename "$design"). Write it next to the design, with the same name: $(basename "$base").py"; exit 1; fi
+                set -- "$design" "$script"
             fi
             exec "$PY" tools/deploy.py "$@" ;;
   check)    need_install; exec "$PY" tools/check_script.py ;;
@@ -45,8 +55,8 @@ Wattle -- usage:  ./wattle <command>
 
   install [--yes]    guided installation: tools, board port, MicroPython, program files, demo
   new NAME           make a starter project in the folder NAME (a label and a button)
-  deploy NAME        copy the project NAME to the board, check it, and start it
-  deploy DESIGN.json SCRIPT.py     the same for two files
+  deploy NAME        copy the project NAME (a folder, or a design NAME.json with its script NAME.py) to the board, check it, and start it
+  deploy DESIGN.json SCRIPT.py     the same for two files with any names
   check              check the design and script that are on the board; explains mistakes
   test N             load test number N (a ready-made example) onto the board
   reset              restart the board
