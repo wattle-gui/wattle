@@ -6,7 +6,8 @@
 #   "upload" also copies the .raw files to the board with mpremote.
 import os as _os
 import wattle_port
-PORT = wattle_port.PORT   # ESP_PORT, or wattle.port, or /dev/ttyUSB0
+PORT = wattle_port.PORT   # ESP_PORT, or wattle.port, or the plugged-in board
+MPREMOTE = wattle_port.MPREMOTE
 import json, subprocess, sys
 from PIL import Image
 
@@ -69,4 +70,4 @@ for scr in design["screens"]:
 
 if "upload" in sys.argv:
     for n in made:
-        subprocess.run(["mpremote", "connect", PORT, "fs", "cp", n, ":" + n], check=True)
+        subprocess.run(MPREMOTE + ["connect", PORT, "fs", "cp", n, ":" + n], check=True)

@@ -6,7 +6,8 @@
 import os, subprocess, sys, time
 
 import wattle_port
-PORT = wattle_port.PORT                      # ESP_PORT, or wattle.port, or /dev/ttyUSB0
+PORT = wattle_port.PORT                      # ESP_PORT, or wattle.port, or the plugged-in board
+MPREMOTE = wattle_port.MPREMOTE
 
 
 def halt():
@@ -37,7 +38,7 @@ def restart():
 
 
 def _mp(*args):
-    return subprocess.run(["mpremote", "connect", PORT] + list(args), capture_output=True, text=True)
+    return subprocess.run(MPREMOTE + ["connect", PORT] + list(args), capture_output=True, text=True)
 
 
 def cat(path):

@@ -31,18 +31,22 @@ def yes(question):
 def empty_board():
     import wattle_port
     port = wattle_port.PORT
-    if subprocess.run(["fuser", port], capture_output=True).returncode == 0:
+    import wattle_port
+    if wattle_port.in_use(port):
         print("Another program (Thonny?) is using %s. Close it and run  ./wattle remove  again." % port)
         return False
     import boardlink
     print("Stopping the board and deleting its files ...")
     boardlink.halt()
-    r = subprocess.run(["mpremote", "connect", port, "exec", WIPE], capture_output=True, text=True)
+    r = subprocess.run(boardlink.MPREMOTE + ["connect", port, "exec", WIPE], capture_output=True, text=True)
     print((r.stdout + r.stderr).strip())
     return r.returncode == 0
 
 
 def remove_computer():
+    if sys.platform.startswith("win"):
+        print("To remove Wattle from this computer: open Windows Settings, Apps, find Wattle, click Uninstall.")
+        return
     home = os.path.expanduser("~")
     mine = os.path.join(home, "Wattle")
     if subprocess.run(["dpkg", "-s", "wattle"], capture_output=True).returncode == 0:
@@ -59,6 +63,9 @@ def remove_computer():
 
 def start_installation():
     """Opens the downloaded package, as a double-click in the Downloads folder would."""
+    if sys.platform.startswith("win"):
+        print("To put Wattle on the board again, run  wattle install  (or double-click the Wattle Setup file again).")
+        return
     debs = sorted(glob.glob(os.path.expanduser("~/Downloads/wattle_*_all.deb")))
     if debs:
         print("Starting the installation again ...")

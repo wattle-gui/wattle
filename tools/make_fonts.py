@@ -18,7 +18,8 @@ import glob, json, os, re, struct, subprocess, sys
 from PIL import Image, ImageDraw, ImageFont
 
 import wattle_port
-PORT = wattle_port.PORT   # ESP_PORT, or wattle.port, or /dev/ttyUSB0
+PORT = wattle_port.PORT   # ESP_PORT, or wattle.port, or the plugged-in board
+MPREMOTE = wattle_port.MPREMOTE
 HERE = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))     # the Wattle folder (this file is in tools/)
 OUT = os.path.join(HERE, "fonts")
 HW = os.path.join(HERE, "hardware")
@@ -143,10 +144,10 @@ def upload(design_path):
                 continue
             style = ("b" if w.get("bold") else "") + ("i" if w.get("italic") else "")
             need.add(fnt_name(ft, size, style))
-    subprocess.run(["mpremote", "connect", PORT, "fs", "mkdir", ":fonts"],
+    subprocess.run(MPREMOTE + ["connect", PORT, "fs", "mkdir", ":fonts"],
                    stdout=subprocess.DEVNULL, stderr=subprocess.DEVNULL)   # ok if it exists
     for n in sorted(need):
-        subprocess.run(["mpremote", "connect", PORT, "fs", "cp",
+        subprocess.run(MPREMOTE + ["connect", PORT, "fs", "cp",
                         os.path.join(OUT, n), ":fonts/" + n], check=True)
     print("uploaded", len(need), "font files")
 

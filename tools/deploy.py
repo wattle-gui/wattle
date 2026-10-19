@@ -61,7 +61,7 @@ def main():
         errfont = os.path.join(HERE, "fonts", "dejavusansmono_12.fnt")      # for the on-screen error messages
         fonts = {w.get("font_type", "default") for w in widgets} - {"default", ""}
         if fonts or os.path.exists(errfont):
-            subprocess.run(["mpremote", "connect", boardlink.PORT, "fs", "mkdir", ":fonts"], capture_output=True)
+            subprocess.run(boardlink.MPREMOTE + ["connect", boardlink.PORT, "fs", "mkdir", ":fonts"], capture_output=True)
         if os.path.exists(errfont):
             boardlink.put(errfont, "fonts/dejavusansmono_12.fnt")
         if fonts:

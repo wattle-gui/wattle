@@ -13,7 +13,8 @@ import glob, os, shutil, subprocess, sys
 
 HERE = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))     # the Wattle folder (this file is in tools/)
 import wattle_port
-PORT = wattle_port.PORT     # ESP_PORT, or wattle.port, or /dev/ttyUSB0
+PORT = wattle_port.PORT     # ESP_PORT, or wattle.port, or the plugged-in board
+MPREMOTE = wattle_port.MPREMOTE
 FILES = ["Runtime", "ili9341"]
 
 arch = sys.argv[sys.argv.index("--arch") + 1] if "--arch" in sys.argv else "xtensawin"
@@ -34,7 +35,7 @@ if not exe:
 for name in FILES:
     src, out = os.path.join(HERE, name + ".py"), os.path.join(HERE, name + ".mpy")
     subprocess.run([exe, "-march=" + arch, "-o", out, src], check=True)
-    subprocess.run(["mpremote", "connect", PORT, "fs", "cp", out, ":" + name + ".mpy"], check=True)
-    subprocess.run(["mpremote", "connect", PORT, "fs", "rm", ":" + name + ".py"])   # ok if absent
+    subprocess.run(MPREMOTE + ["connect", PORT, "fs", "cp", out, ":" + name + ".mpy"], check=True)
+    subprocess.run(MPREMOTE + ["connect", PORT, "fs", "rm", ":" + name + ".py"])   # ok if absent
     print(name, "->", name + ".mpy", os.path.getsize(out), "bytes")
 print("done -- run reset to restart the board")

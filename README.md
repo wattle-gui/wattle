@@ -23,7 +23,7 @@ and open `index.html`; the manuals with their videos play in your browser).
 **Which systems?** Tested on **Zorin OS 18**. The package should install on other Debian-based systems that use the same package
 tools (Ubuntu 22.04 or newer, Linux Mint 21 or newer, Pop!_OS 22.04 or newer, Debian 12 or newer), but we have not tried them yet.
 On other Linux systems, download `Wattle-0.9.zip` from the Releases page, unpack it, and run `./install.sh` in the unpacked folder.
-Windows is planned (see below).
+Windows 10: download `Wattle-Setup-0.9.exe` from the Releases page and double-click it (see the manual, *Installation on Windows*).
 
 ## Free to use
 
@@ -63,8 +63,7 @@ The technical reference for the internals is `SYSTEM_README.md`.
 
 ## What comes next
 
-This is the first release (version 0.9). It is made for the CYD 2.8" (ESP32, ILI9341 display, XPT2046 touch). A Windows version of the
-installer and tools is planned. How it develops further depends on whether people find it useful.
+This is the first release (version 0.9). It is made for the CYD 2.8" (ESP32, ILI9341 display, XPT2046 touch). Windows 10 is supported from the first release by a Setup program. How it develops further depends on whether people find it useful.
 
 ## Credits
 

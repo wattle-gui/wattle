@@ -33,7 +33,9 @@ def step(text):
     print(" *", text)
 
 
-if not shutil.which("mpremote"):
+try:
+    import mpremote                        # noqa: F401  (started later as: python -m mpremote)
+except ImportError:
     sys.exit("mpremote is not installed. Run:  pip install mpremote")
 missing = [f for f in FILES[:6] if not find(f)]
 if missing:
@@ -55,7 +57,7 @@ if dry:
 step("stopping whatever the board is running")
 boardlink.halt()
 for old in OLD_SOURCES:
-    subprocess.run(["mpremote", "connect", boardlink.PORT, "fs", "rm", ":" + old], capture_output=True)   # fine if absent
+    subprocess.run(boardlink.MPREMOTE + ["connect", boardlink.PORT, "fs", "rm", ":" + old], capture_output=True)   # fine if absent
 step("removed any old Runtime.py / ili9341.py (they would hide the precompiled files)")
 for f in FILES:
     p = find(f)
@@ -64,7 +66,7 @@ for f in FILES:
         boardlink.put(p, f)
 if errfont:
     step("copying the error-message font")
-    subprocess.run(["mpremote", "connect", boardlink.PORT, "fs", "mkdir", ":fonts"], capture_output=True)
+    subprocess.run(boardlink.MPREMOTE + ["connect", boardlink.PORT, "fs", "mkdir", ":fonts"], capture_output=True)
     boardlink.put(errfont, "fonts/dejavusansmono_12.fnt")
 boardlink.restart()
 if os.environ.get("WATTLE_FROM_INSTALLER"):

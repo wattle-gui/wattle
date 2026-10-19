@@ -11,6 +11,7 @@ sys.path.insert(0, ROOT)
 sys.path.insert(0, os.path.join(ROOT, "tools"))
 import wattle_port
 PORT = wattle_port.PORT
+MPREMOTE = wattle_port.MPREMOTE
 KEEP = ("boot.py", "main.py", "Runtime.mpy", "Runtime.py", "ili9341.mpy", "ili9341.py",
         "board_cyd.py", "touch_xpt2046.py", "ID.dat", "wifi.dat")
 
@@ -31,7 +32,7 @@ for n in os.listdir():
 
 
 def mp(*args, check=True):
-    return subprocess.run(["mpremote", "connect", PORT] + list(args), check=check)
+    return subprocess.run(MPREMOTE + ["connect", PORT] + list(args), check=check)
 
 
 def main():
@@ -75,8 +76,8 @@ def main():
         subprocess.run([sys.executable, os.path.join(ROOT, "tools", "make_images.py"), design_path, "upload"],
                        check=True, cwd=build, env=dict(os.environ, ESP_PORT=PORT))
 
-    subprocess.run(["esptool", "--port", PORT, "--after", "hard_reset", "chip_id"],
-                   stdout=subprocess.DEVNULL, stderr=subprocess.DEVNULL)
+    import boardlink
+    boardlink.restart()
     txt = os.path.join(HERE, name + ".txt")
     print("\n=== test %s loaded -- board restarted ===" % name)
     if os.path.exists(txt):
