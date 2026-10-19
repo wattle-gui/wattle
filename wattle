@@ -36,7 +36,7 @@ Wattle -- usage:  ./wattle <command>
   check              check the design and script that are on the board; explains mistakes
   test N             load test number N (a ready-made example) onto the board
   reset              restart the board
-  remove             start again: empty the board and/or remove Wattle from the computer (asks first)
+  remove             start again: empty the board, remove Wattle from the computer, restart the installation (asks first)
   wifi               put your Wi-Fi name and password on the board (file wifi.dat; nothing is kept on the computer)
   fonts / images / pick    the font converter, picture converter and hardware picker (see chapter 6)
 

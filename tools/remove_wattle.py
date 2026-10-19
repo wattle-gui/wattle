@@ -57,27 +57,35 @@ def remove_computer():
         print("This copy of Wattle is not in %s, so its folder was left alone." % mine)
 
 
-def main():
-    print("""START AGAIN
-This helps when an installation went wrong, or when you want to try it again from the beginning.
-It can do two things, and it asks before each:
-  1. Empty the board: delete the files on it, so it is like a new board with only MicroPython on it.
-     (Needed because removing Wattle from the computer does NOT change the board.)
-  2. Remove Wattle from the computer: the program package and the folder ~/Wattle.
-     Your own projects are not in those places, so they stay.
-""")
-    did_board = did_pc = False
-    if yes("1. Empty the board?"):
-        did_board = empty_board()
-    if yes("2. Remove Wattle from this computer?"):
-        remove_computer()
-        did_pc = True
-    if did_pc:
-        print("\nTo install again: open the Downloads folder and double-click wattle_0.9_all.deb (chapter 2, step 3).")
-    elif did_board:
-        print("\nTo put Wattle back on the board: ./wattle install")
+def start_installation():
+    """Opens the downloaded package, as a double-click in the Downloads folder would."""
+    debs = sorted(glob.glob(os.path.expanduser("~/Downloads/wattle_*_all.deb")))
+    if debs:
+        print("Starting the installation again ...")
+        subprocess.Popen(["xdg-open", debs[-1]], stdout=subprocess.DEVNULL, stderr=subprocess.DEVNULL)
+        print("A window opens: carry on at step 4 of chapter 2 (Click Run anyway).")
     else:
+        print("To install again: download wattle_0.9_all.deb (chapter 2, step 2), then double-click it.")
+
+
+def main():
+    only_computer = "--no-board" in sys.argv
+    print("""START AGAIN
+This helps when an installation went wrong, or when you want to try it again from the beginning. It will:
+  1. empty the board (delete the files on it, so it is like a new board with only MicroPython on it),
+  2. remove Wattle from this computer (the program package and the folder ~/Wattle), and
+  3. start the installation again.
+Your own projects are not in those places, so they stay.
+""")
+    if not yes("Start again?"):
         print("\nNothing was changed.")
+        return
+    if not only_computer and not empty_board():
+        print("\nNothing was removed from the computer. Fix the problem above and run  ./wattle remove  again.")
+        print("(No board plugged in? Then use  ./wattle remove --no-board  to remove Wattle from the computer only.)")
+        return
+    remove_computer()
+    start_installation()
 
 
 main()
