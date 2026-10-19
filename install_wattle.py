@@ -48,7 +48,7 @@ PROGRAM_FILES = ["Runtime.mpy", "ili9341.mpy", "board_cyd.py", "touch_xpt2046.py
 OLD_SOURCES = ["Runtime.py", "ili9341.py"]            # a .py on the board would be used INSTEAD of the .mpy, so these are removed
 OPTIONAL_FILES = ["calibrate_touch.py", "fonts/arial_12.fnt", "fonts/arial_16.fnt", "fonts/arial_16b.fnt", "fonts/arial_24.fnt", "fonts/arial_24b.fnt"]   # the last five: the demo's font
 FONT = "fonts/dejavusansmono_12.fnt"                  # the font of the on-screen error messages
-DEMO = [("hello_demo/hello.json", "hello.json"), ("hello_demo/Project_1.py", "Project_1.py"), ("hello_demo/design.txt", "design.txt")]
+DEMO = [("hello_demo/hello.json", "hello.json"), ("hello_demo/demo.py", "demo.py"), ("hello_demo/design.txt", "design.txt")]
 CHUNK = 768                                           # bytes of a file sent per step
 USB_SERIAL_CHIPS = {(0x1A86, 0x7523), (0x1A86, 0x55D4), (0x10C4, 0xEA60), (0x0403, 0x6001)}   # CH340, CH9102, CP210x, FT232
 
@@ -426,11 +426,12 @@ sgjI49Y7GbxZ9g9U9vO9AR3ScDSvUutcbHsTNlchDerhx+8hm2bqNn5IdeeP+tOZuTqwaZDa/TEc938E
 yZGMPG6qtyA3HdRbX+CjG5VPWDuhJSHaxdIOoHgEyRGUvNHzXDR+6Ha28CdLM8Oco2Hs9R/gED9sUmfQMqrfP7kBoB8=
 """,   # 1494 bytes
     "main.py": """
-eNpNkD9vg0AMxXckvsNTssAAUtdWnaIsXRql7YxOwZRr4XzyOaJ8+5pAqno5+d/v+d0eo/OhjjOqCkmdaIL2hCj8RReFU0SeSKpr
-rPNsj0PvwifhdH59OR7eoQy5Bji0vutIKCg+3o5npIv4qDWK08ppHtAyJQTWhRKI2mWxKDH1FFZhK2nvEyY3P91uGJgjJpbvBPJW
-kKVVl3l2V3/G7o+/y7M882NkUZyvQf1IeaYyP+YZLEZubbxp1ommKTaG0ejnQlFxvD2ezY3pbWsbqe6cuqGgEv9ij9TztH4XibDA
-dpfEzJOZKlxo15zEuwGLsMndkYt9u8oqvzTge6s=
-""",   # 388 bytes
+eNp1kjFvgzAQhXf/iieygNogdW3VKWLpkihpZuSGS3ELPmSbUv59zxDSDK0HMHe8d9+dvUKrjc27Ees1fNAueISa0Dn+oFOADuh4
+ILfuu1ytsKm1fSfs9tuXYvOKwHC9hUZlzmdyZAOOh2IPf3KmCznS3WxTPqBi8rAcxMQSVVGXZhhqsnNZCYXaeAx6fJoIGuYOA7tP
+DzIScDGVZ6I/2mAajNyj1l+C2gvmpST4HBMOPFiwnYzeWLvqftpW1DLS+JSOs8jgYawPpKtcLU09I7liJ0qZtmMnxn7Z7Xup35IK
+bnxUkMU+lxZCuhjcIRH7JFP0fSJh2h4K59jNP19V/ynbSRqzf8njugGNrSS/JC1XEi3LmbQsF+MrSjG9jExGy1hn0aWf/KyDblLK
+cLNW8DUP85WgSLEMVcZNcnSpttX8Tc7oBrFsphbHeMaClKkfXpPCew==
+""",   # 614 bytes
     "wifi_cipher.py": """
 eNqdVV1v4zYQfNev2NooTmpsAfa1LmA0B/gStwmCJmnsQx5SI6Ak2iIiiTqSiuN/31nKstIPtED9ENMkd3c4M7sZ0l5t1XOq6lya
 uD7QeEx3t7S+WtLnu8XDZUwrKQpLLpf0qMY/K6pEKUlUGdXC2r02GVntk8SZcJTrIrNkUyPKpJAZOfnmRlRpR3UhVEUcYONgGAzJ
@@ -774,20 +775,21 @@ vgMHSTptpoZgtBfi/MJI0sUdkeidOVwVDyxoxXKO2JIeDnFqfb5vwZv06ohXTJyGb5dTTyBOn/W3IHNO
 h+uMs28QSsQhUxrNc7Ui1fqt+4CvpUatwHI6egOLWcwxVcuDBIRMpYXyjwsq/aOYKcAo5fT2cLFy2i7TBC/yurt5YHturJT/ZTHn
 cf0cMlNIQerQognZSw4pNmnq6NL6X/xc7IQ=
 """,   # 9236 bytes
-    "hello_demo/Project_1.py": """
-eNp9VcGO2zgMvfsriAwK2J3UsNsdFMgie+ouUOxtO8AeF4zN2EJkyZDkpPn7kpKTONtJc0okinx875F5gteeoKXBgu/tyQDuAzlQ
-xgfUGoOypsye4FvjiAysBlRmtQGEoIKmNX9pcJQg+RpwhMZORhKgaflkN4XACWKN0CvXxhh/UqHpyUPgonPi1hqKibU6EnQ4dTTn
-GOxRmY4xND26sI6PGCmcegzwLwbGAdrag+enB4EUX2lrurvy6fubtc92cn4FOUpiF8DYQMXvUFfgqbGm5cwoPYWeGMb8qrOcZKfR
-HGLFcGGROH7N4FTTw54jfbzaWXRtmalhlAIDhj7bOzvAP8yWGgjmi/dZFgmELVTw4PMEjgYaduQ8CA8DmrPQ6sFb2KPLIoNb+Au1
-pwcZXt1EgpGpuxMAlI/kMuGQW6PPAt7EDm6SRB0AHYk01BbZ2KOXilVZZVlL+5nr+r9Gq+aQF5v/VZd0l8YbdplQxIUJmbJ4OL8X
-NNzYSG0mDzttd6iTw9bRJ/E4Efa8hTr+1LgjXZeBvguLq1cmZgPv2hW8myMTBm7CdNJminTUOjwlrWIGYHNZ06QSaj+/3W7h0+ah
-LmHp8k1yaUwogiSes0v0LJIIcT1LQ5YnKYos04Ri/cdmeEqwEuzAXLN6ikHDn99VgBNe6IO84iRs68vvM4ViKdXHR1KtYqYPUfeW
-vOoMyLQAb4rVUhRphzVJgLNFg9GF6eDaTRLq0m2avhlOeAPFAg7u7BRkMMUmnsc8DegSSTTjHbQFqOTUZ7Fq/fEi7RzwSNdYuK6q
-meDtci+kZSkcbeZdIErMIyWc0WI1rG/iz1SIaR8U5Fm+7g2ZA1klkL/21vC0WwfDyFuA9xQPkGEXGEMNS3p5f+sK/hDsm2yZfYfN
-QauuD3lV3F2MTpmQr77IHtsro3xP7eZnHOXq/plDxaz+TecY9VX2v5vGcG0lWF5OPE+SaOStx1f5t7MPNCSf2km3vMYOtCjliP+A
-XLiSV1zVYl/d2olbqS6PqCdx20sFz/BbBe/jii15GPIo+Q3vCY+0t26oS2zbPMZ/evkpng/q8nPBl3X11mVVvhTsWDqSO+fM7zqa
-o8jcZPIC4FdO6uMKtSY4q+VPaLkM8xMqnmbGFxd6kf0Abys+xw==
-""",   # 1950 bytes
+    "hello_demo/demo.py": """
+eNp9VdGu2zYMffdXEL4oYPdmht3uYkCK7GkbUOxlWC/Qx4KxmViLLBmSnDR/P1JyEme9WZ4ciyIPzzmkn+C1J+hosOB7ezKAu0AO
+lPEBtcagrKngcwDlwRoIHLu16DpAHy9V4/kTDKgMP4CbjAcVYDJBaTjbCcYpAMJfzv5DbfjWSJDdyYkDqcXpHFXZE3xpHZGBXDLl
+a74SVNC04ocWR8EgjwFHaC0nZ3xoGAJspxAEn7QQesWwJMafVGh78hC4pzlxZw3FxFodCfY47WnOMdijMnvG0PbowipeYiLg1GOA
+rxgYB2hrD56vHgRSvKWt2d+VT89v1pZ2fQ4FSmIXwNhA5SdoavDUWtNxZpSemA2GMd/aW06y1WgOsWK4iEQcv2Jwqu1hx5H+pkmV
+qWGUAgOGPts5O8DfIsVAMB+8z7JIIGyghge/J3A00LAl50F4GNCchVYP3sIOXRYZ3MAfqD09yPDqJhKMTN2dAOIiIZcJh8IafRbw
+yVU3SaIOgI5EGurKbOzRS8W6qrOso93MdfOt1ao9FOX6P9Ul3aXxlk0sFHFhQqYsvpzvCxpubKQuk4t7bbeok8NW0SfxdSLseQNN
+/KtxS7qpAn0XFvNXJmYN77oc3s2RCQM3YfbSZop01Dk8Ja1iBmBzWdOmEmo3391s4OP6oS5h6fJ1cmlMKIIknrNL9CySCHF9l4as
+SFKUWaYJxfqPzfCUYCXYgblm9RSDht+/85Sf8EIfFDUnYVtf/p8plEupPjySKo+Zfoq6d+TV3lyXQ74URdphTRLgbNFgdGF6ce0m
+CXXpNk3fDCe8gWIBB7eWFxYPptjE85inAV0iiWa8g7YAlZz6LFZtPlyknQMe6RoLN3U9E7xZ7oW0i4Wj9bwLRIl5pIQzWqyG1U38
+mQox7YOCPMu3Xc5zIKsEitfeGp5262AYeQvwnuIBMuwCY3h/l9cCt67gV8G+zpbZt9getNr3oajLu4PRKROK/DfZYztllO+pW/+I
+o8rvrzlUzOqfdI5Rn2X/u2kM11aC5eXE8ySJRt56fFR8OftAQ/KpnXTHa+xAi1KO+PvmwpW88qoW++rWTtxKTXVEPYnbXmp4hp9r
+eB9XbMXDUETJb3hPeKSddUNTYdcVMf7jyw/x/KKpfin5sKnfOqyrl5IdS0dy54L5XUVzlBl/YIsS4P+c1McVak1wVstHaLkMixMq
+nmbGFxd6mf0LWpxgEQ==
+""",   # 2045 bytes
     "hello_demo/design.txt": """
 eNrLSM3JydfLKs7P4wIAGc8EBw==
 """,   # 11 bytes

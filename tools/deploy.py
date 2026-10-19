@@ -4,6 +4,7 @@
 #
 #   python3 deploy.py hello.json Project_1.py
 #   python3 deploy.py hello.json Project_1.py --no-check        (skip the check)
+#   python3 deploy.py demo.json demo.py --as demo               (the script gets another name; the installer does this for the demo)
 #
 # What it does: stops the board, writes design.txt (the design's name and the board), copies the design and the script
 # (the script gets the name that main.py expects: PROJECT, "Project_1" by default), copies the fonts and pictures the
@@ -17,7 +18,13 @@ HERE = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))     # the Wat
 
 
 def main():
-    args = [a for a in sys.argv[1:] if not a.startswith("--")]
+    argv = sys.argv[1:]
+    as_name = None                                       # --as NAME: give the script this name on the board (the installer uses it for the demo)
+    if "--as" in argv:
+        i = argv.index("--as")
+        as_name = argv[i + 1] if i + 1 < len(argv) else None
+        del argv[i:i + 2]
+    args = [a for a in argv if not a.startswith("--")]
     if len(args) != 2:
         sys.exit("usage: python3 tools/deploy.py design.json script.py [--no-check]")
     design_path, script_path = args
@@ -39,7 +46,7 @@ def main():
         sys.exit("main.py is not on the board: copy the program files first (see the Quick Guide).")
     import re
     m = re.search(r'PROJECT\s*=\s*["\']([^"\']+)["\']', main_py)
-    project = (m.group(1) if m else "Project_1") + ".py"
+    project = (as_name or (m.group(1) if m else "Project_1")) + ".py"
 
     board = design.get("target", {}).get("board") or "board_cyd"
     with tempfile.TemporaryDirectory() as tmp:

@@ -1,4 +1,4 @@
-# The demo shown after installation.
+# The demo shown after installation. It is on the board as demo.py; main.py runs it until you put a Project_1.py of your own there.
 # Screen "main": a title, a caption, a tap counter and a button. The third tap switches to screen "done": a live gauge and a moving
 # chart, to show what Wattle looks like, and a long button. The button switches to screen "yours" (a short note); 10 seconds later the
 # screen goes blank and the demo ends, which frees the board.

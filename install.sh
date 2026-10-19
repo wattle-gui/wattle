@@ -188,10 +188,10 @@ say "6. The demo"
 DEMO_OK=0
 if [ "$DEMO" = 1 ]; then
     echo "  Loading the demo onto the board: please wait ..."
-    if "$PY" tools/deploy.py hello_demo/hello.json hello_demo/Project_1.py >/dev/null 2>&1; then
+    if "$PY" tools/deploy.py hello_demo/hello.json hello_demo/demo.py --as demo >/dev/null 2>&1; then
         DEMO_OK=1; ok "The demo is on the board."
     else
-        warn "the demo could not be loaded (the files are on the board; try: .venv/bin/python tools/deploy.py hello_demo/hello.json hello_demo/Project_1.py)"
+        warn "the demo could not be loaded (the files are on the board; try: .venv/bin/python tools/deploy.py hello_demo/hello.json hello_demo/demo.py --as demo)"
     fi
 fi
 
