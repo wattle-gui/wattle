@@ -124,7 +124,7 @@ if ! [ -r "$PORT" ] || ! [ -w "$PORT" ]; then
     fail "without access to the port nothing can be copied."
 fi
 if fuser "$PORT" >/dev/null 2>&1; then
-    warn "another program is using $PORT (Thonny? a serial monitor?). Close it and run ./install.sh again."
+    warn "another program is using $PORT (Thonny? a serial monitor?). Close it. Then press Ctrl+Alt+T to open a terminal, type  cd ~/Wattle  and press Enter, then type  ./install.sh  and press Enter."
     [ "$CHECK" = 1 ] || exit 1
 fi
 [ "$CHECK" = 1 ] || echo "$PORT" > wattle.port          # the other tools use this port from now on

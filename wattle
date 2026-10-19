@@ -23,6 +23,7 @@ case "$1" in
   fonts)    need_install; exec "$PY" tools/make_fonts.py "${@:2}" ;;
   images)   need_install; exec "$PY" tools/make_images.py "${@:2}" ;;
   pick)     need_install; exec "$PY" tools/picker.py "${@:2}" ;;
+  remove)   exec "$PY" tools/remove_wattle.py ;;     # start again from the beginning (asks before it deletes anything)
   wifi)     exec "$PY" wifi_setup.py "${@:2}" ;;     # needs only Python + pyserial, like install_wattle.py
   help|""|-h|--help)
 cat <<'TXT'
@@ -35,6 +36,7 @@ Wattle -- usage:  ./wattle <command>
   check              check the design and script that are on the board; explains mistakes
   test N             load test number N (a ready-made example) onto the board
   reset              restart the board
+  remove             start again: empty the board and/or remove Wattle from the computer (asks first)
   wifi               put your Wi-Fi name and password on the board (file wifi.dat; nothing is kept on the computer)
   fonts / images / pick    the font converter, picture converter and hardware picker (see chapter 6)
 

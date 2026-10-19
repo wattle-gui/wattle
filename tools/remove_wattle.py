@@ -1,0 +1,83 @@
+# remove_wattle.py -- DESKTOP: start again from the beginning. Run it with  ./wattle remove
+#   1. optionally empties the board (every file except boot.py), so it is like a new board with only MicroPython
+#   2. optionally removes Wattle from the computer (the package and the folder ~/Wattle; your own projects are not in them)
+# It asks before it does anything, and says what it will do.
+import glob, os, shutil, subprocess, sys
+
+HERE = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
+sys.path.insert(0, os.path.join(HERE, "tools"))
+
+WIPE = """
+import os
+def rm(d):
+    for n in os.listdir(d):
+        p = d.rstrip('/') + '/' + n
+        if p == '/boot.py':
+            continue
+        try:
+            os.remove(p)
+        except OSError:
+            rm(p)
+            os.rmdir(p)
+rm('/')
+print('board emptied')
+"""
+
+
+def yes(question):
+    return input(question + " [y/N] ").strip().lower() in ("y", "yes")
+
+
+def empty_board():
+    import wattle_port
+    port = wattle_port.PORT
+    if subprocess.run(["fuser", port], capture_output=True).returncode == 0:
+        print("Another program (Thonny?) is using %s. Close it and run  ./wattle remove  again." % port)
+        return False
+    import boardlink
+    print("Stopping the board and deleting its files ...")
+    boardlink.halt()
+    r = subprocess.run(["mpremote", "connect", port, "exec", WIPE], capture_output=True, text=True)
+    print((r.stdout + r.stderr).strip())
+    return r.returncode == 0
+
+
+def remove_computer():
+    home = os.path.expanduser("~")
+    mine = os.path.join(home, "Wattle")
+    if subprocess.run(["dpkg", "-s", "wattle"], capture_output=True).returncode == 0:
+        print("Removing the package (your password may be asked) ...")
+        subprocess.run(["sudo", "apt", "remove", "-y", "wattle"])
+    if os.path.realpath(HERE) == os.path.realpath(mine):
+        os.chdir(home)
+        for old in glob.glob(os.path.join(home, "Wattle-previous-*")) + [mine]:
+            shutil.rmtree(old, ignore_errors=True)
+        print("Deleted the folder %s" % mine)
+    else:
+        print("This copy of Wattle is not in %s, so its folder was left alone." % mine)
+
+
+def main():
+    print("""START AGAIN
+This helps when an installation went wrong, or when you want to try it again from the beginning.
+It can do two things, and it asks before each:
+  1. Empty the board: delete the files on it, so it is like a new board with only MicroPython on it.
+     (Needed because removing Wattle from the computer does NOT change the board.)
+  2. Remove Wattle from the computer: the program package and the folder ~/Wattle.
+     Your own projects are not in those places, so they stay.
+""")
+    did_board = did_pc = False
+    if yes("1. Empty the board?"):
+        did_board = empty_board()
+    if yes("2. Remove Wattle from this computer?"):
+        remove_computer()
+        did_pc = True
+    if did_pc:
+        print("\nTo install again: open the Downloads folder and double-click wattle_0.9_all.deb (chapter 2, step 3).")
+    elif did_board:
+        print("\nTo put Wattle back on the board: ./wattle install")
+    else:
+        print("\nNothing was changed.")
+
+
+main()
