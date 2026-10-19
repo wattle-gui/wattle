@@ -25,12 +25,11 @@ tools (Ubuntu 22.04 or newer, Linux Mint 21 or newer, Pop!_OS 22.04 or newer, De
 On other Linux systems, download `Wattle-0.9.zip` from the Releases page, unpack it, and run `./install.sh` in the unpacked folder.
 Windows is planned (see below).
 
-## Free to use. Not for commercial purposes.
+## Free to use
 
-This software is **freeware**: a small gesture to everyone who contributed free software. You may use it, study it, change it
-and share it for any **non-commercial** purpose (hobby, learning, school, research, charity). You may **not** sell it or use it
-in a commercial product or service. The full terms are in [LICENSE](LICENSE) (PolyForm Noncommercial 1.0.0). Parts made by others
-keep their own licences: see [THIRD_PARTY_NOTICES.md](THIRD_PARTY_NOTICES.md).
+Wattle is free, under the **MIT licence**: you may use it, study it, change it, share it and even sell it, for any purpose. The one
+condition is that the copyright notice stays with it (that is how everyone who contributed is acknowledged). The full text is in
+[LICENSE](LICENSE). Parts made by others keep their own licences: see [THIRD_PARTY_NOTICES.md](THIRD_PARTY_NOTICES.md).
 
 ## What is where
 

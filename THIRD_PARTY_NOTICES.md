@@ -13,7 +13,7 @@ if you notice a mistake or a missing credit, please say so and it will be correc
 | [PyQt6](https://www.riverbankcomputing.com/software/pyqt/) | the Wattle Editor and the hardware picker window | GPL-3.0 or a commercial licence |
 | [pyserial](https://github.com/pyserial/pyserial) | stopping and restarting the board over its serial port | BSD-3-Clause |
 
-These are installed separately by the installer (`pip install ...`); nothing of them is copied into this package. A possible later change
+These are installed separately by the installer (`pip install ...`); nothing of them is copied into this package. Wattle itself is MIT-licensed, which is compatible with the GPL; PyQt6 is not part of this package. A possible later change
 is the LGPL alternative PySide6 for the Editor.
 
 ## Source files in the package that were not written for this project
