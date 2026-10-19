@@ -1,5 +1,6 @@
 #!/bin/bash
 # wattle -- one command for everything. Type  ./wattle help  to see what it can do.
+CALLER="$PWD"        # the folder you typed the command in: your own files are looked for there first
 cd "$(dirname "$0")" || exit 1
 HERE="$PWD"
 if [ -x .venv/bin/python ]; then PY="$HERE/.venv/bin/python"; export PATH="$HERE/.venv/bin:$PATH"; else PY=python3; fi
@@ -15,6 +16,12 @@ case "$1" in
             echo "Created $2/ with $2.json (the design) and Project_1.py (the script)." &&
             echo "Put it on the board:   ./wattle deploy $2" ;;
   deploy)   need_install; shift
+            args=()
+            for f in "$@"; do          # a name that exists in the folder you typed the command in means that file
+                case "$f" in --*|/*) ;; *) [ -e "$CALLER/$f" ] && f="$CALLER/$f" ;; esac
+                args+=("$f")
+            done
+            set -- "${args[@]}"
             if [ -d "$1" ]; then d="$1"; set -- "$d"/*.json "$d/Project_1.py"; fi
             exec "$PY" tools/deploy.py "$@" ;;
   check)    need_install; exec "$PY" tools/check_script.py ;;
