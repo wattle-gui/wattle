@@ -212,7 +212,7 @@ def read_from_board():
     try:
         design = json.loads(dtext)
     except ValueError as e:
-        sys.exit("the design '%s' on the board is not valid JSON: %s" % (design_name, e))
+        sys.exit("the design '%s' on the board is not a valid design file (bad JSON): %s" % (design_name, e))
     script = boardlink.cat(script_name)
     if script is None and boardlink.cat("demo.py") is not None:        # main.py starts the demo when there is no script of your own
         script_name = "demo.py"

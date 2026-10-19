@@ -5,7 +5,7 @@
 A touch-screen user interface for the ESP32 **"CYD"** (*Cheap Yellow Display*: ESP32, 2.8-inch 320 x 240 ILI9341 display,
 XPT2046 resistive touch) **without writing any drawing or touch code**.
 
-You draw your screens in the **Wattle Editor**, write a short MicroPython script that says what your application *does*, and
+You draw your screens in the **Wattle Editor**, write a short MicroPython script that says what your app *does*, and
 copy both to the board. The Runtime draws the screens, watches the touch panel and calls your functions.
 
 <img src="manual/images/board_front_back.jpg" width="480" alt="the CYD board, front and back">
@@ -35,10 +35,10 @@ keep their own licences: see [THIRD_PARTY_NOTICES.md](THIRD_PARTY_NOTICES.md).
 ## What is where
 
 - `Runtime.py` (and `Runtime.mpy`, the precompiled copy): the program that runs on the board. The other board files next to it are the display and touch drivers, `board_cyd.py`, `main.py` and `wifi_cipher.py`.
-- `Editor/`: the design program.
+- `Editor/`: the Editor, where you draw your designs.
 - `tools/`: the helper scripts that run on your computer (`./wattle` starts them for you).
 - `fonts/`, `hardware/`, `hello_demo/`: the typefaces, the list of supported hardware, and the demo that is put on the board.
-- `tests/`: numbered example programs, which are also the manual's working examples.
+- `tests/`: numbered example apps, which are also the manual's working examples.
 
 ## What you get
 

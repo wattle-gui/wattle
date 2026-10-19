@@ -35,7 +35,7 @@ def main():
     try:
         design = json.load(open(design_path))
     except ValueError as e:
-        sys.exit("%s is not valid JSON: %s" % (design_path, e))
+        sys.exit("%s is not a valid design file (bad JSON): %s" % (design_path, e))
     design_name = os.path.basename(design_path)
 
     print("stopping the board ...")
@@ -43,7 +43,7 @@ def main():
 
     main_py = boardlink.cat("main.py")
     if main_py is None:
-        sys.exit("main.py is not on the board: copy the program files first (see the Quick Guide).")
+        sys.exit("main.py is not on the board: copy the Wattle files first (see the Quick Guide).")
     import re
     m = re.search(r'PROJECT\s*=\s*["\']([^"\']+)["\']', main_py)
     project = (as_name or (m.group(1) if m else "Project_1")) + ".py"

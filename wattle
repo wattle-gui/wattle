@@ -9,8 +9,8 @@ need_install() { if [ ! -x .venv/bin/mpremote ]; then echo "The tools are not in
 
 case "$1" in
   install)  shift; exec ./install.sh "$@" ;;
-  new)      # ./wattle new myproject  -> a folder with a ready-to-run starter (a label and a button)
-            [ -n "$2" ] || { echo "Give the project a name:  ./wattle new myproject"; exit 1; }
+  new)      # ./wattle new myapp  -> a folder with a ready-to-run starter (a label and a button)
+            [ -n "$2" ] || { echo "Give the app a name:  ./wattle new myapp"; exit 1; }
             [ -e "$2" ] && { echo "'$2' already exists; choose another name."; exit 1; }
             mkdir "$2" && cp tests/00.json "$2/$2.json" && cp tests/00.py "$2/$2.py" &&
             echo "Created $2/ with $2.json (the design) and $2.py (the script)." &&
@@ -37,7 +37,12 @@ case "$1" in
                 base="${design%.json}"
                 if [ -f "$base.py" ]; then script="$base.py"
                 elif [ -f "$(dirname "$design")/Project_1.py" ]; then script="$(dirname "$design")/Project_1.py"
-                else echo "There is no script for $(basename "$design"). Write it next to the design, with the same name: $(basename "$base").py"; exit 1; fi
+                else                       # no script named like the design: take the folder's only script, whatever its name
+                    dd="$(dirname "$design")"; np=$(ls "$dd"/*.py 2>/dev/null | wc -l)
+                    if [ "$np" = 1 ]; then script=$(ls "$dd"/*.py)
+                    elif [ "$np" = 0 ]; then echo "There is no script next to $(basename "$design"). Save your script (a .py file) in the same folder."; exit 1
+                    else echo "There are $np scripts next to $(basename "$design"), and none is named $(basename "$base").py. Give the one you want the design's name, or name both files:  ./wattle deploy $design /path/to/script.py"; exit 1; fi
+                fi
                 set -- "$design" "$script"
             fi
             exec "$PY" tools/deploy.py "$@" ;;
@@ -54,8 +59,8 @@ cat <<'TXT'
 Wattle -- usage:  ./wattle <command>
 
   install [--yes]    guided installation: tools, board port, MicroPython, program files, demo
-  new NAME           make a starter project in the folder NAME (a label and a button)
-  deploy NAME        copy the project NAME (a folder, or a design NAME.json with its script NAME.py) to the board, check it, and start it
+  new NAME           make a starter app in the folder NAME (a label and a button)
+  deploy NAME        copy the app NAME (a folder, or a design NAME.json with its script NAME.py) to the board, check it, and start it
   deploy DESIGN.json SCRIPT.py     the same for two files with any names
   check              check the design and script that are on the board; explains mistakes
   test N             load test number N (a ready-made example) onto the board

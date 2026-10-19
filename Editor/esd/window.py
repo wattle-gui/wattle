@@ -722,7 +722,7 @@ QFrame#esdPanel QScrollArea > QWidget {{
 
     def set_projects_folder(self) -> None:
         start = self._projects_dir() or self._default_file_dir()
-        chosen = QFileDialog.getExistingDirectory(self, "Choose the folder for your projects", start)
+        chosen = QFileDialog.getExistingDirectory(self, "Choose the folder for your designs and scripts", start)
         if not chosen:
             return
         try:
@@ -1433,7 +1433,7 @@ QFrame#esdPanel QScrollArea > QWidget {{
                 elif key == "update_ms":
                     ed.setToolTip(
                         "Redraw at most this often, in milliseconds. "
-                        "Very small values can make the rest of the program slow."
+                        "Very small values can make the rest of the app slow."
                     )
                 ed.setValue(int(val if val is not None else 0))
                 self._compact(ed)

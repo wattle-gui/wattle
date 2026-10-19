@@ -9,11 +9,11 @@ _DEFAULT = "Select a component to see what it does.\nDrag it onto the screen to 
 COMPONENTS = {
     "design": (
         "The design holds the screens and the target board. "
-        "Name, purpose, and version describe the program. "
+        "Name, purpose, and version describe the app. "
         "The target fields are filled in by the board picker."
     ),
     "screen": (
-        "One screen of the program. Width and height are the size the device draws. "
+        "One screen of the app. Width and height are the size the device draws. "
         "Orientation follows that size."
     ),
     "button": (
@@ -117,8 +117,8 @@ PROPERTIES = {
     "points": "How many values are kept across the width. The oldest drops off the left.",
     "grid": "When on, three faint horizontal lines are drawn.",
     "title": "Words at the top left. Leave this empty for none.",
-    "app.name": "Name of the program.",
-    "app.purpose": "What the program is for.",
+    "app.name": "Name of the app.",
+    "app.purpose": "What the app is for.",
     "app.version": "Version text, such as 1.0.",
     "app.version_date": "The date of this version.",
     "width": "Screen width in pixels.",
@@ -156,7 +156,7 @@ BY_TYPE = {
         "title": "Words at the top left. Leave this empty for none.",
         "update_ms": (
             "Shortest time in milliseconds between two redraws. 0 redraws on every value. "
-            "Very small values can make the rest of the program slow."
+            "Very small values can make the rest of the app slow."
         ),
         "font_size": "Size of the title. Default, or 8, 16, or 24.",
     },
@@ -176,7 +176,7 @@ BY_TYPE = {
         "show_values": "When on, each number is printed above its bar.",
         "update_ms": (
             "Shortest time in milliseconds between two redraws. 0 redraws on every change. "
-            "Very small values can make the rest of the program slow."
+            "Very small values can make the rest of the app slow."
         ),
         "font_size": "Size of the title, the text under the bars, and the numbers. Default, or 8, 16, or 24.",
     },

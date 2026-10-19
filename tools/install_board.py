@@ -70,4 +70,4 @@ boardlink.restart()
 if os.environ.get("WATTLE_FROM_INSTALLER"):
     print("Done. The board has restarted.")
 else:
-    print("Done. The board has restarted. Next: ./wattle deploy yourproject  (or: python3 tools/deploy.py yourdesign.json Project_1.py)")
+    print("Done. The board has restarted. Next: ./wattle deploy yourapp  (or: python3 tools/deploy.py yourdesign.json Project_1.py)")
