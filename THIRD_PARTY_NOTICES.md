@@ -10,18 +10,17 @@ if you notice a mistake or a missing credit, please say so and it will be correc
 | [MicroPython](https://micropython.org) (firmware, `mpy-cross`, `mpremote`) | the language on the board; copying files; the precompiled `.mpy` files | MIT |
 | [esptool](https://github.com/espressif/esptool) | flashing the firmware | GPL-2.0-or-later |
 | [Pillow](https://python-pillow.org) | converting pictures and fonts on the computer | HPND (Pillow licence) |
-| [PyQt6](https://www.riverbankcomputing.com/software/pyqt/) | the hardware picker window (`picker.py`) and the experimental screen viewer (`mirror_viewer.py`) only | GPL-3.0 or a commercial licence |
-| [pyserial](https://github.com/pyserial/pyserial) | reading the board's serial port in the experimental screen viewer (`mirror_viewer.py`) only | BSD-3-Clause |
+| [PyQt6](https://www.riverbankcomputing.com/software/pyqt/) | the Wattle Editor and the hardware picker window | GPL-3.0 or a commercial licence |
+| [pyserial](https://github.com/pyserial/pyserial) | stopping and restarting the board over its serial port | BSD-3-Clause |
 
-These are installed separately (`pip install ...`); nothing of them is copied into this package. Because PyQt6 is GPL, `picker.py` and `mirror_viewer.py`
-are only conveniences: the system works without it (the hardware block of a design can be written by hand). A possible later change
-is the LGPL alternative PySide6.
+These are installed separately by the installer (`pip install ...`); nothing of them is copied into this package. A possible later change
+is the LGPL alternative PySide6 for the Editor.
 
 ## Source files in the package that were not written for this project
 
 | File | What is known |
 |---|---|
-| `ili9341.py` (display driver) | **Author and licence not recorded.** It closely resembles the open-source *micropython-ili9341* driver (MIT licence) but this has not been verified. It was modified for this project (larger transfer blocks). To be checked before the first release; if it cannot be traced it will be replaced by a driver written for this project. |
+| `ili9341.py` (display driver) | Based on [micropython-ili9341](https://github.com/rdagger/micropython-ili9341) by rdagger, **MIT licence**, "Copyright (c) 2020" (the licence text is reproduced below). Modified for this project: one reusable transfer buffer and larger blocks, so that redrawing does not fragment the board's memory. |
 | `touch_xpt2046.py` (touch driver) | a short driver (about 50 lines) for the XPT2046 chip, written in the same session as the Runtime; no copied source is known, but this has not been formally verified. |
 
 ## Fonts
@@ -43,3 +42,29 @@ Renaming the entries (for example to "Liberation Sans") is planned.
 
 - The 8x8 built-in font comes from the MicroPython `framebuf` module (MIT).
 - The sample pictures and designs in `designs/` are test material written for this project.
+
+## Licence text of micropython-ili9341 (for `ili9341.py`)
+
+```
+MIT License
+
+Copyright (c) 2020
+
+Permission is hereby granted, free of charge, to any person obtaining a copy
+of this software and associated documentation files (the "Software"), to deal
+in the Software without restriction, including without limitation the rights
+to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
+copies of the Software, and to permit persons to whom the Software is
+furnished to do so, subject to the following conditions:
+
+The above copyright notice and this permission notice shall be included in all
+copies or substantial portions of the Software.
+
+THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
+IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
+FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
+AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
+LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
+OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
+SOFTWARE.
+```
