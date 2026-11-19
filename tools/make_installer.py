@@ -6,7 +6,8 @@
 #   python3 make_installer.py --check    only say whether the files inside are up to date (exit code 1 if not)
 #
 # RUN IT AFTER ANY CHANGE to Runtime.py / ili9341.py (first make the new .mpy files with make_mpy.py or mpy-cross), board_cyd.py,
-# touch_xpt2046.py, main.py, wifi_cipher.py, calibrate_touch.py, the font or hello_demo/ -- and commit install_wattle.py again.
+# touch_xpt2046.py, main.py, wifi_cipher.py, calibrate_touch.py, the font or hello_demo/, or anything in browser/ (Runtime.py, main.py, wnet.py,
+# webui.html: regenerate it with tools/make_webui.py first; examples/hello) -- and commit install_wattle.py again.
 import base64
 import os
 import re
@@ -18,6 +19,7 @@ sys.path.insert(0, HERE)
 import install_wattle as iw
 
 SOURCES = list(iw.PROGRAMS if hasattr(iw, "PROGRAMS") else iw.PROGRAM_FILES) + [iw.FONT] + list(iw.OPTIONAL_FILES) + [s for s, _ in iw.DEMO]
+SOURCES += [s for s, _ in iw.BROWSER_FILES + iw.BROWSER_DEMO if s not in SOURCES]       # the browser flavour: wattle install --browser works from this one file too
 BEGIN = "# BEGIN EMBEDDED FILES (made by make_installer.py: do not edit by hand)\n"
 END = "# END EMBEDDED FILES\n"
 

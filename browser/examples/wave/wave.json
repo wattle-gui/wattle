@@ -1,0 +1,212 @@
+{
+  "app": {
+    "name": "Wave",
+    "purpose": "steady load for measuring current",
+    "version": "1.0",
+    "version_date": ""
+  },
+  "target": {
+    "model": "Browser (any ESP32 with Wi-Fi, no screen needed)",
+    "processor": "ESP32",
+    "board": "board_browser",
+    "display": {
+      "model": "Browser",
+      "width": 360,
+      "height": 640,
+      "interface": "Wi-Fi (web page)",
+      "driver": "(none: the browser draws)"
+    },
+    "touch": {
+      "model": "Browser",
+      "type": "finger or mouse",
+      "interface": "Wi-Fi (web page)",
+      "driver": "(none: the browser sends the taps)"
+    },
+    "fonts": [
+      {
+        "name": "default",
+        "sizes": [
+          8,
+          16,
+          24
+        ],
+        "styles": [
+          "bold",
+          "italic"
+        ]
+      },
+      {
+        "name": "Arial",
+        "sizes": [
+          10,
+          12,
+          14,
+          16,
+          20,
+          24,
+          32
+        ],
+        "styles": [
+          "bold",
+          "italic"
+        ]
+      },
+      {
+        "name": "Times New Roman",
+        "sizes": [
+          10,
+          12,
+          14,
+          16,
+          20,
+          24,
+          32
+        ],
+        "styles": [
+          "bold",
+          "italic"
+        ]
+      },
+      {
+        "name": "Comic Sans MS",
+        "sizes": [
+          10,
+          12,
+          14,
+          16,
+          20,
+          24,
+          32
+        ],
+        "styles": [
+          "bold",
+          "italic"
+        ]
+      },
+      {
+        "name": "DejaVu Sans",
+        "sizes": [
+          10,
+          12,
+          14,
+          16,
+          20,
+          24,
+          32
+        ],
+        "styles": [
+          "bold",
+          "italic"
+        ]
+      },
+      {
+        "name": "DejaVu Sans Mono",
+        "sizes": [
+          10,
+          12,
+          14,
+          16,
+          20,
+          24,
+          32
+        ],
+        "styles": [
+          "bold",
+          "italic"
+        ]
+      },
+      {
+        "name": "DejaVu Serif",
+        "sizes": [
+          10,
+          12,
+          14,
+          16,
+          20,
+          24,
+          32
+        ],
+        "styles": [
+          "bold",
+          "italic"
+        ]
+      }
+    ]
+  },
+  "screens": [
+    {
+      "id": "main",
+      "orientation": "portrait",
+      "width": 360,
+      "height": 640,
+      "background": "black",
+      "widgets": [
+        {
+          "widget": "label",
+          "visible": true,
+          "enabled": true,
+          "background": "black",
+          "color": "white",
+          "border": {
+            "color": "white",
+            "width": 0
+          },
+          "alignment": "center",
+          "events": [],
+          "font_type": "default",
+          "font_size": "default",
+          "bold": false,
+          "italic": false,
+          "id": "title1",
+          "x": 10,
+          "y": 30,
+          "w": 340,
+          "h": 40,
+          "text": "ESP32 live wave"
+        },
+        {
+          "widget": "waveform",
+          "id": "wave1",
+          "x": 10,
+          "y": 90,
+          "w": 340,
+          "h": 300,
+          "visible": true,
+          "background": "black",
+          "color": "green",
+          "min": 0,
+          "max": 100,
+          "points": 60,
+          "style": "line",
+          "grid": true,
+          "title": "Live wave",
+          "update_ms": 50,
+          "font_size": "default"
+        },
+        {
+          "widget": "label",
+          "visible": true,
+          "enabled": true,
+          "background": "black",
+          "color": "yellow",
+          "border": {
+            "color": "white",
+            "width": 0
+          },
+          "alignment": "center",
+          "events": [],
+          "font_type": "default",
+          "font_size": "default",
+          "bold": false,
+          "italic": false,
+          "id": "info1",
+          "x": 10,
+          "y": 410,
+          "w": 340,
+          "h": 60,
+          "text": "..."
+        }
+      ]
+    }
+  ]
+}

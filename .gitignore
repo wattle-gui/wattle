@@ -27,3 +27,6 @@ wattle.port
 # generated manuals (web pages, PDFs, videos): rebuilt by manual/make_manuals.py; shipped as a release file, not kept in git
 manual/books/
 manual/images/editor_storyboard_trial.png
+/images/
+manual/books_windows/
+manual/books_linux/

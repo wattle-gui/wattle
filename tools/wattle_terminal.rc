@@ -1,0 +1,3 @@
+# wattle_terminal.rc -- used by the "Wattle Terminal" icon: an ordinary terminal that also finds the  wattle  command (so  wattle deploy hello  works, without ./ in front).
+[ -f "$HOME/.bashrc" ] && . "$HOME/.bashrc"
+export PATH="$(cd "$(dirname "${BASH_SOURCE[0]}")/.." && pwd):$PATH"

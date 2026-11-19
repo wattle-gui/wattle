@@ -144,7 +144,7 @@
             "color": "black",
             "width": 0
           },
-          "text": "Enter PIN 1234",
+          "text": "Enter password 1234",
           "alignment": "center",
           "font_type": "default",
           "font_size": 16,
@@ -166,7 +166,7 @@
             "color": "black",
             "width": 1
           },
-          "text": "PIN",
+          "text": "Password",
           "alignment": "center",
           "accepts_input": false,
           "events": [

@@ -1,29 +1,24 @@
 # Wattle
 
-**Version 0.9** (first public release, pre-1.0)
+**Version 0.10**
 
-A touch-screen user interface for the ESP32 **"CYD"** (*Cheap Yellow Display*: ESP32, 2.8-inch 320 x 240 ILI9341 display,
-XPT2046 resistive touch) **without writing any drawing or touch code**.
+**Touch-screen apps for the ESP32: you draw them, you do not program them.**
 
-You draw your screens in the **Wattle Editor**, write a short MicroPython script that says what your app *does*, and
-copy both to the board. The Runtime draws the screens, watches the touch panel and calls your functions.
+## START HERE: read the manual
 
-<img src="manual/images/board_front_back.jpg" width="480" alt="the CYD board, front and back">
+**Download the manual for your computer, and follow it from the first page.** It takes you from the download to your first app, one step at a time.
 
-## Install it (Linux)
+- **[Manual for Windows](https://github.com/wattle-gui/wattle/releases/latest/download/Wattle_manual_windows_0.10.zip)** (unpack it, then open `getting_started.html`)
+- **[Manual for Linux](https://github.com/wattle-gui/wattle/releases/latest/download/Wattle_manual_linux_0.10.zip)** (unpack it, then open `getting_started.html`)
 
-1. Plug the board into a USB port. It needs MicroPython (the installer offers to put it there if it is missing).
-2. Go to the **[Releases page](https://github.com/wattle-gui/wattle/releases/latest)** and download **wattle_0.9_all.deb**.
-3. Double-click it, click **Run anyway**, **Install**, enter your Linux password, then click the blue **Open** button.
-4. Wait for **ALL DONE**. The board shows a small demo. A **Wattle Editor** icon appears on your Desktop.
+The manual's first chapter explains what Wattle is, and chapter 2 installs it. You do not need anything else from this page.
 
-The manual **Getting Started** explains every step with pictures. It is on the Releases page too (**Wattle_manuals_0.9.zip**: unpack it
-and open `index.html`; the manuals with their videos play in your browser).
+> **What Wattle supports today:** the **CYD** (*Cheap Yellow Display*: an ESP32 with its own 2.8-inch touch screen) and the **browser version** (any ESP32 with Wi-Fi, with a phone, tablet or computer as its screen).
+> **Planned, with no date yet:** two ESP32-S3 touch-screen boards: a 2.8-inch ESP32-S3 display with capacitive touch, and the Waveshare ESP32-S3-Touch-LCD-2.8.
 
-**Which systems?** Tested on **Zorin OS 18**. The package should install on other Debian-based systems that use the same package
-tools (Ubuntu 22.04 or newer, Linux Mint 21 or newer, Pop!_OS 22.04 or newer, Debian 12 or newer), but we have not tried them yet.
-On other Linux systems, download `Wattle-0.9.zip` from the Releases page, unpack it, and run `./install.sh` in the unpacked folder.
-Windows 10: download `Wattle-Setup-0.9.exe` from the Releases page and double-click it (see the manual, *Installation on Windows*).
+## What it is
+
+You draw your screens in the **Wattle Editor**, write a short MicroPython script that says what your app *does*, and put both on the ESP32. Wattle draws the screens, watches the touches and calls your functions. You write no drawing code and no touch code.
 
 ## Free to use
 
@@ -53,7 +48,7 @@ condition is that the copyright notice stays with it (that is how everyone who c
 
 ## The manuals
 
-Three manuals, as web pages with pictures and videos (download **Wattle_manuals_0.9.zip** from the Releases page):
+Each manual download holds three manuals, as web pages with pictures:
 
 - **Getting Started**: everything needed to install Wattle, design your screens in the Editor and write your script.
 - **Reference Manual**: every property of every widget, the design file in full, the tools, the hardware, and the test results.
@@ -63,7 +58,7 @@ The technical reference for the internals is `SYSTEM_README.md`.
 
 ## What comes next
 
-This is the first release (version 0.9). It is made for the CYD 2.8" (ESP32, ILI9341 display, XPT2046 touch). Windows 10 is supported from the first release by a Setup program. How it develops further depends on whether people find it useful.
+Version 0.10 works with the CYD and with the browser version, on **Linux** (a package, `wattle_0.10_all.deb`) and **Windows 10** (a Setup program, `Wattle-Setup-0.10.exe`). The two ESP32-S3 touch-screen boards above are planned. The manual tells you everything about installing.
 
 ## Credits
 

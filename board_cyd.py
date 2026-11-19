@@ -45,6 +45,16 @@ def make_display(width, height):
     return display
 
 
+def rotate(display, touch, width, height):
+    """Turns the display and the touch to the shape of a screen: portrait (higher than wide) or landscape. Used when the app switches
+    to a screen of the other orientation."""
+    portrait = height > width
+    display.set_rotation(PORTRAIT_ROTATION if portrait else 90, width, height)
+    touch.cal = TOUCH_CAL_PORTRAIT if portrait else TOUCH_CAL
+    touch.width = width
+    touch.height = height
+
+
 def make_touch(width, height):
     """Returns a touch object with pressed() and read() -> (x, y) | None."""
 

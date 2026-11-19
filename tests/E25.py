@@ -1,9 +1,11 @@
-# E25 -- a design made in the Editor with the four new widgets. The script connects them:
-# the stepper sets the gauge and adds a value to the waveform.
+# MultiScreen: two screens, each with one button. Tapping a button shows the other screen.
+# screen1 and screen2 may have different orientations (landscape and portrait): the display turns to the shape of the screen it shows.
 from Runtime import *
 
-def stepper1_changed(value):
-    gauge1.value = value
-    waveform1.add(value)
+def button1_click():             # the button on screen1
+    Screen("screen2")
+
+def button2_click():             # the button on screen2
+    Screen("screen1")
 
 run()

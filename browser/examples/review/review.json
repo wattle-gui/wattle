@@ -1,0 +1,390 @@
+{
+  "app": {
+    "name": "Editor review",
+    "purpose": "Every widget once, in Palette order, for reviewing the Inspector.",
+    "version": "1.0",
+    "version_date": ""
+  },
+  "target": {
+    "model": "Browser (any ESP32 with Wi-Fi, no screen needed)",
+    "processor": "ESP32",
+    "board": "board_browser",
+    "display": {
+      "model": "Browser",
+      "width": 360,
+      "height": 640,
+      "interface": "Wi-Fi (web page)",
+      "driver": "(none: the browser draws)"
+    },
+    "touch": {
+      "model": "Browser",
+      "type": "finger or mouse",
+      "interface": "Wi-Fi (web page)",
+      "driver": "(none: the browser sends the taps)"
+    },
+    "fonts": [
+      {
+        "name": "default",
+        "sizes": [
+          8,
+          16,
+          24
+        ],
+        "styles": [
+          "bold",
+          "italic"
+        ]
+      }
+    ]
+  },
+  "screens": [
+    {
+      "id": "main",
+      "orientation": "landscape",
+      "width": 660,
+      "height": 640,
+      "background": "black",
+      "widgets": [
+        {
+          "widget": "barchart",
+          "id": "barchart1",
+          "x": 10,
+          "y": 10,
+          "w": 120,
+          "h": 120,
+          "visible": true,
+          "background": "black",
+          "color": "green",
+          "min": 0,
+          "max": 100,
+          "bars": 5,
+          "grid": true,
+          "title": "",
+          "labels": [],
+          "values": [],
+          "show_values": false,
+          "update_ms": 0,
+          "font_size": "default"
+        },
+        {
+          "widget": "button",
+          "id": "button1",
+          "x": 170,
+          "y": 10,
+          "w": 120,
+          "h": 40,
+          "visible": true,
+          "enabled": true,
+          "background": "green",
+          "color": "white",
+          "border": {
+            "color": "black",
+            "width": 1
+          },
+          "text": "Button",
+          "alignment": "center",
+          "accepts_input": false,
+          "events": [],
+          "font_type": "default",
+          "font_size": "default",
+          "bold": false,
+          "italic": false
+        },
+        {
+          "widget": "checkbox",
+          "id": "checkbox1",
+          "x": 330,
+          "y": 10,
+          "w": 120,
+          "h": 24,
+          "visible": true,
+          "enabled": true,
+          "background": "transparent",
+          "color": "white",
+          "text": "Checkbox",
+          "value": false,
+          "events": [],
+          "font_type": "default",
+          "font_size": "default",
+          "bold": false,
+          "italic": false
+        },
+        {
+          "widget": "choice",
+          "id": "choice1",
+          "x": 490,
+          "y": 10,
+          "w": 140,
+          "h": 84,
+          "visible": true,
+          "enabled": true,
+          "style": "radio",
+          "orientation": "vertical",
+          "items": [
+            "Option 1",
+            "Option 2",
+            "Option 3"
+          ],
+          "selected": 0,
+          "background": "black",
+          "color": "white",
+          "border": {
+            "color": "gray",
+            "width": 1
+          },
+          "events": [],
+          "font_type": "default",
+          "font_size": "default",
+          "bold": false,
+          "italic": false
+        },
+        {
+          "widget": "gauge",
+          "id": "gauge1",
+          "x": 10,
+          "y": 165,
+          "w": 120,
+          "h": 120,
+          "visible": true,
+          "background": "gray",
+          "color": "red",
+          "min": 0,
+          "max": 100,
+          "value": 0,
+          "text": "",
+          "show_value": true,
+          "ticks": 10,
+          "diameter": 0,
+          "sweep": 270,
+          "show_ticks": true,
+          "font_size": "default"
+        },
+        {
+          "widget": "image",
+          "id": "image1",
+          "x": 170,
+          "y": 165,
+          "w": 80,
+          "h": 80,
+          "visible": true,
+          "enabled": true,
+          "background": "gray",
+          "source": "",
+          "scale": "fit",
+          "transparent": true,
+          "events": []
+        },
+        {
+          "widget": "keyboard",
+          "id": "keyboard1",
+          "x": 330,
+          "y": 165,
+          "w": 150,
+          "h": 112,
+          "visible": true,
+          "enabled": true,
+          "background": "gray",
+          "color": "black",
+          "border": {
+            "color": "black",
+            "width": 1
+          },
+          "layout": "full",
+          "target": "",
+          "secret": false,
+          "max_length": 0,
+          "input_event": false,
+          "hide_on_enter": true,
+          "linefeed": false,
+          "events": []
+        },
+        {
+          "widget": "label",
+          "id": "label1",
+          "x": 490,
+          "y": 165,
+          "w": 96,
+          "h": 24,
+          "visible": true,
+          "enabled": true,
+          "background": "black",
+          "color": "white",
+          "border": {
+            "color": "black",
+            "width": 0
+          },
+          "text": "Label",
+          "alignment": "left",
+          "font_type": "default",
+          "font_size": "default",
+          "bold": false,
+          "italic": false
+        },
+        {
+          "widget": "line",
+          "id": "line1",
+          "x": 10,
+          "y": 320,
+          "w": 80,
+          "h": 0,
+          "visible": true,
+          "color": "white",
+          "thickness": 2
+        },
+        {
+          "widget": "memo",
+          "id": "memo1",
+          "x": 170,
+          "y": 320,
+          "w": 150,
+          "h": 80,
+          "visible": true,
+          "enabled": true,
+          "background": "white",
+          "color": "black",
+          "border": {
+            "color": "black",
+            "width": 1
+          },
+          "text": "Memo",
+          "alignment": "left",
+          "accepts_input": true,
+          "events": [],
+          "font_type": "default",
+          "font_size": "default",
+          "bold": false,
+          "italic": false
+        },
+        {
+          "widget": "progressbar",
+          "id": "progressbar1",
+          "x": 330,
+          "y": 320,
+          "w": 150,
+          "h": 16,
+          "visible": true,
+          "background": "gray",
+          "color": "green",
+          "max": 100,
+          "value": 40
+        },
+        {
+          "widget": "slider",
+          "id": "slider1",
+          "x": 490,
+          "y": 320,
+          "w": 150,
+          "h": 24,
+          "visible": true,
+          "enabled": true,
+          "background": "gray",
+          "color": "green",
+          "min": 0,
+          "max": 100,
+          "value": 50,
+          "step": 1,
+          "events": []
+        },
+        {
+          "widget": "stepper",
+          "id": "stepper1",
+          "x": 10,
+          "y": 475,
+          "w": 120,
+          "h": 120,
+          "visible": true,
+          "enabled": true,
+          "background": "transparent",
+          "color": "green",
+          "min": 0,
+          "max": 100,
+          "value": 0,
+          "step": 1,
+          "events": [
+            "changed"
+          ],
+          "font_type": "default",
+          "font_size": "default",
+          "bold": false,
+          "italic": false
+        },
+        {
+          "widget": "switch",
+          "id": "switch1",
+          "x": 170,
+          "y": 475,
+          "w": 140,
+          "h": 28,
+          "visible": true,
+          "enabled": true,
+          "background": "transparent",
+          "color": "white",
+          "text": "Switch",
+          "value": false,
+          "events": [],
+          "font_type": "default",
+          "font_size": "default",
+          "bold": false,
+          "italic": false
+        },
+        {
+          "widget": "tree",
+          "id": "tree1",
+          "x": 330,
+          "y": 475,
+          "w": 150,
+          "h": 120,
+          "visible": true,
+          "enabled": true,
+          "items": [
+            {
+              "text": "Group",
+              "items": [
+                {
+                  "text": "Item 1"
+                },
+                {
+                  "text": "Item 2"
+                }
+              ]
+            },
+            {
+              "text": "Item 3"
+            }
+          ],
+          "selected": "",
+          "background": "black",
+          "color": "white",
+          "border": {
+            "color": "gray",
+            "width": 1
+          },
+          "events": [],
+          "font_type": "default",
+          "font_size": "default",
+          "bold": false,
+          "italic": false
+        },
+        {
+          "widget": "waveform",
+          "id": "waveform1",
+          "x": 490,
+          "y": 475,
+          "w": 120,
+          "h": 120,
+          "visible": true,
+          "background": "black",
+          "color": "green",
+          "min": 0,
+          "max": 100,
+          "points": 60,
+          "style": "line",
+          "grid": true,
+          "title": "",
+          "update_ms": 50,
+          "font_size": "default"
+        }
+      ]
+    }
+  ]
+}

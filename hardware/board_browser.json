@@ -1,0 +1,20 @@
+{
+ "kind": "board",
+ "name": "Browser (any ESP32 with Wi-Fi, no screen needed)",
+ "file": "main.py",
+ "processor": "ESP32",
+ "firmware": "MicroPython (standard)",
+ "display": "Browser",
+ "touch": "Browser",
+ "fonts": [
+  "default",
+  "Arial",
+  "Times New Roman",
+  "Comic Sans MS",
+  "DejaVu Sans",
+  "DejaVu Sans Mono",
+  "DejaVu Serif"
+ ],
+ "width": 360,
+ "height": 640
+}

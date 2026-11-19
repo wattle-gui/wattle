@@ -169,7 +169,7 @@
           "visible": "true | false",
           "enabled": "true | false (false: ignores taps)",
           "background": "colour name (black, white, red, green, blue, yellow, cyan, magenta, gray) or #rrggbb",
-          "source": "path of the picture on the PC (make_images.py converts it for the board)",
+          "source": "the picture on the PC: a short name such as pictures/dog.jpg (the Editor copies the picture next to the design), or a full path (make_images.py converts it for the board)",
           "scale": "fit | fill | stretch",
           "transparent": "true | false (true: screen colour shows around the picture)",
           "events": "list; allowed: click, longpress"

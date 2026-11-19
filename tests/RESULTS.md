@@ -41,6 +41,9 @@ Re-run the whole list when you port to another board (`python3 tests/run_test.py
 | 22 (regression) | tree menu after the touch rule change and the scroll fix; Pick WiFi opens the branch | PASS (2026-10-06) |
 | power-up | board started from a power bank/charger with no computer: project runs by itself | PASS (2026-10-06) |
 | E23 | PORTRAIT screen 240x320 built in the Editor (PORT1.json): picture upright with USB at the bottom (PORTRAIT_ROTATION=180), four corner buttons + slider hit correctly after calibrate_touch.py | PASS (2026-10-06) |
+| E24 | TWO screens, TWO orientations (screen1 landscape 320x240, screen2 portrait 240x320): Screen() turns display and touch (ili9341.set_rotation, board_cyd.rotate); four corner buttons on each screen + a switch button | PASS (2026-11-02, Bob: corners right in both orientations, repeated switches fine)
+| E25 | Bob's own design from the Editor (MultiScreen: screen1 landscape + screen2 portrait, one button each, deployed with ./wattle deploy) | PASS (2026-11-01, Bob: "AND IT WORKED")
+| REGRESSION 2026-11-02 | tests 01, 03, 11 (now with the word "password") and E23 re-run on the CYD (MicroPython 1.24.0) with the Runtime that turns the display per screen | all PASS: Runtime change broke nothing
 | 23 | errors shown on the screen: handler, periodic task; title centred, 12 px mono text, breaks at spaces only, all white | PASS (2026-10-07) |
 | 24 | message(): one, two and three buttons, long wrapped text, box removed and screen restored | PASS (2026-10-07) |
 | 23 | (final wording) error screen: place of the error in words, line number at the end of a syntax error message, hint to run check_script.py | PASS (2026-10-07) |

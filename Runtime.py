@@ -1504,7 +1504,7 @@ def Screen(screen_id):
     widgets (with their current properties). Widgets on other screens keep
     whatever you last set."""
 
-    global screen, _zorder
+    global screen, _zorder, WIDTH, HEIGHT
 
     if screen_id not in screens:
         raise ValueError("no screen: " + str(screen_id))
@@ -1519,6 +1519,13 @@ def Screen(screen_id):
 
     screen = screens[screen_id]
     _zorder = list(screen["widgets"])
+
+    w, h = screen.get("width", WIDTH), screen.get("height", HEIGHT)
+    if (w, h) != (WIDTH, HEIGHT):         # a screen of the other orientation: turn the display and the touch first
+        _turn = getattr(board, "rotate", None)
+        if _turn is not None:
+            _turn(display, touch, w, h)
+        WIDTH, HEIGHT = w, h
 
     display.clear(colour(screen.get("background", "black")))
 
@@ -2269,7 +2276,7 @@ def get_event():
 
 
 def wait_event(timeout_ms=None, poll_ms=50):
-    """Blocks, light-sleeping poll_ms between checks, until an event is
+    """Blocks, sleeping poll_ms between checks (a light sleep only if LOW_POWER is True), until an event is
     queued or timeout_ms elapses (returns None on timeout). No timeout =
     wait forever. poll_ms trades responsiveness for power: longer =
     lower average current, shorter = snappier clicks."""
@@ -2724,11 +2731,22 @@ def run(module=None, poll_ms=50):
     poll_ms = how often the touch screen is checked (default 50 ms; 150 ms could miss a quick tap). A longer
     interval saves power (especially with LOW_POWER) but taps are noticed later."""
 
+    global _module
+    _module = module
+
     print("Runtime: running")
 
     _prealloc_buffers()
 
     set_poll_ms(poll_ms)
+
+    start = _find_handler("on_start", module)          # optional User-Function: runs once, here, before the first event
+    if start is not None:
+        try:
+            start()
+        except Exception as e:
+            _error_screen(e, "in on_start")
+            _restore_screen()
 
     while True:
 
@@ -2749,5 +2767,22 @@ def run(module=None, poll_ms=50):
             _restore_screen()
 
 
+_module = None
+
+
+def quit():
+    """Ends the app: calls the script's on_exit() (if it has one), blanks the screen and stops at the prompt.
+    Call it from a User-Function, for example a Quit button's button1_click()."""
+    h = _find_handler("on_exit", _module)
+    if h is not None:
+        try:
+            h()
+        except Exception as e:
+            _error_screen(e, "in on_exit")
+    backlight(0)
+    print("Runtime: the app has ended")
+    raise KeyboardInterrupt        # not an Exception, so run() lets it through
+
+
 # What "from Runtime import *" hands to the USER script: widgets by name.
-__all__ = list(widgets) + ["Screen", "every", "stop", "set_poll_ms", "set_longpress_ms", "message", "save", "load", "fatal", "backlight", "screensaver", "power_button", "wifi", "wifi_ip", "wifi_off", "ntp", "timezone", "now", "locality", "run", "get_event", "wait_event", "widgets", "widget_objs"]
+__all__ = list(widgets) + ["Screen", "every", "stop", "set_poll_ms", "set_longpress_ms", "message", "save", "load", "fatal", "backlight", "screensaver", "power_button", "wifi", "wifi_ip", "wifi_off", "ntp", "timezone", "now", "locality", "run", "quit", "get_event", "wait_event", "widgets", "widget_objs"]

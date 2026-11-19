@@ -22,16 +22,36 @@ def colour(v):
         return tuple(int(v[i:i + 2], 16) for i in (1, 3, 5))
     return COLOURS.get(v, (0, 0, 0))
 
+if len(sys.argv) < 2:
+    sys.exit("Usage:   wattle images your_design.json upload     (on Linux: python3 tools/make_images.py your_design.json upload)")
 design = json.load(open(sys.argv[1]))
 made = []
 
 
+def _homes():
+    """The folders where a picture is looked for: beside the design, its pictures folder, and the projects folder of Wattle."""
+    design_dir = _os.path.dirname(_os.path.abspath(sys.argv[1]))
+    here = _os.path.dirname(_os.path.dirname(_os.path.abspath(__file__)))
+    return [design_dir, _os.path.join(design_dir, "pictures"), _os.path.join(here, "projects"), _os.path.join(here, "projects", "pictures")]
+
+
 def find_source(path):
-    """A picture path may be absolute, or relative to where you run this program, or relative to the design file's own folder."""
-    if _os.path.isabs(path) or _os.path.exists(path):
+    """A picture path may be absolute, or relative to where you run this program, or relative to the design file's own folder.
+    A design that was made on ANOTHER computer holds that computer's full path: then the picture's file NAME is looked for
+    beside the design (and in its pictures folder, and in the projects folder), so copying the picture next to the design is enough."""
+    if _os.path.exists(path):
         return path
-    beside = _os.path.join(_os.path.dirname(_os.path.abspath(sys.argv[1])), path)
-    return beside if _os.path.exists(beside) else path
+    if not _os.path.isabs(path):
+        for home in _homes():
+            found = _os.path.join(home, path)
+            if _os.path.exists(found):
+                return found
+    name = path.replace("\\", "/").split("/")[-1]
+    for home in _homes():
+        found = _os.path.join(home, name)
+        if _os.path.exists(found):
+            return found
+    return path
 
 
 for scr in design["screens"]:
@@ -39,7 +59,15 @@ for scr in design["screens"]:
         if w.get("widget") != "image":
             continue
         W, H = w["w"], w["h"]
-        im = Image.open(find_source(w["source"])).convert("RGBA")
+        picture = find_source(w["source"])
+        if not _os.path.exists(picture):
+            name = w["source"].replace("\\", "/").split("/")[-1]
+            sys.exit("The picture '%s' (widget %s) is not on this computer.\n"
+                     "It was looked for beside the design (%s) and in its pictures folder.\n"
+                     "What to do: copy the picture file '%s' into that folder, next to the design, and run the command again.\n"
+                     "Or open the design in the Editor and choose the picture again. The app was NOT started."
+                     % (name, w.get("id", "?"), _homes()[0], name))
+        im = Image.open(picture).convert("RGBA")
         # "transparent": true -> the screen's background shows around/through the
         # picture; otherwise the widget's own background colour is used.
         pad = colour(scr.get("background", "black") if w.get("transparent") else w.get("background", "gray"))

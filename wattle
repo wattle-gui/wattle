@@ -8,17 +8,17 @@ if [ -x .venv/bin/python ]; then PY="$HERE/.venv/bin/python"; export PATH="$HERE
 need_install() { if [ ! -x .venv/bin/mpremote ]; then echo "The tools are not installed yet. Run:  ./wattle install"; exit 1; fi; }
 
 case "$1" in
-  install)  shift; exec ./install.sh "$@" ;;
-  new)      # ./wattle new myapp  -> a folder with a ready-to-run starter (a label and a button)
-            [ -n "$2" ] || { echo "Give the app a name:  ./wattle new myapp"; exit 1; }
-            [ -e "$2" ] && { echo "'$2' already exists; choose another name."; exit 1; }
-            mkdir "$2" && cp tests/00.json "$2/$2.json" && cp tests/00.py "$2/$2.py" &&
-            echo "Created $2/ with $2.json (the design) and $2.py (the script)." &&
-            echo "Put it on the board:   ./wattle deploy $2" ;;
+  install)  shift
+            case " $* " in *" --browser "*) exec "$PY" install_wattle.py "$@" ;; esac     # the browser version: any ESP32 with Wi-Fi
+            exec ./install.sh "$@" ;;
+  new)      exec "$PY" wattle.py new "${@:2}" ;;     # ./wattle new myapp  -> a folder with a ready-to-run starter; asks which screen it is for
   deploy)   need_install; shift
             args=()
             for f in "$@"; do          # a name that exists in the folder you typed the command in means that file
-                case "$f" in --*|/*) ;; *) for c in "$f" "$f.json"; do [ -e "$CALLER/$c" ] && { f="$CALLER/$f"; break; }; done ;; esac
+                case "$f" in --*|/*) ;; *)
+                    found=0     # first the folder you typed the command in, then your projects folder
+                    for c in "$f" "$f.json"; do [ -e "$CALLER/$c" ] && { f="$CALLER/$f"; found=1; break; }; done
+                    [ "$found" = 1 ] || for c in "$f" "$f.json"; do [ -e "$HERE/projects/$c" ] && { f="$HERE/projects/$f"; break; }; done ;; esac
                 args+=("$f")
             done
             set -- "${args[@]}"
@@ -32,7 +32,12 @@ case "$1" in
                     design=$(ls "$dir"/*.json)
                 else
                     design="$one"; [ -f "$design" ] || design="$one.json"
-                    [ -f "$design" ] || { echo "I cannot find '$one' (a design, or a folder that holds one)."; echo "Give the full path, for example:  ./wattle deploy /home/you/Documents/dad"; exit 1; }
+                    [ -f "$design" ] || {
+                        echo "I cannot find the design '$one.json' in this folder or in your projects folder ($HERE/projects)."
+                        for d in "$HERE/projects" "$CALLER"; do
+                            [ -f "$d/$one.py" ] && { echo "I did find a script called $one.py in $d, but there is no design with the same name next to it."; echo "Save your design in the Editor under the same name (File, Save As...), in that folder."; break; }
+                        done
+                        echo "Or give the full path of your design, for example:  ./wattle deploy $HERE/projects/$one"; exit 1; }
                 fi
                 base="${design%.json}"
                 if [ -f "$base.py" ]; then script="$base.py"
@@ -52,20 +57,27 @@ case "$1" in
   fonts)    need_install; exec "$PY" tools/make_fonts.py "${@:2}" ;;
   images)   need_install; exec "$PY" tools/make_images.py "${@:2}" ;;
   pick)     need_install; exec "$PY" tools/picker.py "${@:2}" ;;
-  remove)   exec "$PY" tools/remove_wattle.py ;;     # start again from the beginning (asks before it deletes anything)
+  remove)   exec "$PY" tools/remove_wattle.py "${@:2}" ;;     # start again from the beginning (asks before it deletes anything)
+  uninstall) exec "$PY" tools/remove_wattle.py --uninstall ;;  # take Wattle off this computer (asks first)
+  setup)    exec "$PY" wattle.py setup "${@:2}" ;;    # a NEW plain ESP32 in one go: a ready-made image, the Wi-Fi from a phone
+  pin)      exec "$PY" pin_setup.py "${@:2}" ;;       # browser boards: a PIN or password, sealed on the board
   wifi)     exec "$PY" wifi_setup.py "${@:2}" ;;     # needs only Python + pyserial, like install_wattle.py
   help|""|-h|--help)
 cat <<'TXT'
 Wattle -- usage:  ./wattle <command>
 
   install [--yes]    guided installation: tools, board port, MicroPython, program files, demo
+  install --browser [--name NAME] [--yes]   the browser version: a phone, tablet or PC is the screen (the ESP32 needs MicroPython)
+  setup [--yes]      set up a NEW plain ESP32 in one go (it writes a ready-made image; this ERASES the ESP32); the Wi-Fi is typed on your phone
   new NAME           make a starter app in the folder NAME (a label and a button)
   deploy NAME        copy the app NAME (a folder, or a design NAME.json with its script NAME.py) to the board, check it, and start it
   deploy DESIGN.json SCRIPT.py     the same for two files with any names
   check              check the design and script that are on the board; explains mistakes
   test N             load test number N (a ready-made example) onto the board
   reset              restart the board
+  uninstall          remove Wattle from this computer (asks first); your projects and the ESP32 stay
   remove             start again: empty the board, remove Wattle from the computer, restart the installation (asks first)
+  pin                put a PIN or password on a browser board (it is asked once when a page is opened); --remove takes it off
   wifi               put your Wi-Fi name and password on the board (file wifi.dat; nothing is kept on the computer)
   fonts / images / pick    the font converter, picture converter and hardware picker (see chapter 6)
 

@@ -41,6 +41,8 @@ class DesignCanvas(QWidget):
     overlapBlocked = pyqtSignal(str)
     imageDropped = pyqtSignal(str, int, int)
     keyboardFinished = pyqtSignal(str, str)
+    zoomChanged = pyqtSignal(float)
+    zoomWheel = pyqtSignal(int)         # Ctrl + wheel: the wheel's own amount (120 = one notch), + is in
 
     def __init__(self, parent=None) -> None:
         super().__init__(parent)
@@ -59,6 +61,7 @@ class DesignCanvas(QWidget):
         self.setMouseTracking(True)
         self.setAcceptDrops(True)
         self.setContextMenuPolicy(Qt.ContextMenuPolicy.CustomContextMenu)
+        self._zoom = 1.0
         self.setMinimumSize(400, 300)
         self._apply_board_size()
 
@@ -74,12 +77,46 @@ class DesignCanvas(QWidget):
 
     def _apply_board_size(self) -> None:
         sw, sh = self.design.screen_size(self.active_screen_id)
-        self.setMinimumSize(max(400, sw + 80), max(300, sh + 80))
+        z = self._zoom
+        self.setMinimumSize(int(max(400, sw + 80) * z), int(max(300, sh + 80) * z))
+
+    # ---- zoom: everything inside works in design pixels; only painting is scaled and incoming mouse positions are divided ----
+    def zoom(self) -> float:
+        return self._zoom
+
+    def set_zoom(self, z: float) -> None:
+        z = max(0.2, min(4.0, float(z)))
+        if abs(z - self._zoom) < 1e-6:
+            return
+        self._zoom = z
+        self._apply_board_size()
+        self.updateGeometry()
+        self.update()
+        self.zoomChanged.emit(z)
+
+    def _lw(self) -> int:
+        return int(self.width() / self._zoom) + 1
+
+    def _lh(self) -> int:
+        return int(self.height() / self._zoom) + 1
+
+    def _lpt(self, p) -> QPoint:
+        """A position in the widget (pixels on screen) -> a position in design pixels."""
+        return QPoint(int(p.x() / self._zoom), int(p.y() / self._zoom))
+
+    def to_view(self, p) -> QPoint:
+        """A position in design pixels -> a position in the widget (pixels on screen)."""
+        return QPoint(int(p.x() * self._zoom), int(p.y() * self._zoom))
+
+    def fit_zoom_for(self, avail_w: int, avail_h: int) -> float:
+        """The zoom at which the whole screen fits in the given area (never above 100%)."""
+        sw, sh = self.design.screen_size(self.active_screen_id)
+        return max(0.2, min(1.0, (avail_w - 2) / max(400, sw + 80), (avail_h - 2) / max(300, sh + 80)))
 
     def screen_origin(self) -> QPoint:
         sw, sh = self.design.screen_size(self.active_screen_id)
-        x = max(24, (self.width() - sw) // 2)
-        y = max(28, (self.height() - sh) // 2)
+        x = max(24, (self._lw() - sw) // 2)
+        y = max(28, (self._lh() - sh) // 2)
         return QPoint(x, y)
 
     def screen_rect(self) -> QRect:
@@ -125,7 +162,7 @@ class DesignCanvas(QWidget):
         return r
 
     def _handle_rects(self, r: QRect) -> dict[str, QRect]:
-        hs = HANDLE
+        hs = max(HANDLE, int(round(HANDLE / self._zoom)))      # stays easy to grab when zoomed out
         cx = r.center().x()
         cy = r.center().y()
 
@@ -164,10 +201,16 @@ class DesignCanvas(QWidget):
             return f"screen:{self.active_screen_id}", "screen"
         return "design", "board"
 
+    def _sticks_out(self) -> bool:
+        sr = self.screen_rect()
+        for inst in self.design.widgets_on(self.active_screen_id):
+            x, y = int(inst.get("x") or 0), int(inst.get("y") or 0)
+            if x < 0 or y < 0 or x + int(inst.get("w") or 0) > sr.width() or y + int(inst.get("h") or 0) > sr.height():
+                return True
+        return False
+
     def _widget_at(self, pos: QPoint) -> dict | None:
         sr = self.screen_rect()
-        if not sr.contains(pos):
-            return None
         lx = pos.x() - sr.x()
         ly = pos.y() - sr.y()
         for inst in reversed(self.design.widgets_on(self.active_screen_id)):
@@ -213,7 +256,8 @@ class DesignCanvas(QWidget):
     def paintEvent(self, _event) -> None:  # noqa: N802
         c = studio_colors()
         p = QPainter(self)
-        p.fillRect(self.rect(), QColor(c["canvas"]))
+        p.scale(self._zoom, self._zoom)
+        p.fillRect(QRect(0, 0, self._lw(), self._lh()), QColor(c["canvas"]))
 
         sr = self.screen_rect()
         bg = self._screen_bg()
@@ -243,6 +287,8 @@ class DesignCanvas(QWidget):
             p.setPen(pen)
             p.setRenderHint(QPainter.RenderHint.Antialiasing, False)
             g = max(1, int(self.grid_size))
+            while g * self._zoom < 6:          # zoomed out: draw every 2nd, 4th ... line so the grid does not turn into a haze
+                g *= 2
             x = sr.x()
             while x <= sr.right():
                 p.drawLine(x, sr.y(), x, sr.bottom())
@@ -253,6 +299,13 @@ class DesignCanvas(QWidget):
                 y += g
             p.restore()
 
+        if self._kb_session is None and self._sticks_out():
+            p.save()                                # parts outside the screen are shown faintly so they can still be seen and grabbed
+            p.setOpacity(0.35)
+            for inst in self.design.widgets_on(self.active_screen_id):
+                if inst.get("visible", True):
+                    self._paint_widget(p, sr, inst)
+            p.restore()
         p.setClipRect(sr)
         if self._kb_session is not None:
             self._paint_keyboard_call(p, sr)
@@ -1162,6 +1215,8 @@ class DesignCanvas(QWidget):
             )
         p.restore()
 
+    picture_resolver = None          # set by the window: finds a picture given by a short name or by a full path from another computer
+
     def _load_pixmap(self, src: str) -> QPixmap:
         src = str(src or "").strip()
         if not src:
@@ -1169,6 +1224,12 @@ class DesignCanvas(QWidget):
         cached = self._pix_cache.get(src)
         if cached is not None and not cached.isNull():
             return cached
+        real = src
+        if self.picture_resolver is not None and not src.startswith(("file://", "data:", "http://", "https://")):
+            try:
+                real = self.picture_resolver(src)
+            except Exception:
+                real = src
         pm = QPixmap()
         if src.startswith("file://"):
             pm = QPixmap(QUrl(src).toLocalFile() or src)
@@ -1196,7 +1257,7 @@ class DesignCanvas(QWidget):
             except Exception:
                 pm = QPixmap()
         else:
-            pm = QPixmap(src)
+            pm = QPixmap(real)
         if not pm.isNull():
             self._pix_cache[src] = pm
         return pm
@@ -1478,7 +1539,7 @@ class DesignCanvas(QWidget):
     def mousePressEvent(self, event) -> None:  # noqa: N802
         if event.button() != Qt.MouseButton.LeftButton:
             return
-        pos = event.position().toPoint()
+        pos = self._lpt(event.position())
         if self._kb_session is not None:
             _memo_r, keys_r = self._kb_call_rects(self.screen_rect())
             fake = {
@@ -1525,7 +1586,7 @@ class DesignCanvas(QWidget):
         self._drag = None
 
     def mouseMoveEvent(self, event) -> None:  # noqa: N802
-        pos = event.position().toPoint()
+        pos = self._lpt(event.position())
         if self._drag is None:
             _token, mode = self.hit_test(pos)
             cursors = {
@@ -1628,7 +1689,11 @@ class DesignCanvas(QWidget):
             self._drag = None
 
     def wheelEvent(self, event) -> None:  # noqa: N802
-        pos = event.position().toPoint()
+        if event.modifiers() & Qt.KeyboardModifier.ControlModifier:
+            self.zoomWheel.emit(int(event.angleDelta().y()))
+            event.accept()
+            return
+        pos = self._lpt(event.position())
         inst = self._widget_at(pos)
         if inst is not None and str(inst.get("widget") or "") == "memo":
             r = self._widget_canvas_rect(inst)
@@ -1649,7 +1714,7 @@ class DesignCanvas(QWidget):
     def mouseDoubleClickEvent(self, event) -> None:  # noqa: N802
         if self._kb_session is not None:
             return
-        pos = event.position().toPoint()
+        pos = self._lpt(event.position())
         inst = self._widget_at(pos)
         if inst is not None and str(inst.get("widget") or "") == "keyboard":
             self.start_keyboard_call(inst)
@@ -1762,7 +1827,7 @@ class DesignCanvas(QWidget):
 
     def dropEvent(self, event) -> None:  # noqa: N802
         mime = event.mimeData()
-        pos = event.position().toPoint()
+        pos = self._lpt(event.position())
         sr = self.screen_rect()
         if not sr.contains(pos):
             event.ignore()

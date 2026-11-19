@@ -1,0 +1,866 @@
+{
+  "app": {
+    "name": "Design",
+    "purpose": "",
+    "version": "1.0",
+    "version_date": ""
+  },
+  "target": {
+    "model": "",
+    "processor": "",
+    "board": "",
+    "display": {
+      "model": "",
+      "width": 320,
+      "height": 240,
+      "interface": "",
+      "driver": ""
+    },
+    "touch": {
+      "model": "",
+      "type": "",
+      "interface": "",
+      "driver": ""
+    },
+    "fonts": [
+      {
+        "name": "default",
+        "sizes": [
+          8,
+          16,
+          24
+        ],
+        "styles": [
+          "bold",
+          "italic"
+        ]
+      }
+    ]
+  },
+  "screens": [
+    {
+      "id": "Screen_1",
+      "orientation": "landscape",
+      "width": 320,
+      "height": 240,
+      "background": "black",
+      "widgets": [
+        {
+          "widget": "label",
+          "id": "Date1",
+          "x": 128,
+          "y": 16,
+          "w": 188,
+          "h": 24,
+          "visible": true,
+          "enabled": true,
+          "background": "black",
+          "color": "#aa0000",
+          "border": {
+            "color": "black",
+            "width": 0
+          },
+          "text": "Label",
+          "alignment": "center",
+          "font_type": "default",
+          "font_size": 8,
+          "bold": false,
+          "italic": false
+        },
+        {
+          "widget": "button",
+          "id": "button1",
+          "x": 224,
+          "y": 96,
+          "w": 88,
+          "h": 16,
+          "visible": true,
+          "enabled": true,
+          "background": "green",
+          "color": "white",
+          "border": {
+            "color": "black",
+            "width": 1
+          },
+          "text": "Button",
+          "alignment": "center",
+          "accepts_input": false,
+          "events": [
+            "click"
+          ],
+          "font_type": "default",
+          "font_size": "default",
+          "bold": false,
+          "italic": false
+        },
+        {
+          "widget": "tree",
+          "id": "tree1",
+          "x": 4,
+          "y": 4,
+          "w": 120,
+          "h": 112,
+          "visible": true,
+          "enabled": true,
+          "items": [
+            {
+              "text": "EXAMPLE"
+            },
+            {
+              "text": "----------------"
+            },
+            {
+              "text": "Screen_1"
+            },
+            {
+              "text": "Screen_2"
+            },
+            {
+              "text": "Screen_3"
+            },
+            {
+              "text": "Screen_4"
+            },
+            {
+              "text": "-----------------"
+            },
+            {
+              "text": "Quit"
+            }
+          ],
+          "selected": "",
+          "background": "black",
+          "color": "white",
+          "border": {
+            "color": "gray",
+            "width": 1
+          },
+          "events": [
+            "selected"
+          ],
+          "font_type": "default",
+          "font_size": "default",
+          "bold": false,
+          "italic": false
+        },
+        {
+          "widget": "barchart",
+          "id": "barchart1",
+          "x": 16,
+          "y": 120,
+          "w": 192,
+          "h": 112,
+          "visible": true,
+          "background": "black",
+          "color": "green",
+          "min": 15,
+          "max": 30,
+          "bars": 5,
+          "grid": true,
+          "title": "DAILY TEMPERATURE",
+          "labels": [
+            "MON",
+            "TUE",
+            "WED",
+            "THU",
+            "FRI"
+          ],
+          "values": [
+            20,
+            16,
+            24,
+            27,
+            18
+          ],
+          "show_values": true,
+          "update_ms": 0,
+          "font_size": 8
+        },
+        {
+          "widget": "gauge",
+          "id": "gauge1",
+          "x": 216,
+          "y": 136,
+          "w": 104,
+          "h": 96,
+          "visible": true,
+          "background": "gray",
+          "color": "red",
+          "min": 15,
+          "max": 30,
+          "value": 0,
+          "text": "",
+          "show_value": true,
+          "ticks": 10,
+          "diameter": 0,
+          "sweep": 270,
+          "show_ticks": true,
+          "font_size": "default"
+        },
+        {
+          "widget": "label",
+          "id": "HourMinute1",
+          "x": 132,
+          "y": 48,
+          "w": 88,
+          "h": 24,
+          "visible": true,
+          "enabled": true,
+          "background": "black",
+          "color": "#0000ff",
+          "border": {
+            "color": "black",
+            "width": 0
+          },
+          "text": "Label",
+          "alignment": "left",
+          "font_type": "default",
+          "font_size": 16,
+          "bold": false,
+          "italic": false
+        },
+        {
+          "widget": "label",
+          "id": "Seconds1",
+          "x": 224,
+          "y": 48,
+          "w": 96,
+          "h": 24,
+          "visible": true,
+          "enabled": true,
+          "background": "black",
+          "color": "#5500ff",
+          "border": {
+            "color": "black",
+            "width": 0
+          },
+          "text": "Label",
+          "alignment": "left",
+          "font_type": "default",
+          "font_size": 16,
+          "bold": false,
+          "italic": false
+        }
+      ]
+    },
+    {
+      "id": "Screen_2",
+      "orientation": "landscape",
+      "width": 320,
+      "height": 240,
+      "background": "black",
+      "widgets": [
+        {
+          "widget": "waveform",
+          "id": "waveform2",
+          "x": 8,
+          "y": 96,
+          "w": 304,
+          "h": 112,
+          "visible": true,
+          "background": "black",
+          "color": "green",
+          "min": 216,
+          "max": 264,
+          "points": 60,
+          "style": "bars",
+          "grid": true,
+          "title": "MAIN POWER",
+          "update_ms": 50,
+          "font_size": "default"
+        },
+        {
+          "widget": "label",
+          "id": "label2",
+          "x": 0,
+          "y": 0,
+          "w": 3,
+          "h": 8,
+          "visible": true,
+          "enabled": true,
+          "background": "black",
+          "color": "white",
+          "border": {
+            "color": "black",
+            "width": 0
+          },
+          "text": "Label",
+          "alignment": "left",
+          "font_type": "default",
+          "font_size": "default",
+          "bold": false,
+          "italic": false
+        },
+        {
+          "widget": "tree",
+          "id": "tree2",
+          "x": 4,
+          "y": 4,
+          "w": 120,
+          "h": 88,
+          "visible": true,
+          "enabled": true,
+          "items": [
+            {
+              "text": "EXAMPLE"
+            },
+            {
+              "text": "----------------"
+            },
+            {
+              "text": "Screen_1"
+            },
+            {
+              "text": "Screen_2"
+            },
+            {
+              "text": "Screen_3"
+            },
+            {
+              "text": "Screen_4"
+            },
+            {
+              "text": "-----------------"
+            },
+            {
+              "text": "Quit"
+            }
+          ],
+          "selected": "",
+          "background": "black",
+          "color": "white",
+          "border": {
+            "color": "gray",
+            "width": 1
+          },
+          "events": [
+            "selected"
+          ],
+          "font_type": "default",
+          "font_size": "default",
+          "bold": false,
+          "italic": false
+        },
+        {
+          "widget": "gauge",
+          "id": "gauge2",
+          "x": 0,
+          "y": 0,
+          "w": 3,
+          "h": 8,
+          "visible": true,
+          "background": "gray",
+          "color": "red",
+          "min": 15,
+          "max": 30,
+          "value": 0,
+          "text": "",
+          "show_value": true,
+          "ticks": 10,
+          "diameter": 0,
+          "sweep": 270,
+          "show_ticks": true,
+          "font_size": "default"
+        },
+        {
+          "widget": "progressbar",
+          "id": "progressbar1",
+          "x": 8,
+          "y": 216,
+          "w": 304,
+          "h": 16,
+          "visible": true,
+          "background": "gray",
+          "color": "green",
+          "max": 100,
+          "value": 40
+        },
+        {
+          "widget": "label",
+          "id": "Date2",
+          "x": 128,
+          "y": 16,
+          "w": 188,
+          "h": 24,
+          "visible": true,
+          "enabled": true,
+          "background": "black",
+          "color": "#aa0000",
+          "border": {
+            "color": "black",
+            "width": 0
+          },
+          "text": "Label",
+          "alignment": "center",
+          "font_type": "default",
+          "font_size": 8,
+          "bold": false,
+          "italic": false
+        },
+        {
+          "widget": "label",
+          "id": "HourMinute2",
+          "x": 132,
+          "y": 48,
+          "w": 88,
+          "h": 24,
+          "visible": true,
+          "enabled": true,
+          "background": "black",
+          "color": "#0000ff",
+          "border": {
+            "color": "black",
+            "width": 0
+          },
+          "text": "Label",
+          "alignment": "left",
+          "font_type": "default",
+          "font_size": 16,
+          "bold": false,
+          "italic": false
+        },
+        {
+          "widget": "label",
+          "id": "Seconds2",
+          "x": 224,
+          "y": 48,
+          "w": 96,
+          "h": 24,
+          "visible": true,
+          "enabled": true,
+          "background": "black",
+          "color": "#5500ff",
+          "border": {
+            "color": "black",
+            "width": 0
+          },
+          "text": "Label",
+          "alignment": "left",
+          "font_type": "default",
+          "font_size": 16,
+          "bold": false,
+          "italic": false
+        }
+      ]
+    },
+    {
+      "id": "Screen_3",
+      "orientation": "landscape",
+      "width": 320,
+      "height": 240,
+      "background": "black",
+      "widgets": [
+        {
+          "widget": "tree",
+          "id": "tree3",
+          "x": 4,
+          "y": 4,
+          "w": 120,
+          "h": 160,
+          "visible": true,
+          "enabled": true,
+          "items": [
+            {
+              "text": "EXAMPLE"
+            },
+            {
+              "text": "----------------"
+            },
+            {
+              "text": "Screen_1"
+            },
+            {
+              "text": "Screen_2"
+            },
+            {
+              "text": "Screen_3"
+            },
+            {
+              "text": "Screen_4"
+            },
+            {
+              "text": "-----------------"
+            },
+            {
+              "text": "Quit"
+            }
+          ],
+          "selected": "",
+          "background": "black",
+          "color": "white",
+          "border": {
+            "color": "gray",
+            "width": 1
+          },
+          "events": [
+            "selected"
+          ],
+          "font_type": "default",
+          "font_size": "default",
+          "bold": false,
+          "italic": false
+        },
+        {
+          "widget": "line",
+          "id": "line1",
+          "x": 128,
+          "y": 8,
+          "w": 0,
+          "h": 224,
+          "visible": true,
+          "color": "white",
+          "thickness": 1
+        },
+        {
+          "widget": "label",
+          "id": "Title3",
+          "x": 144,
+          "y": 8,
+          "w": 160,
+          "h": 20,
+          "visible": true,
+          "enabled": true,
+          "background": "black",
+          "color": "white",
+          "border": {
+            "color": "black",
+            "width": 0
+          },
+          "text": "SETTINGS",
+          "alignment": "left",
+          "font_type": "default",
+          "font_size": 16,
+          "bold": true,
+          "italic": false
+        },
+        {
+          "widget": "switch",
+          "id": "switch1",
+          "x": 144,
+          "y": 32,
+          "w": 160,
+          "h": 28,
+          "visible": true,
+          "enabled": true,
+          "background": "transparent",
+          "color": "white",
+          "text": "Alarm enabled",
+          "value": false,
+          "events": [
+            "changed"
+          ],
+          "font_type": "default",
+          "font_size": "default",
+          "bold": false,
+          "italic": false
+        },
+        {
+          "widget": "checkbox",
+          "id": "checkbox1",
+          "x": 144,
+          "y": 64,
+          "w": 160,
+          "h": 24,
+          "visible": true,
+          "enabled": true,
+          "background": "transparent",
+          "color": "white",
+          "text": "Log to memo",
+          "value": true,
+          "events": [
+            "changed"
+          ],
+          "font_type": "default",
+          "font_size": "default",
+          "bold": false,
+          "italic": false
+        },
+        {
+          "widget": "choice",
+          "id": "choice1",
+          "x": 144,
+          "y": 128,
+          "w": 100,
+          "h": 24,
+          "visible": true,
+          "enabled": true,
+          "style": "dropdown",
+          "orientation": "vertical",
+          "items": [
+            "Voltage",
+            "Current",
+            "Power"
+          ],
+          "selected": 2,
+          "background": "black",
+          "color": "white",
+          "border": {
+            "color": "gray",
+            "width": 1
+          },
+          "events": [
+            "changed"
+          ],
+          "font_type": "default",
+          "font_size": "default",
+          "bold": false,
+          "italic": false
+        },
+        {
+          "widget": "slider",
+          "id": "slider1",
+          "x": 144,
+          "y": 96,
+          "w": 160,
+          "h": 24,
+          "visible": true,
+          "enabled": true,
+          "background": "gray",
+          "color": "yellow",
+          "min": 15,
+          "max": 30,
+          "value": 25,
+          "step": 1,
+          "events": [
+            "changed"
+          ]
+        },
+        {
+          "widget": "stepper",
+          "id": "stepper1",
+          "x": 144,
+          "y": 160,
+          "w": 100,
+          "h": 48,
+          "visible": true,
+          "enabled": true,
+          "background": "transparent",
+          "color": "cyan",
+          "min": 10,
+          "max": 100,
+          "value": 70,
+          "step": 10,
+          "events": [
+            "changed"
+          ],
+          "font_type": "default",
+          "font_size": "default",
+          "bold": false,
+          "italic": false
+        },
+        {
+          "widget": "label",
+          "id": "BrightnessLabel1",
+          "x": 144,
+          "y": 208,
+          "w": 160,
+          "h": 24,
+          "visible": true,
+          "enabled": true,
+          "background": "black",
+          "color": "cyan",
+          "border": {
+            "color": "black",
+            "width": 0
+          },
+          "text": "Brightness: 70",
+          "alignment": "left",
+          "font_type": "default",
+          "font_size": "default",
+          "bold": false,
+          "italic": false
+        }
+      ]
+    },
+    {
+      "id": "Screen_4",
+      "orientation": "landscape",
+      "width": 320,
+      "height": 240,
+      "background": "black",
+      "widgets": [
+        {
+          "widget": "tree",
+          "id": "tree4",
+          "x": 4,
+          "y": 4,
+          "w": 120,
+          "h": 160,
+          "visible": true,
+          "enabled": true,
+          "items": [
+            {
+              "text": "EXAMPLE"
+            },
+            {
+              "text": "----------------"
+            },
+            {
+              "text": "Screen_1"
+            },
+            {
+              "text": "Screen_2"
+            },
+            {
+              "text": "Screen_3"
+            },
+            {
+              "text": "Screen_4"
+            },
+            {
+              "text": "-----------------"
+            },
+            {
+              "text": "Quit"
+            }
+          ],
+          "selected": "",
+          "background": "black",
+          "color": "white",
+          "border": {
+            "color": "gray",
+            "width": 1
+          },
+          "events": [
+            "selected"
+          ],
+          "font_type": "default",
+          "font_size": "default",
+          "bold": false,
+          "italic": false
+        },
+        {
+          "widget": "line",
+          "id": "line2",
+          "x": 128,
+          "y": 8,
+          "w": 0,
+          "h": 224,
+          "visible": true,
+          "color": "white",
+          "thickness": 1
+        },
+        {
+          "widget": "label",
+          "id": "Title4",
+          "x": 144,
+          "y": 8,
+          "w": 100,
+          "h": 20,
+          "visible": true,
+          "enabled": true,
+          "background": "black",
+          "color": "white",
+          "border": {
+            "color": "black",
+            "width": 0
+          },
+          "text": "LOG / ABOUT",
+          "alignment": "left",
+          "font_type": "default",
+          "font_size": 16,
+          "bold": true,
+          "italic": false
+        },
+        {
+          "widget": "button",
+          "id": "button2",
+          "x": 144,
+          "y": 32,
+          "w": 112,
+          "h": 28,
+          "visible": true,
+          "enabled": true,
+          "background": "green",
+          "color": "white",
+          "border": {
+            "color": "black",
+            "width": 1
+          },
+          "text": "Rename",
+          "alignment": "center",
+          "accepts_input": false,
+          "events": [
+            "click"
+          ],
+          "font_type": "default",
+          "font_size": "default",
+          "bold": false,
+          "italic": false
+        },
+        {
+          "widget": "label",
+          "id": "CustomTitle1",
+          "x": 144,
+          "y": 64,
+          "w": 160,
+          "h": 20,
+          "visible": true,
+          "enabled": true,
+          "background": "black",
+          "color": "cyan",
+          "border": {
+            "color": "black",
+            "width": 0
+          },
+          "text": "My Dashboard",
+          "alignment": "left",
+          "font_type": "default",
+          "font_size": "default",
+          "bold": false,
+          "italic": false
+        },
+        {
+          "widget": "memo",
+          "id": "memo1",
+          "x": 144,
+          "y": 92,
+          "w": 160,
+          "h": 132,
+          "visible": true,
+          "enabled": true,
+          "background": "white",
+          "color": "black",
+          "border": {
+            "color": "gray",
+            "width": 1
+          },
+          "text": "",
+          "alignment": "left",
+          "accepts_input": true,
+          "events": [],
+          "font_type": "default",
+          "font_size": "default",
+          "bold": false,
+          "italic": false
+        },
+        {
+          "widget": "keyboard",
+          "id": "keyboard1",
+          "x": 8,
+          "y": 120,
+          "w": 304,
+          "h": 112,
+          "visible": true,
+          "enabled": true,
+          "background": "gray",
+          "color": "black",
+          "border": {
+            "color": "black",
+            "width": 1
+          },
+          "layout": "full",
+          "target": "CustomTitle1",
+          "secret": false,
+          "max_length": 20,
+          "input_event": false,
+          "hide_on_enter": true,
+          "linefeed": false,
+          "events": [
+            "enter"
+          ]
+        }
+      ]
+    }
+  ]
+}

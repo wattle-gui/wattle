@@ -10,11 +10,30 @@ PORT = wattle_port.PORT                      # ESP_PORT, or wattle.port, or the 
 MPREMOTE = wattle_port.MPREMOTE
 
 
+def native():
+    """True for boards whose USB is built into the chip (ESP32-C3/S3/C6, port ttyACM...): changes of the DTR/RTS lines RESET those and
+    kill the open port, so the helpers below only send characters to them."""
+    if "ttyACM" in PORT:
+        return True
+    try:
+        from serial.tools import list_ports
+        return any(p.device == PORT and p.vid == 0x303A for p in list_ports.comports())
+    except Exception:
+        return False
+
+
 def halt():
     """Reset the board and send Ctrl-C again and again while it boots, so it stops at the prompt BEFORE the
     project (maybe a sleeping LOW_POWER one) starts."""
     import serial
     ser = serial.Serial(PORT, 115200, timeout=0.05)
+    if native():                # no reset lines: Ctrl-C is enough (the Runtime then gives the board a long watchdog, see Runtime.run)
+        for _ in range(10):
+            ser.write(b"\x03")
+            ser.read(200)
+            time.sleep(0.1)
+        ser.close()
+        return
     ser.dtr = False
     ser.rts = True              # EN low = reset
     time.sleep(0.1)
@@ -30,6 +49,11 @@ def halt():
 def restart():
     import serial
     ser = serial.Serial(PORT, 115200, timeout=0.05)
+    if native():
+        ser.write(b"\x03\x03import machine\r\nmachine.reset()\r\n")
+        time.sleep(0.5)
+        ser.close()
+        return
     ser.dtr = False
     ser.rts = True
     time.sleep(0.1)

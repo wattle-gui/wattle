@@ -4,9 +4,10 @@ from __future__ import annotations
 
 import copy
 import os
+import threading
 from pathlib import Path
 
-from PyQt6.QtCore import QEvent, QMimeData, QPoint, QRectF, QSize, QTimer, Qt
+from PyQt6.QtCore import QEvent, pyqtSignal, QMimeData, QPoint, QRectF, QSize, QTimer, Qt
 from PyQt6.QtGui import (
     QAction,
     QActionGroup,
@@ -16,9 +17,13 @@ from PyQt6.QtGui import (
     QKeySequence,
     QPainter,
     QPainterPath,
+    QIcon,
     QPixmap,
 )
 from PyQt6.QtWidgets import (
+    QAbstractSpinBox,
+    QApplication,
+    QGridLayout,
     QCheckBox,
     QColorDialog,
     QDialog,
@@ -69,6 +74,7 @@ from esd.fonts import (
 from esd.inspector_widgets import (
     ROW_H,
     BarRowsEditor,
+    BarTableEditor,
     ChoiceRow,
     EntryListEditor,
     FinishPlainText,
@@ -79,6 +85,8 @@ from esd.inspector_widgets import (
     parse_json_number,
 )
 from esd.json_io import load_design, save_design
+from esd import boards as myboards
+from esd.new_design_dialog import NewDesignDialog
 from esd.notes import component_note, property_note
 try:
     from esd.recorder import make_recorder
@@ -91,11 +99,15 @@ except ImportError:                  # the recording tools are not part of the p
 
     def make_recorder():
         return _NoRecorder()
+from esd import devices as devs
+from esd.settings import Settings
 from esd.model import (
     Design,
     clamp_widget,
     cross_check_warning,
+    browser_design,
     empty_design,
+    is_browser,
     find_free_position,
     geometry_allowed,
     get_path,
@@ -123,6 +135,21 @@ from wattle_theme import (
 )
 
 
+class _ClickLabel(QLabel):
+    clicked = pyqtSignal()
+    rightClicked = pyqtSignal()
+
+    def __init__(self, text: str) -> None:
+        super().__init__(text)
+        self.setCursor(Qt.CursorShape.PointingHandCursor)
+
+    def mousePressEvent(self, event) -> None:  # noqa: N802
+        if event.button() == Qt.MouseButton.LeftButton:
+            self.clicked.emit()
+        elif event.button() == Qt.MouseButton.RightButton:
+            self.rightClicked.emit()
+
+
 class PaletteItemDelegate(QStyledItemDelegate):
     """Draw each palette component in a Hub-style rounded box."""
 
@@ -146,11 +173,11 @@ class PaletteItemDelegate(QStyledItemDelegate):
             vp = getattr(widget, "viewport", None)
             if callable(vp) and vp() is not None:
                 vw = vp().width()
-            right = max(right, vw - 4)
+            right = max(right, vw - 1)
         rect = QRectF(
-            option.rect.left() + 6,
+            option.rect.left() + 1,
             option.rect.top() + 1,
-            max(40, right - option.rect.left() - 10),
+            max(40, right - option.rect.left() - 1),
             option.rect.height() - 2,
         )
         path = QPainterPath()
@@ -161,12 +188,12 @@ class PaletteItemDelegate(QStyledItemDelegate):
             painter.drawPath(path)
             painter.setPen(QColor(c["btn_ink"]))
         else:
-            painter.fillPath(path, QColor(c["field"]))
+            painter.fillPath(path, QColor(ORANGE if hover else c["field"]))      # the hover colour was never painted, so its dark text vanished
             painter.setPen(QColor(ORANGE if hover else c["line"]))
             painter.drawPath(path)
-            painter.setPen(QColor(ORANGE_INK if hover else c["title"]))
+            painter.setPen(QColor("#000000") if hover else QColor(c["title"]))      # black on the orange highlight
         painter.drawText(
-            rect.adjusted(10, 0, -8, 0),
+            rect.adjusted(5, 0, -1, 0),
             int(Qt.AlignmentFlag.AlignVCenter | Qt.AlignmentFlag.AlignLeft),
             text,
         )
@@ -257,13 +284,17 @@ class PaletteTree(QTreeWidget):
 
 
 class MainWindow(QMainWindow):
+
     def __init__(self) -> None:
         super().__init__()
         self._recorder = make_recorder()
         self.resize(1280, 800)
         self._dark = is_dark()
         self.setStyleSheet(self._full_qss())
-        self.design = Design(empty_design())
+        self._settings = Settings()
+        self._migrate_old_settings()
+        self._presets = devs.load_devices()                      # ready-made sizes (hardware/devices.json)
+        self.design = Design(devs.new_design(devs.find(self._presets, devs.DEFAULT) or self._presets[0]))     # a new design starts as the CYD
         self._suspend = False
         self._dirty = False
         self._clean = copy.deepcopy(self.design.data)
@@ -304,11 +335,7 @@ class MainWindow(QMainWindow):
         self._act(m_file, "Save &As...", self.file_save_as, QKeySequence.StandardKey.SaveAs)
         self._act(m_file, "Save and Exit", self.file_save_and_exit)
         m_file.addSeparator()
-        self._act(m_file, "New &Screen", self.add_screen)
-        m_file.addSeparator()
         self._act(m_file, "Add &Font...", self.add_font)
-        m_file.addSeparator()
-        self._act(m_file, "Projects F&older...", self.set_projects_folder)
         m_file.addSeparator()
         self._act(m_file, "E&xit", self.close)
 
@@ -339,6 +366,17 @@ class MainWindow(QMainWindow):
         self._act_show_hidden.toggled.connect(self._set_show_hidden)
         m_view.addAction(self._act_show_hidden)
         m_view.addSeparator()
+        m_zoom = m_view.addMenu("Wheel Zoom Speed")
+        z_grp = QActionGroup(self)
+        z_grp.setExclusive(True)
+        for name, pct in self._ZOOM_SPEEDS:
+            a = QAction(f"{name}  ({round(pct * 100)}% per notch)", self)
+            a.setCheckable(True)
+            a.setChecked(abs(pct - self._zoom_step_pct()) < 1e-9)
+            a.triggered.connect(lambda _=False, n=name: self._set_zoom_speed(n))
+            z_grp.addAction(a)
+            m_zoom.addAction(a)
+        m_view.addSeparator()
         g_grp = QActionGroup(self)
         g_grp.setExclusive(True)
         for n in (4, 8, 16, 32):
@@ -355,6 +393,12 @@ class MainWindow(QMainWindow):
         host = QWidget()
         hl = QHBoxLayout(host)
         hl.setContentsMargins(4, 2, 8, 2)
+        self._zoom_label = _ClickLabel("Zoom 100%")
+        self._zoom_label.setToolTip("Ctrl + mouse wheel zooms. Click here: back to 100%; click again at 100% to fit the whole screen in the window. Right-click: how fast the wheel zooms.")
+        self._zoom_label.setStyleSheet("padding:0 14px 0 4px;")
+        self._zoom_label.clicked.connect(self.zoom_toggle)
+        self._zoom_label.rightClicked.connect(self._zoom_speed_menu)
+        hl.addWidget(self._zoom_label)
         hl.addWidget(make_theme_toggle(self._apply_theme))
         mb.setCornerWidget(host, Qt.Corner.TopRightCorner)
 
@@ -368,6 +412,50 @@ QFrame#esdPanel {{
 }}
 QFrame#esdPanel QLabel#panelCaption {{
   background: transparent;
+}}
+QSplitter::handle {{
+  width: 0px;
+  background: transparent;
+}}
+QCheckBox::indicator:checked {{
+  image: url("{(Path(__file__).resolve().parent.parent / 'check_white.png').as_posix()}");
+}}
+QScrollBar:vertical {{
+  background: {c['field']};
+  width: 14px;
+  margin: 0;
+  border: none;
+  border-radius: 7px;
+}}
+QScrollBar:horizontal {{
+  background: {c['field']};
+  height: 14px;
+  margin: 0;
+  border: none;
+  border-radius: 7px;
+}}
+QScrollBar::handle:vertical {{
+  background: #0b8aa8;
+  border-radius: 5px;
+  margin: 2px;
+  min-height: 32px;
+}}
+QScrollBar::handle:horizontal {{
+  background: #0b8aa8;
+  border-radius: 5px;
+  margin: 2px;
+  min-width: 32px;
+}}
+QScrollBar::handle:vertical:hover, QScrollBar::handle:horizontal:hover,
+QScrollBar::handle:vertical:pressed, QScrollBar::handle:horizontal:pressed {{
+  background: {ACCENT};
+}}
+QScrollBar::add-line, QScrollBar::sub-line {{
+  width: 0;
+  height: 0;
+}}
+QScrollBar::add-page, QScrollBar::sub-page {{
+  background: none;
 }}
 QFrame#esdPanel QListWidget,
 QFrame#esdPanel QTreeWidget,
@@ -386,6 +474,7 @@ QFrame#esdPanel QScrollArea > QWidget {{
         lay.setSpacing(4)
         cap = QLabel(title)
         cap.setObjectName("panelCaption")
+        cap.setContentsMargins(6, 0, 0, 0)
         lay.addWidget(cap)
         return box, lay
 
@@ -407,16 +496,17 @@ QFrame#esdPanel QScrollArea > QWidget {{
         pal_wrap = QWidget()
         pal_wrap.setSizePolicy(QSizePolicy.Policy.Preferred, QSizePolicy.Policy.Expanding)
         pal_outer = QVBoxLayout(pal_wrap)
-        pal_outer.setContentsMargins(8, 8, 4, 8)
+        pal_outer.setContentsMargins(6, 6, 3, 6)
         pal_outer.setSpacing(0)
         pal_frame = QFrame()
-        pal_frame.setObjectName("paletteFrame")
+        pal_frame.setObjectName("esdPanel")
         pal_frame.setSizePolicy(QSizePolicy.Policy.Preferred, QSizePolicy.Policy.Expanding)
         pl = QVBoxLayout(pal_frame)
-        pl.setContentsMargins(8, 4, 8, 8)
+        pl.setContentsMargins(3, 4, 3, 8)
         pl.setSpacing(4)
         cap = QLabel("PALETTE")
         cap.setObjectName("panelCaption")
+        cap.setContentsMargins(6, 0, 0, 0)
         pl.addWidget(cap)
         self.palette = PaletteTree()
         self.palette.setSizePolicy(QSizePolicy.Policy.Preferred, QSizePolicy.Policy.Expanding)
@@ -451,16 +541,17 @@ QFrame#esdPanel QScrollArea > QWidget {{
         pl.addWidget(notes_cap)
         self.palette_notes = self._make_notes_box(component_note(None))
         pl.addWidget(self.palette_notes)
-        pal_frame.setMinimumWidth(210)
+        pal_frame.setMinimumWidth(100)
         pal_outer.addWidget(pal_frame, 1)
-        split.addWidget(pal_wrap)
+        pal_wrap.setFixedWidth(153)
 
         tree_wrap = QWidget()
         tree_wrap.setSizePolicy(QSizePolicy.Policy.Preferred, QSizePolicy.Policy.Expanding)
         tree_outer = QVBoxLayout(tree_wrap)
-        tree_outer.setContentsMargins(4, 8, 4, 8)
+        tree_outer.setContentsMargins(3, 6, 6, 6)
         tree_outer.setSpacing(0)
         tree_box, tl = self._esd_panel("APPLICATION TREE")
+        tl.setContentsMargins(2, 4, 4, 8)         # the Design arrow and the names start further left: room for longer widget IDs
         tree_box.setSizePolicy(QSizePolicy.Policy.Preferred, QSizePolicy.Policy.Expanding)
         self.tree = QTreeWidget()
         self.tree.setSizePolicy(QSizePolicy.Policy.Preferred, QSizePolicy.Policy.Expanding)
@@ -471,13 +562,21 @@ QFrame#esdPanel QScrollArea > QWidget {{
         self.tree.currentItemChanged.connect(self._on_tree_select)
         tl.addWidget(self.tree, 1)
         tree_outer.addWidget(tree_box, 1)
-        split.addWidget(tree_wrap)
+        tree_wrap.setFixedWidth(184)
+        left = QWidget()                     # Palette and Tree are one fixed block: no divider between them or next to the canvas
+        left_lay = QHBoxLayout(left)
+        left_lay.setContentsMargins(0, 0, 0, 0)
+        left_lay.setSpacing(0)
+        left_lay.addWidget(pal_wrap)
+        left_lay.addWidget(tree_wrap)
+        split.addWidget(left)
 
         mid = QFrame()
         mid.setObjectName("canvasBoard")
         ml = QVBoxLayout(mid)
-        ml.setContentsMargins(8, 6, 8, 8)
+        ml.setContentsMargins(0, 6, 0, 6)
         self.canvas = DesignCanvas()
+        self.canvas.picture_resolver = self._resolve_picture
         self.canvas.selectionChanged.connect(self._on_canvas_select)
         self.canvas.selectionChanged.connect(self._record_selection)
         self.canvas.widgetsChanged.connect(self._on_widgets_changed)
@@ -489,8 +588,10 @@ QFrame#esdPanel QScrollArea > QWidget {{
         self.canvas.overlapBlocked.connect(self._on_overlap_blocked)
         self.canvas.imageDropped.connect(self._on_image_dropped)
         self.canvas.keyboardFinished.connect(self._on_keyboard_finished)
+        self.canvas.zoomChanged.connect(self._on_zoom_changed)
+        self.canvas.zoomWheel.connect(self.zoom_wheel)
         self.canvas.customContextMenuRequested.connect(self._canvas_context_menu)
-        scroll = QScrollArea()
+        scroll = self._canvas_scroll = QScrollArea()
         scroll.setWidgetResizable(True)
         scroll.setAlignment(Qt.AlignmentFlag.AlignCenter)
         scroll.setWidget(self.canvas)
@@ -500,8 +601,8 @@ QFrame#esdPanel QScrollArea > QWidget {{
 
         insp_wrap = QWidget()
         insp_outer = QVBoxLayout(insp_wrap)
-        insp_outer.setContentsMargins(4, 8, 8, 8)
-        insp, il = self._esd_panel("OBJECT INSPECTOR")
+        insp_outer.setContentsMargins(6, 6, 6, 6)
+        insp, il = self._esd_panel("INSPECTOR")
         self.insp_form_host = QWidget()
         self.insp_form = QFormLayout(self.insp_form_host)
         self.insp_form.setContentsMargins(6, 2, 6, 4)
@@ -510,6 +611,7 @@ QFrame#esdPanel QScrollArea > QWidget {{
         self.insp_scroll = QScrollArea()
         self.insp_scroll.setWidgetResizable(True)
         self.insp_scroll.setWidget(self.insp_form_host)
+        self.insp_scroll.setHorizontalScrollBarPolicy(Qt.ScrollBarPolicy.ScrollBarAlwaysOff)
         self.insp_scroll.viewport().installEventFilter(self)
         il.addWidget(self.insp_scroll, 1)
         insp_notes_cap = QLabel("Notes")
@@ -518,12 +620,18 @@ QFrame#esdPanel QScrollArea > QWidget {{
         self.inspector_notes = self._make_notes_box(component_note(None))
         il.addWidget(self.inspector_notes)
         insp_outer.addWidget(insp)
+        insp_wrap.setFixedWidth(270)
         split.addWidget(insp_wrap)
-        split.setSizes([220, 210, 560, 320])
+        if self._settings.notes:
+            QTimer.singleShot(400, lambda: self._set_status("editor.ini: " + " ".join(self._settings.notes)))
+        split.setSizes([337, 560, 270])
         split.setStretchFactor(0, 0)
-        split.setStretchFactor(1, 0)
-        split.setStretchFactor(2, 1)
-        split.setStretchFactor(3, 0)
+        split.setStretchFactor(1, 1)
+        split.setStretchFactor(2, 0)
+        split.setHandleWidth(0)              # no dividers at all: the gaps between the panels are the panels' own margins
+        split.setCollapsible(0, False)
+        split.handle(1).setEnabled(False)    # the left block and the Inspector keep their widths: nothing to drag
+        split.handle(2).setEnabled(False)
 
     def _set_status(self, msg: str) -> None:
         self.statusBar().showMessage(msg, 8000)
@@ -540,18 +648,18 @@ QFrame#esdPanel QScrollArea > QWidget {{
         return box
 
     def _show_component_notes(self, kind: str | None) -> None:
+        """The Notes under the INSPECTOR: they follow what is selected on the screen or in the Application tree (not the Palette)."""
         self._note_kind = kind
-        text = component_note(kind)
-        self.palette_notes.setPlainText(text)
-        self.inspector_notes.setPlainText(text)
+        self.inspector_notes.setPlainText(component_note(kind))
 
     def _on_palette_notes(self, current: QTreeWidgetItem | None, _previous=None) -> None:
+        """The Notes under the PALETTE: they follow the Palette item you click, and change nothing else."""
         if current is None:
             return
         kind = current.data(0, Qt.ItemDataRole.UserRole)
         if not kind:
             return
-        self._show_component_notes(str(kind))
+        self.palette_notes.setPlainText(component_note(str(kind)))
 
     def _notes_for_token(self, token: str) -> None:
         if token == "design":
@@ -679,14 +787,35 @@ QFrame#esdPanel QScrollArea > QWidget {{
         star = " *" if self._dirty else ""
         # Spelled out explicitly rather than relying on Qt to append the application display
         # name to the title -- that only happens on some platforms (macOS), not on Linux.
-        self.setWindowTitle((path or name) + star + " — " + APP_TITLE)
+        sc = self.design.first_screen()
+        size = f" {sc.get('width')} x {sc.get('height')}" if sc else ""     # the design's real screen: it may have been turned
+        device = (self._board_label() + size) if sc else ""
+        self.setWindowTitle((path or name) + star + " — " + APP_TITLE + (" — " + device if device else ""))
 
-    def _confirm_save(self) -> bool:
+    def _board_label(self) -> str:
+        """The name of the board the design says it is for: one of your boards (CYD_51), a ready-made one, or just 'screen'."""
+        did = str((self.design.data.get("target") or {}).get("device") or "")
+        for d in self._presets:
+            if d["id"] == did:
+                return d["name"]
+        return "screen" if did in ("", "custom") else did
+
+    def _commit_pending_edit(self) -> None:
+        """A text you are still typing in the Inspector is applied when you press Enter or leave the field, but opening a menu (File, Save)
+        does not count as leaving it. So before saving or asking about unsaved changes, apply what is in the field that has the focus."""
+        fw = QApplication.focusWidget()
+        if isinstance(fw, QLineEdit) and not fw.isReadOnly():
+            fw.editingFinished.emit()
+        elif isinstance(fw, QAbstractSpinBox):
+            fw.interpretText()
+
+    def _confirm_save(self, what: str = "continuing") -> bool:
+        self._commit_pending_edit()
         if not self._dirty:
             return True
         box = QMessageBox(self)
         box.setWindowTitle("Save")
-        box.setText("Save this Design before continuing?")
+        box.setText(f"Save this Design before {what}?")
         save_btn = box.addButton("Save", QMessageBox.ButtonRole.AcceptRole)
         cancel_btn = box.addButton("Cancel", QMessageBox.ButtonRole.RejectRole)
         box.addButton("Close without saving", QMessageBox.ButtonRole.DestructiveRole)
@@ -701,38 +830,111 @@ QFrame#esdPanel QScrollArea > QWidget {{
     def file_new(self) -> None:
         if not self._confirm_save():
             return
-        self.design = Design(empty_design())
+        dlg = NewDesignDialog(self, myboards.load(), self._presets, self._settings.get("editor", "default_device", devs.DEFAULT))
+        if not dlg.exec():
+            return
+        dev = dlg.device()
+        self._settings.set("editor", "default_device", dev["id"])
+        self.design = Design(devs.new_design(dev))
         self.design.path = None
         self._undo.clear()
         self._redo.clear()
-        self._reload_view("screen:main")
+        self._reload_view(f"screen:{self.design.first_screen().get('id')}")
         self._mark_clean()
-        self._set_status("New empty Design")
+        self.zoom_for_new_design()
+        self._set_status(f"New empty Design for: {dev['name']}, screen {dev['width']} x {dev['height']}")
+
+    # ---- zoom ----
+    def _view_center(self):
+        sc = self._canvas_scroll
+        c = self.canvas
+        h, v = sc.horizontalScrollBar(), sc.verticalScrollBar()
+        vp = sc.viewport()
+        return ((h.value() + vp.width() / 2) / max(1, c.width()), (v.value() + vp.height() / 2) / max(1, c.height()))
+
+    def zoom_to(self, z: float) -> None:
+        keep = self._view_center()
+        self.canvas.set_zoom(z)
+
+        def restore() -> None:
+            sc = self._canvas_scroll
+            sc.horizontalScrollBar().setValue(int(keep[0] * self.canvas.width() - sc.viewport().width() / 2))
+            sc.verticalScrollBar().setValue(int(keep[1] * self.canvas.height() - sc.viewport().height() / 2))
+
+        QTimer.singleShot(0, restore)
+
+    # How fast Ctrl + wheel zooms: Slow 5 %, Normal 10 %, Fast 20 % of the current size per notch. Remembered between sessions in the
+    # editor.ini (see esd/settings.py).
+    _ZOOM_SPEEDS = (("Slow", 0.05), ("Normal", 0.10), ("Fast", 0.20))
+    def _zoom_step_pct(self) -> float:
+        return dict(self._ZOOM_SPEEDS).get(self._settings.get("editor", "zoom_speed", "Normal"), 0.10)
+
+    def _zoom_speed_menu(self) -> None:
+        current = self._zoom_step_pct()
+        menu = QMenu(self)
+        for name, pct in self._ZOOM_SPEEDS:
+            act = menu.addAction(f"{name}  ({round(pct * 100)}% per notch)")
+            act.setCheckable(True)
+            act.setChecked(abs(pct - current) < 1e-9)
+            act.triggered.connect(lambda _=False, n=name: self._set_zoom_speed(n))
+        menu.exec(self._zoom_label.mapToGlobal(self._zoom_label.rect().bottomLeft()))
+
+    def _set_zoom_speed(self, name: str) -> None:
+        self._settings.set("editor", "zoom_speed", name)
+        self._set_status(f"Wheel zoom speed: {name}")
+
+    def zoom_wheel(self, delta: int) -> None:
+        """Ctrl + wheel: the chosen percentage per notch (120 = one notch; finer wheels and touchpads send smaller amounts)."""
+        self.zoom_to(self.canvas.zoom() * ((1.0 + self._zoom_step_pct()) ** (delta / 120.0)))
+
+    def zoom_toggle(self) -> None:
+        """Click on the zoom readout: back to 100%; when already at 100%, the zoom that fits the whole screen in the window."""
+        if abs(self.canvas.zoom() - 1.0) < 0.005:
+            self.zoom_fit()
+        else:
+            self.canvas.set_zoom(1.0)
+            QTimer.singleShot(0, self._center_view)
+
+    def zoom_fit(self) -> None:
+        vp = self._canvas_scroll.viewport()
+        self.canvas.set_zoom(self.canvas.fit_zoom_for(vp.width() + (14 if self._canvas_scroll.verticalScrollBar().isVisible() else 0),
+                                                      vp.height() + (14 if self._canvas_scroll.horizontalScrollBar().isVisible() else 0)))
+        QTimer.singleShot(0, self._center_view)
+
+    def _center_view(self) -> None:
+        sc = self._canvas_scroll
+        sc.horizontalScrollBar().setValue(0)
+        sc.verticalScrollBar().setValue(0)
+
+    def zoom_for_new_design(self) -> None:
+        """After a design is loaded or made: 100% when it fits, else the zoom at which the whole screen fits."""
+        self.canvas.set_zoom(1.0)
+        QTimer.singleShot(0, self.zoom_fit)
+
+    def _on_zoom_changed(self, z: float) -> None:
+        self._zoom_label.setText(f"Zoom {round(z * 100)}%")
 
     # The user's projects folder: chosen once with File > Projects Folder..., remembered between sessions in the same
     # small settings folder that the installer uses (~/.config/wattle). Open and Save start there.
-    _PROJECTS_FILE = Path.home() / ".config" / "wattle" / "projects_folder"
+    def _migrate_old_settings(self) -> None:
+        """Earlier versions kept the projects folder and the zoom speed in one-line files; move them into editor.ini once."""
+        folder = self._settings.path.parent
+        for old_name, key in (("projects_folder", "projects_folder"), ("zoom_speed", "zoom_speed")):
+            try:
+                text = (folder / old_name).read_text(encoding="utf-8").strip()
+            except OSError:
+                continue
+            if text and not self._settings.get("editor", key):
+                self._settings.set("editor", key, text)
 
     def _projects_dir(self) -> str:
-        try:
-            text = self._PROJECTS_FILE.read_text(encoding="utf-8").strip()
-        except OSError:
-            return ""
-        return text if text and Path(text).expanduser().is_dir() else ""
-
-    def set_projects_folder(self) -> None:
-        start = self._projects_dir() or self._default_file_dir()
-        chosen = QFileDialog.getExistingDirectory(self, "Choose the folder for your designs and scripts", start)
-        if not chosen:
-            return
-        try:
-            self._PROJECTS_FILE.parent.mkdir(parents=True, exist_ok=True)
-            self._PROJECTS_FILE.write_text(chosen + "\n", encoding="utf-8")
-        except OSError as e:
-            QMessageBox.warning(self, "Projects folder", f"The folder could not be remembered: {e}")
-            return
-        self._file_dir = chosen
-        self._set_status(f"Projects folder: {chosen}")
+        """Where designs and scripts live: the folder 'projects' of the Wattle installation (made by the installer, never deleted by it).
+        A projects_folder in editor.ini (older versions of the Editor had a menu item for it) still wins."""
+        text = self._settings.get("editor", "projects_folder")
+        if text and Path(text).expanduser().is_dir():
+            return text
+        installed = Path(__file__).resolve().parents[2] / "projects"
+        return str(installed) if installed.is_dir() else ""
 
     def _default_file_dir(self) -> str:
         projects = self._projects_dir()
@@ -742,6 +944,56 @@ QFrame#esdPanel QScrollArea > QWidget {{
         if documents.is_dir():
             return str(documents)
         return str(Path.home())
+
+    def _picture_home(self) -> Path:
+        """Where a design's pictures are kept: the folder 'pictures' beside the design (or in the projects folder, for a design not saved yet)."""
+        base = Path(self.design.path).parent if self.design.path else Path(self._default_file_dir())
+        return base / "pictures"
+
+    def _adopt_picture(self, src: str) -> str:
+        """A picture chosen with its full path is COPIED into the pictures folder beside the design, and the short name 'pictures/name.jpg'
+        is stored, so the design and its pictures can be moved together to another computer. Web addresses and embedded pictures stay as they are."""
+        text = str(src or "").strip()
+        if not text or text.startswith(("data:", "http://", "https://", "file://")):
+            return text
+        picture = Path(text).expanduser()
+        if not picture.is_absolute() or not picture.is_file():
+            return text
+        import filecmp
+        import shutil
+        home = self._picture_home()
+        try:
+            if picture.parent.resolve() == home.resolve():
+                return "pictures/" + picture.name
+            home.mkdir(parents=True, exist_ok=True)
+            target = home / picture.name
+            number = 2
+            while target.exists() and not filecmp.cmp(str(picture), str(target), shallow=False):
+                target = home / f"{picture.stem}_{number}{picture.suffix}"
+                number += 1
+            if not target.exists():
+                shutil.copy2(str(picture), str(target))
+            return "pictures/" + target.name
+        except OSError as exc:
+            self._set_status(f"The picture could not be copied beside the design ({exc}); its full path is kept.")
+            return text
+
+    def _resolve_picture(self, src: str) -> str:
+        """For showing a picture in the Editor: a short name is looked for beside the design and in the projects folder; a full path from
+        ANOTHER computer is looked for by its file name in the same places."""
+        picture = Path(src)
+        bases = []
+        if self.design.path:
+            bases.append(Path(self.design.path).parent)
+        bases.append(Path(self._default_file_dir()))
+        names = [picture] if not picture.is_absolute() else []
+        if picture.is_absolute() and picture.exists():
+            return src
+        for base in bases:
+            for name in names + [Path(picture.name), Path("pictures") / picture.name]:
+                if (base / name).is_file():
+                    return str(base / name)
+        return src
 
     def _dialog_start_dir(self) -> str:
         if self.design.path:
@@ -775,8 +1027,10 @@ QFrame#esdPanel QScrollArea > QWidget {{
         self._redo.clear()
         sc = self.design.first_screen()
         token = f"screen:{sc.get('id')}" if sc else "design"
+        self._refresh_title()
         self._reload_view(token)
         self._mark_clean()
+        self.zoom_for_new_design()
         self._set_status(self._opened_status(path))
 
     def file_save(self) -> bool:
@@ -804,6 +1058,7 @@ QFrame#esdPanel QScrollArea > QWidget {{
             self.close()
 
     def _write(self, path: str) -> bool:
+        self._commit_pending_edit()
         try:
             save_design(path, self.design.data)
         except OSError as exc:
@@ -816,7 +1071,7 @@ QFrame#esdPanel QScrollArea > QWidget {{
         return True
 
     def closeEvent(self, event) -> None:  # noqa: N802
-        if self._confirm_save():
+        if self._confirm_save("closing"):
             event.accept()
         else:
             event.ignore()
@@ -902,6 +1157,7 @@ QFrame#esdPanel QScrollArea > QWidget {{
     def _on_tree_select(self, current: QTreeWidgetItem | None, _prev=None) -> None:
         if current is None:
             return
+        self._commit_pending_edit()          # a text typed for the widget that WAS selected goes to that widget, not nowhere
         token = str(current.data(0, Qt.ItemDataRole.UserRole) or "design")
         sid = self._screen_id_for_token(token)
         if sid and sid != self.canvas.active_screen_id:
@@ -921,6 +1177,7 @@ QFrame#esdPanel QScrollArea > QWidget {{
     def _on_canvas_select(self, token: str) -> None:
         if os.environ.get("WATTLE_REPLAY"):
             print("window: selectionChanged ->", token, flush=True)
+        self._commit_pending_edit()          # a text typed for the widget that WAS selected goes to that widget, not nowhere
         self._sync_tree_selection(token)
         self._rebuild_inspector()
         self._notes_for_token(token)
@@ -993,6 +1250,9 @@ QFrame#esdPanel QScrollArea > QWidget {{
         for key in ("width", "height"):
             ed = self._geom.get(key)
             if ed is None:
+                continue
+            if isinstance(ed, QLineEdit):                  # read-only: the screen's size is shown as text
+                ed.setText(str(int(screen.get(key) or 0)))
                 continue
             ed.blockSignals(True)
             ed.setValue(int(screen.get(key) or 0))
@@ -1247,8 +1507,6 @@ QFrame#esdPanel QScrollArea > QWidget {{
         token = self.canvas.selected()
         act_del = menu.addAction("Delete", self.delete_selected)
         act_del.setEnabled(token.startswith("widget:") or token.startswith("screen:"))
-        menu.addSeparator()
-        menu.addAction("New Screen", self.add_screen)
         menu.exec(self.tree.viewport().mapToGlobal(pos))
 
     def _canvas_context_menu(self, pos) -> None:
@@ -1257,7 +1515,7 @@ QFrame#esdPanel QScrollArea > QWidget {{
             menu.addAction("Cancel Keyboard", self.canvas.cancel_keyboard_call)
             menu.exec(self.canvas.mapToGlobal(pos))
             return
-        token, _mode = self.canvas.hit_test(pos)
+        token, _mode = self.canvas.hit_test(self.canvas._lpt(pos))
         self.canvas.select(token)
         menu = QMenu(self)
         has_w = token.startswith("widget:")
@@ -1293,6 +1551,7 @@ QFrame#esdPanel QScrollArea > QWidget {{
     def _rebuild_inspector(self) -> None:
         self._suspend = True
         self._clear_inspector()
+        self._held = None
         token = self.canvas.selected()
         if token == "design":
             self._fill_props(DESIGN_PROPS, self.design.data, design_level=True)
@@ -1326,12 +1585,58 @@ QFrame#esdPanel QScrollArea > QWidget {{
             lab.setStyleSheet(f"color:{colors['muted']};")
         return lab
 
-    def _add_row(self, label: str, editor: QWidget, *, accent: bool = False, help_key: str | None = None) -> None:
+    _PAIRS = {"visible": "enabled"}      # these two share one line (two checkboxes are narrow)
+
+    def _add_row(self, label: str, editor: QWidget, *, accent: bool = False, help_key: str | None = None, lines: int = 1) -> None:
+        held = getattr(self, "_held", None)
+        if held is not None:
+            self._held = None
+            if help_key is not None and help_key == self._PAIRS.get(held[2]) and len(label) <= 10:
+                self._add_pair_row(held, (label, editor, help_key))
+                return
+            self._add_row_single(held[0], held[1], help_key=held[2])
+        if help_key in self._PAIRS and not accent and lines == 1 and len(label) <= 10:
+            self._held = (label, editor, help_key)                        # wait for its partner
+            return
+        self._add_row_single(label, editor, accent=accent, help_key=help_key, lines=lines)
+
+    def _flush_held(self) -> None:
+        held = getattr(self, "_held", None)
+        if held is not None:
+            self._held = None
+            self._add_row_single(held[0], held[1], help_key=held[2])
+
+    def _add_pair_row(self, a, b) -> None:
+        row = QWidget()
+        row.setFixedHeight(ROW_H + 4)
+        hl = QHBoxLayout(row)
+        hl.setContentsMargins(0, 0, 0, 0)
+        hl.setSpacing(6)
+        la = self._field_label(a[0])
+        lb = self._field_label(b[0])
+        la.setMinimumWidth(84)
+        for lab in (la, lb):
+            lab.setFixedHeight(ROW_H)
+        lb.setWordWrap(False)
+        for ed in (a[1], b[1]):
+            ed.setMinimumHeight(ROW_H)
+            ed.setMaximumHeight(ROW_H + 2)
+        hl.addWidget(la)
+        hl.addWidget(a[1], 1)
+        hl.addWidget(lb)
+        hl.addWidget(b[1], 1)
+        for lab, ed, key in ((la, a[1], a[2]), (lb, b[1], b[2])):
+            self._wire_notes(lab, key)
+            self._wire_notes(ed, key)
+        self.insp_form.addRow(row)
+
+    def _add_row_single(self, label: str, editor: QWidget, *, accent: bool = False, help_key: str | None = None, lines: int = 1) -> None:
         row = QWidget()
         lab = self._field_label(label, accent=accent)
-        editor.setMinimumHeight(ROW_H)
-        editor.setMaximumHeight(ROW_H + 2)
-        if len(label) > 20:
+        extra = (lines - 1) * (ROW_H + 2)                   # a row of several lines (the Event boxes)
+        editor.setMinimumHeight(ROW_H + extra)
+        editor.setMaximumHeight(ROW_H + 2 + extra)
+        if len(label) > 13:
             row.setMinimumHeight(ROW_H * 2 + 8)
             vl = QVBoxLayout(row)
             vl.setContentsMargins(0, 2, 0, 2)
@@ -1339,20 +1644,20 @@ QFrame#esdPanel QScrollArea > QWidget {{
             vl.addWidget(lab)
             vl.addWidget(editor)
         else:
-            row.setFixedHeight(ROW_H + 4)
+            row.setFixedHeight(ROW_H + 4 + extra)
             hl = QHBoxLayout(row)
             hl.setContentsMargins(0, 0, 0, 0)
             hl.setSpacing(6)
-            lab.setMinimumWidth(108)
+            lab.setMinimumWidth(84)
             lab.setFixedHeight(ROW_H)
-            hl.addWidget(lab)
+            hl.addWidget(lab, 0, Qt.AlignmentFlag.AlignTop if lines > 1 else Qt.AlignmentFlag(0))
             hl.addWidget(editor, 1)
         if help_key:
             self._wire_notes(lab, help_key)
             self._wire_notes(editor, help_key)
         self.insp_form.addRow(row)
 
-    def _add_tall_row(self, label: str, editor: QWidget, height: int, *, help_key: str | None = None) -> None:
+    def _add_tall_row(self, label: str, editor: QWidget, height: int, *, help_key: str | None = None, cap: int = 0) -> None:
         row = QWidget()
         row.setMinimumHeight(height + ROW_H)
         vl = QVBoxLayout(row)
@@ -1360,6 +1665,9 @@ QFrame#esdPanel QScrollArea > QWidget {{
         vl.setSpacing(2)
         lab = self._field_label(label)
         editor.setMinimumHeight(height - 4)
+        if cap:
+            editor.setMaximumHeight(cap)
+            row.setMaximumHeight(cap + ROW_H + 8)
         vl.addWidget(lab)
         vl.addWidget(editor)
         if help_key:
@@ -1374,6 +1682,10 @@ QFrame#esdPanel QScrollArea > QWidget {{
         )
 
     def _fill_props(self, props, target: dict, *, design_level=False, screen=None, widget=None) -> None:
+        self._fill_props_rows(props, target, design_level=design_level, screen=screen, widget=widget)
+        self._flush_held()
+
+    def _fill_props_rows(self, props, target: dict, *, design_level=False, screen=None, widget=None) -> None:
         for prop in props:
             key, label, kind = prop[0], prop[1], prop[2]
             opts = prop[3] if len(prop) > 3 else None
@@ -1383,11 +1695,15 @@ QFrame#esdPanel QScrollArea > QWidget {{
                 val = target.get(key)
             if kind == "events":
                 spec = spec_for(str((widget or {}).get("widget") or ""))
-                self._add_events_row(spec.get("events") or [], widget)
+                evs = list(spec.get("events") or [])
+                if widget is not None and widget.get("widget") == "memo" and is_browser(self.design.data):
+                    evs.append(("changed", "The text was typed into (browser only; the memo must accept input)."))
+                self._add_events_row(evs, widget)
                 continue
             if kind == "bool":
-                ed = ChoiceRow([("On", True), ("Off", False)], bool(val))
-                ed.changed.connect(
+                ed = QCheckBox()                           # an on/off setting is a checkbox: far narrower than two On/Off buttons
+                ed.setChecked(bool(val))
+                ed.toggled.connect(
                     lambda v, k=key: self._set_value(
                         k, bool(v), design_level, widget, screen
                     )
@@ -1461,6 +1777,21 @@ QFrame#esdPanel QScrollArea > QWidget {{
 
                 ed.valueChanged.connect(commit_number)
                 self._choices[key] = ed
+            elif kind == "entries" and widget is not None and str(widget.get("widget") or "") == "barchart" and key in ("labels", "values"):
+                if key == "values":
+                    continue                                  # shown together with the labels, in one table
+                def count_of(w=widget) -> int:
+                    try:
+                        return int(w.get("bars") or 1)
+                    except (TypeError, ValueError):
+                        return 1
+
+                ed = BarTableEditor(list(widget.get("labels") or []), list(widget.get("values") or []), count_fn=count_of)
+                ed.labelsChanged.connect(lambda v: self._set_value("labels", v, design_level, widget, screen))
+                ed.valuesChanged.connect(lambda v: self._set_value("values", v, design_level, widget, screen))
+                ed.refused.connect(self._set_status)
+                self._add_tall_row("Bars (text and height)", ed, 40, help_key="labels")
+                continue
             elif kind == "entries":
                 numeric = opts == "number"
                 is_bar_list = (
@@ -1514,7 +1845,9 @@ QFrame#esdPanel QScrollArea > QWidget {{
             elif kind == "readonly":
                 ed = QLineEdit("" if val is None else str(val))
                 ed.setReadOnly(True)
-                ed.setToolTip("Written by picker.py.")
+                if key in ("width", "height") and screen is not None and widget is None:
+                    self._geom[key] = ed                       # the screen's size: refreshed when the orientation turns it
+                ed.setToolTip("The size of the screen was chosen in File > New Design. Orientation turns it." if key in ("width", "height") and screen is not None and widget is None else "Written by picker.py.")
                 self._compact(ed)
             elif kind == "tree_path":
                 paths = tree_leaf_paths(val if key == "items" else (widget or {}).get("items"))
@@ -1545,7 +1878,7 @@ QFrame#esdPanel QScrollArea > QWidget {{
                         k, e.toPlainText(), design_level, widget, screen
                     )
                 )
-                self._add_tall_row(label, ed, 72, help_key=key)
+                self._add_tall_row(label, ed, 72, help_key=key, cap=96)
                 continue
             elif kind in ("lines", "tree_items"):
                 to_text = items_to_lines if kind == "lines" else tree_to_text
@@ -1562,7 +1895,7 @@ QFrame#esdPanel QScrollArea > QWidget {{
                         k, f(e.toPlainText()), design_level, widget, screen
                     )
                 )
-                self._add_tall_row(label, ed, 96, help_key=key)
+                self._add_tall_row(label, ed, 96, help_key=key, cap=150)
                 continue
             elif kind == "border":
                 self._add_border_editor(
@@ -1595,15 +1928,16 @@ QFrame#esdPanel QScrollArea > QWidget {{
         if not events:
             lab = QLabel("none")
             lab.setFixedHeight(ROW_H)
-            self._add_row("Event", lab, accent=True, help_key="events")
+            self._add_row("EVENTS", lab, accent=True, help_key="events")
             return
         current = list(inst.get("events") or [])
         host = QWidget()
-        hl = QHBoxLayout(host)
+        hl = QGridLayout(host)                      # one per line: events side by side made the whole Inspector wider than its panel
         hl.setContentsMargins(0, 0, 0, 0)
-        hl.setSpacing(8)
+        hl.setHorizontalSpacing(8)
+        hl.setVerticalSpacing(2)
         boxes = []
-        for ev, desc in events:
+        for i, (ev, desc) in enumerate(events):
             box = QCheckBox(ev)
             box.setToolTip(desc)
             box.setChecked(ev in current)
@@ -1611,8 +1945,8 @@ QFrame#esdPanel QScrollArea > QWidget {{
             self._compact(box)
             boxes.append((ev, box))
             self._event_boxes[ev] = box
-            hl.addWidget(box)
-        hl.addStretch(1)
+            hl.addWidget(box, i, 0)
+        hl.setColumnStretch(1, 1)
 
         def toggled(_checked: bool) -> None:
             if self._suspend:
@@ -1627,7 +1961,7 @@ QFrame#esdPanel QScrollArea > QWidget {{
 
         for _ev, box in boxes:
             box.toggled.connect(toggled)
-        self._add_row("Event", host, accent=True, help_key="events")
+        self._add_row("EVENTS", host, accent=True, help_key="events", lines=len(events))
 
     def _add_color_row(self, label, value, key, design_level, widget, screen, apply=None) -> None:
         row = QWidget()
@@ -1637,11 +1971,12 @@ QFrame#esdPanel QScrollArea > QWidget {{
         le = QLineEdit(str(value or ""))
         self._compact(le)
         self._paint_color_field(le, str(value or ""))
-        btn = QPushButton("Pick")
-        btn.setFixedSize(48, ROW_H)
+        btn = QPushButton("...")
+        btn.setToolTip("Pick a colour")
+        btn.setFixedSize(24, ROW_H)
         btn.setCursor(Qt.CursorShape.PointingHandCursor)
         btn.setStyleSheet(
-            f"QPushButton {{ min-height:{ROW_H - 4}px; max-height:{ROW_H}px; padding:0 6px; "
+            f"QPushButton {{ min-height:{ROW_H - 4}px; max-height:{ROW_H}px; padding:0; "
             f"background:{studio_colors()['field']}; color:{studio_colors()['title']}; "
             f"border:1px solid {studio_colors()['line']}; border-radius:8px; }}"
             f"QPushButton:hover {{ background:{ORANGE}; color:{ORANGE_INK}; }}"
@@ -1776,13 +2111,23 @@ QFrame#esdPanel QScrollArea > QWidget {{
         hl.setSpacing(4)
         le = QLineEdit(str(value or ""))
         self._compact(le)
-        btn = QPushButton("Browse")
-        btn.setFixedSize(64, ROW_H)
+        btn = QPushButton("...")
+        btn.setToolTip("Browse for a picture")
+        btn.setFixedSize(24, ROW_H)
         btn.setCursor(Qt.CursorShape.PointingHandCursor)
+        btn.setStyleSheet(
+            f"QPushButton {{ min-height:{ROW_H - 4}px; max-height:{ROW_H}px; padding:0; "
+            f"background:{studio_colors()['field']}; color:{studio_colors()['title']}; "
+            f"border:1px solid {studio_colors()['line']}; border-radius:8px; }}"
+            f"QPushButton:hover {{ background:{ORANGE}; color:{ORANGE_INK}; }}"
+        )
 
         def commit(line=le):
-            self._set_value("source", line.text().strip(), False, widget, screen)
-            self.canvas._pix_cache.pop(line.text().strip(), None)
+            adopted = self._adopt_picture(line.text().strip())
+            if adopted != line.text().strip():
+                line.setText(adopted)
+            self._set_value("source", adopted, False, widget, screen)
+            self.canvas._pix_cache.pop(adopted, None)
 
         def browse(_=False, line=le):
             path, _filt = QFileDialog.getOpenFileName(
@@ -1792,7 +2137,7 @@ QFrame#esdPanel QScrollArea > QWidget {{
                 "Images (*.png *.jpg *.jpeg *.bmp *.PNG *.JPG *.JPEG *.BMP);;All files (*)",
             )
             if path:
-                line.setText(path)
+                line.setText(self._adopt_picture(path))
                 commit()
 
         btn.clicked.connect(browse)
@@ -1824,6 +2169,7 @@ QFrame#esdPanel QScrollArea > QWidget {{
         self._rebuild_inspector()
 
     def _on_image_dropped(self, src: str, x: int, y: int) -> None:
+        src = self._adopt_picture(src)
         sid = self.canvas.active_screen_id
         if not sid:
             return
@@ -1985,12 +2331,14 @@ QFrame#esdPanel QScrollArea > QWidget {{
                 QTimer.singleShot(0, self._rebuild_inspector)
                 return
         elif screen is not None:
+            before = [(w.get("x"), w.get("y"), w.get("w"), w.get("h")) for w in screen.get("widgets") or []]
             screen[key] = value
             if key == "orientation":
                 self.design.apply_orientation(screen)
                 self.canvas._apply_board_size()
                 self._sync_screen_geom(screen)
                 self._after_edit(widget, screen)
+                self._say_what_moved(screen, before)
                 return
             if key in ("width", "height"):
                 self.design.sync_orientation_from_size(screen)
@@ -1999,10 +2347,18 @@ QFrame#esdPanel QScrollArea > QWidget {{
                 if ch is not None:
                     ch.set_value(screen.get("orientation"))
                 self._after_edit(widget, screen)
+                self._say_what_moved(screen, before)
                 return
         self._after_edit(widget, screen)
         if widget is not None:
             self._note_widget_warning(f"widget:{widget.get('id')}")
+
+    def _say_what_moved(self, screen: dict, before: list) -> None:
+        """After the screen's size or orientation changed, the widgets were pulled inside it: say how many were moved or made smaller."""
+        after = [(w.get("x"), w.get("y"), w.get("w"), w.get("h")) for w in screen.get("widgets") or []]
+        n = sum(1 for a, b in zip(before, after) if a != b)
+        if n:
+            self._set_status(f"{n} widget{'s were' if n != 1 else ' was'} moved or made smaller to fit the screen. Edit, Undo takes it back.")
 
     def _apply_font_choice(self, widget: dict, name: str) -> None:
         """Keep font_size and bold/italic inside the chosen face. Saved on the widget."""

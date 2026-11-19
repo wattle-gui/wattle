@@ -72,6 +72,11 @@ def glyph(font, ch, ascent, h, slant):
 
 
 def build(name, size, style, path, slant):
+    if not os.path.exists(path):
+        sys.exit("Making NEW font files needs the DejaVu and Liberation font files, which are in Linux's system folders and\n"
+                 "not on Windows. So this part is not available on Windows yet.\n"
+                 "You do not need it: the finished fonts are already in the Wattle folder (the fonts folder).\n"
+                 "To put the fonts a design uses on the board:   wattle fonts --upload your_design.json")
     font = ImageFont.truetype(path, size)
     ascent, descent = font.getmetrics()
     h = ascent + descent

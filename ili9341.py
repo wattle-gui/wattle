@@ -185,6 +185,15 @@ class Display(object):
         sleep(.1)
         self.clear()
 
+    def set_rotation(self, rotation, width, height, mirror=False, bgr=True):
+        """Turns the picture while the display is running (0, 90, 180 or 270): the new MADCTL value and the new size of the picture."""
+        self.rotation = self.MIRROR_ROTATE[mirror, rotation]
+        if bgr:
+            self.rotation |= 0b00001000
+        self.write_cmd(self.MADCTL, self.rotation)
+        self.width = width
+        self.height = height
+
     def _fillbuf(self, npixels, color):
         """A slice of the reusable scratch buffer, filled with `npixels` copies of
         `color` (2 bytes, big-endian) -- no new allocation, so repeated fills don't

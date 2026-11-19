@@ -13,7 +13,7 @@ import wattle_port
 PORT = wattle_port.PORT
 MPREMOTE = wattle_port.MPREMOTE
 KEEP = ("boot.py", "main.py", "Runtime.mpy", "Runtime.py", "ili9341.mpy", "ili9341.py",
-        "board_cyd.py", "touch_xpt2046.py", "ID.dat", "wifi.dat")
+        "board_cyd.py", "touch_xpt2046.py", "ID.dat", "wifi.dat", "wifi_cipher.py", "calibrate_touch.py", "board_name.txt")
 
 CLEAN = """
 import os
@@ -37,6 +37,11 @@ def mp(*args, check=True):
 
 def main():
     name = "%02d" % int(sys.argv[1]) if sys.argv[1].isdigit() else sys.argv[1]   # 20 or E20
+    # The tests are for the CYD. A board without board_cyd.py (a browser board, for example) would lose its files in the clean-up below.
+    r = subprocess.run(MPREMOTE + ["connect", PORT, "fs", "ls"], capture_output=True, text=True)
+    if "board_cyd.py" not in r.stdout or "wnet.py" in r.stdout or "touch_xpt2046.py" not in r.stdout:     # a CYD has its touch driver; a browser board has wnet.py
+        sys.exit("This board is not a CYD (there is no board_cyd.py on it), so the test was NOT loaded and nothing was changed.\n"
+                 "The tests are for the CYD board. Plug in the CYD, with no other board, and try again.")
     design_path = os.path.join(HERE, name + ".json")
     design = json.load(open(design_path))
 

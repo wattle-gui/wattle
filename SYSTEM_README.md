@@ -1,4 +1,4 @@
-# Wattle — Technical Reference (version 0.9, for the CYD)
+# Wattle — Technical Reference (version 0.10, for the CYD)
 
 A JSON-driven touch GUI for the ESP32 "CYD" (ESP32 + 2.8" ILI9341 display + XPT2046 resistive touch), in MicroPython.
 You draw screens in the **Editor**, save them as a **design file** (JSON), and write a small **script** that says what

@@ -1,4 +1,4 @@
-# make_shortcuts.py -- WINDOWS: puts "Wattle Editor", "Wattle Command Prompt" and "Wattle Manuals" on the Desktop and in the Start menu.
+# make_shortcuts.py -- WINDOWS: puts "Wattle Editor", "Wattle Command Prompt", "Wattle Manuals" and "Set up an ESP32 with Wattle" on the Desktop and in the Start menu.
 import os
 import subprocess
 import sys
@@ -23,6 +23,7 @@ function Make($name, $target, $cmdline, $dir, $desc) {
 Make 'Wattle Editor' '__PYW__' '"__HERE__\Editor\ESP32_Editor.py"' '__HERE__\Editor' 'Design the screens of your Wattle app'
 Make 'Wattle Command Prompt' '__HERE__\wattle_prompt.cmd' '' '__HERE__' 'A command window where the wattle command works'
 Make 'Wattle Manuals' '__HERE__\manual\books\index.html' '' '__HERE__\manual\books' 'The Wattle manuals'
+Make 'Set up an ESP32 with Wattle' '__HERE__\SETUP_ESP32.cmd' '' '__HERE__' 'Puts Wattle on a new ESP32 (this erases the ESP32)'
 Write-Output 'shortcuts made'
 '''
 

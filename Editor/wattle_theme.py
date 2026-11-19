@@ -113,6 +113,8 @@ def make_theme_toggle(on_changed) -> object:
     moon.setCheckable(True)
     moon.setCursor(Qt.CursorShape.PointingHandCursor)
     moon.setToolTip("Dark look")
+    sun.setFocusPolicy(Qt.FocusPolicy.NoFocus)
+    moon.setFocusPolicy(Qt.FocusPolicy.NoFocus)
     wrap._sun = sun
     wrap._moon = moon
 

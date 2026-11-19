@@ -729,7 +729,7 @@ WIDGET_TYPES: dict[str, dict[str, Any]] = {
             ("style", "Style", "select", ["line", "bars"]),
             ("grid", "Grid", "bool"),
             ("title", "Title", "string"),
-            ("update_ms", "Redraw at most every (ms)", "int", (0, 5000)),
+            ("update_ms", "Redraw (ms)", "int", (0, 5000)),
             COMMON["font_size"],
         ],
         "events": [],
@@ -769,13 +769,13 @@ WIDGET_TYPES: dict[str, dict[str, Any]] = {
             COMMON["color"],
             ("min", "Lowest value", "number"),
             ("max", "Highest value", "number"),
-            ("bars", "Number of bars", "int", (1, 64)),
+            ("bars", "Bars", "int", (1, 64)),
             ("grid", "Grid", "bool"),
             ("title", "Title", "string"),
             ("labels", "Text under the bars (one per bar, left to right)", "entries", "string"),
             ("values", "Bar heights (one number per bar, left to right)", "entries", "number"),
-            ("show_values", "Numbers above the bars", "bool"),
-            ("update_ms", "Redraw at most every (ms)", "int", (0, 5000)),
+            ("show_values", "Show values", "bool"),
+            ("update_ms", "Redraw (ms)", "int", (0, 5000)),
             COMMON["font_size"],
         ],
         "events": [],
@@ -785,8 +785,8 @@ WIDGET_TYPES: dict[str, dict[str, Any]] = {
 SCREEN_PROPS = [
     ("id", "ID", "id"),
     ("orientation", "Orientation", "select", ["landscape", "portrait"]),
-    ("width", "Width", "int"),
-    ("height", "Height", "int"),
+    ("width", "Width", "readonly"),            # the size of the screen is chosen when the design is made (File > New Design)
+    ("height", "Height", "readonly"),
     ("background", "Background", "color"),
 ]
 

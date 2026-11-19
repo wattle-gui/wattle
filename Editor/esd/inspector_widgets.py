@@ -1,4 +1,4 @@
-"""Object Inspector controls that avoid native QComboBox popups.
+"""Inspector controls that avoid native QComboBox popups.
 
 This desktop segfaults when Qt paints some combo/arrow glyphs, and also when a
 QComboBox is destroyed while its popup is still open (Screen Orientation).
@@ -8,6 +8,7 @@ from __future__ import annotations
 
 from PyQt6.QtCore import Qt, pyqtSignal
 from PyQt6.QtWidgets import (
+    QSizePolicy,
     QButtonGroup,
     QDialog,
     QDoubleSpinBox,
@@ -78,7 +79,7 @@ class ChoiceRow(QWidget):
                   border-bottom-left-radius: {left}px;
                   border-top-right-radius: {right}px;
                   border-bottom-right-radius: {right}px;
-                  padding: 0 10px;
+                  padding: 0 4px;
                   min-height: {ROW_H - 2}px;
                   max-height: {ROW_H}px;
                   font-size: 12px;
@@ -604,6 +605,138 @@ class BarRowsEditor(QWidget):
             return
         self._items[i] = new
         self.changed.emit(list(self._items))
+
+
+class _HeightGrip(QFrame):
+    """A thin bar under a scrolling box: drag it up or down to change the box's height."""
+
+    def __init__(self, target: QWidget, lo: int, hi: int, parent=None) -> None:
+        super().__init__(parent)
+        self._target, self._lo, self._hi = target, lo, hi
+        self._y0 = self._h0 = 0
+        self.setFixedHeight(8)
+        self.setCursor(Qt.CursorShape.SizeVerCursor)
+        self.setToolTip("Drag to change the height of this box")
+        self.setStyleSheet(f"background:{studio_colors()['line']}; border-radius:3px; margin:2px 40px;")
+
+    def mousePressEvent(self, e) -> None:  # noqa: N802
+        self._y0 = int(e.globalPosition().y())
+        self._h0 = self._target.height()
+
+    def mouseMoveEvent(self, e) -> None:  # noqa: N802
+        h = max(self._lo, min(self._hi, self._h0 + int(e.globalPosition().y()) - self._y0))
+        self._target.setFixedHeight(h)
+        self._target.updateGeometry()
+
+
+class BarTableEditor(QWidget):
+    """One row per bar: its number, the text under it, and its height -- both lists in a single box that scrolls, with a grip to
+    change the box's height. Shows exactly count_fn() rows; entries beyond that are kept, not discarded."""
+
+    labelsChanged = pyqtSignal(list)
+    valuesChanged = pyqtSignal(list)
+    refused = pyqtSignal(str)
+
+    def __init__(self, labels: list, values: list, *, count_fn, parent=None) -> None:
+        super().__init__(parent)
+        self._labels = list(labels or [])
+        self._values = list(values or [])
+        self._count_fn = count_fn
+        self._block = False
+        colors = studio_colors()
+        self._style = (
+            f"QLineEdit {{ background:{colors['field']}; color:{colors['title']}; "
+            f"border:1px solid {colors['line']}; min-height:{ROW_H - 4}px; "
+            f"max-height:{ROW_H}px; padding:0 4px; }}"
+        )
+        self.setSizePolicy(QSizePolicy.Policy.Preferred, QSizePolicy.Policy.Fixed)
+        lay = QVBoxLayout(self)
+        lay.setContentsMargins(0, 0, 0, 0)
+        lay.setSpacing(2)
+        head = QHBoxLayout()
+        head.setSpacing(4)
+        for text, width in (("#", 18), ("Text under the bar", 0), ("Height", 62)):
+            lab = QLabel(text)
+            lab.setStyleSheet(f"color:{colors['muted']}; font-size:11px;")
+            if width:
+                lab.setFixedWidth(width)
+            head.addWidget(lab, 0 if width else 1)
+        lay.addLayout(head)
+        self._scroll = QScrollArea()
+        self._scroll.setWidgetResizable(True)
+        self._scroll.setFrameShape(QFrame.Shape.NoFrame)
+        self._scroll.setFixedHeight(5 * (ROW_H + 2) + 4)
+        self._scroll.setSizePolicy(QSizePolicy.Policy.Preferred, QSizePolicy.Policy.Fixed)      # no stretching to fill spare height
+        self._scroll.setHorizontalScrollBarPolicy(Qt.ScrollBarPolicy.ScrollBarAlwaysOff)
+        inner = QWidget()
+        self._rows = QVBoxLayout(inner)
+        self._rows.setContentsMargins(0, 0, 0, 0)
+        self._rows.setSpacing(2)
+        self._rows.addStretch(1)
+        self._scroll.setWidget(inner)
+        lay.addWidget(self._scroll)
+        lay.addWidget(_HeightGrip(self._scroll, 2 * (ROW_H + 2), 40 * (ROW_H + 2)))
+        self._note = QLabel("")
+        self._note.setWordWrap(True)
+        self._note.setStyleSheet(f"color:{colors['title']}; font-style: italic;")
+        lay.addWidget(self._note)
+        self._build()
+
+    def _count(self) -> int:
+        try:
+            return max(0, int(self._count_fn()))
+        except (TypeError, ValueError):
+            return 0
+
+    def _build(self) -> None:
+        n = self._count()
+        for i in range(n):
+            label = self._labels[i] if i < len(self._labels) else ""
+            value = self._values[i] if i < len(self._values) else 0
+            row = QWidget()
+            hl = QHBoxLayout(row)
+            hl.setContentsMargins(0, 0, 0, 0)
+            hl.setSpacing(4)
+            num = QLabel(str(i + 1))
+            num.setFixedWidth(18)
+            t = QLineEdit("" if label is None else str(label))
+            t.setStyleSheet(self._style)
+            t.setFixedHeight(ROW_H)
+            t.editingFinished.connect(lambda i=i, e=t: self._commit_label(i, e))
+            v = QLineEdit(format_json_number(value))
+            v.setStyleSheet(self._style)
+            v.setFixedHeight(ROW_H)
+            v.setFixedWidth(62)
+            v.editingFinished.connect(lambda i=i, e=v: self._commit_value(i, e))
+            hl.addWidget(num)
+            hl.addWidget(t, 1)
+            hl.addWidget(v)
+            self._rows.insertWidget(self._rows.count() - 1, row)
+        extra = max(len(self._labels), len(self._values)) - n
+        self._note.setText(
+            f"{extra} more {'entry' if extra == 1 else 'entries'} kept but not shown here -- raise \"Bars\" to see them again."
+            if extra > 0 else ""
+        )
+
+    def _commit_label(self, i: int, ed: QLineEdit) -> None:
+        while len(self._labels) <= i:
+            self._labels.append("")
+        if self._labels[i] != ed.text():
+            self._labels[i] = ed.text()
+            self.labelsChanged.emit(list(self._labels))
+
+    def _commit_value(self, i: int, ed: QLineEdit) -> None:
+        parsed = parse_json_number(ed.text())
+        if parsed is None:
+            self.refused.emit("A bar's height must be a number.")
+            old = self._values[i] if i < len(self._values) else 0
+            ed.setText(format_json_number(old))
+            return
+        while len(self._values) <= i:
+            self._values.append(0)
+        if self._values[i] != parsed:
+            self._values[i] = parsed
+            self.valuesChanged.emit(list(self._values))
 
 
 class FinishPlainText(QPlainTextEdit):

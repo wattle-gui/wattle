@@ -85,7 +85,7 @@ def canonical_design(data: dict[str, Any]) -> dict[str, Any]:
             "touch": _order_map(touch, ["model", "type", "interface", "driver"]),
             "fonts": fonts_out,
         },
-        ["model", "processor", "board", "display", "touch", "fonts"],
+        ["model", "processor", "board", "device", "display", "touch", "fonts"],
     )
     ordered = _order_map(
         {

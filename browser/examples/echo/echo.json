@@ -1,0 +1,125 @@
+{
+  "app": {
+    "name": "Echo",
+    "purpose": "Made in the Editor: type in the memo, the label counts the characters.",
+    "version": "1.0",
+    "version_date": ""
+  },
+  "target": {
+    "model": "Browser (any ESP32 with Wi-Fi, no screen needed)",
+    "processor": "ESP32",
+    "board": "board_browser",
+    "display": {
+      "model": "Browser",
+      "width": 360,
+      "height": 640,
+      "interface": "Wi-Fi (web page)",
+      "driver": "(none: the browser draws)"
+    },
+    "touch": {
+      "model": "Browser",
+      "type": "finger or mouse",
+      "interface": "Wi-Fi (web page)",
+      "driver": "(none: the browser sends the taps)"
+    },
+    "fonts": [
+      {
+        "name": "default",
+        "sizes": [
+          8,
+          16,
+          24
+        ],
+        "styles": [
+          "bold",
+          "italic"
+        ]
+      }
+    ]
+  },
+  "screens": [
+    {
+      "id": "main",
+      "orientation": "portrait",
+      "width": 360,
+      "height": 640,
+      "background": "black",
+      "widgets": [
+        {
+          "widget": "label",
+          "id": "label1",
+          "x": 20,
+          "y": 30,
+          "w": 320,
+          "h": 40,
+          "visible": true,
+          "enabled": true,
+          "background": "black",
+          "color": "white",
+          "border": {
+            "color": "black",
+            "width": 0
+          },
+          "text": "Type below",
+          "alignment": "center",
+          "font_type": "default",
+          "font_size": "default",
+          "bold": false,
+          "italic": false
+        },
+        {
+          "widget": "memo",
+          "id": "memo1",
+          "x": 20,
+          "y": 90,
+          "w": 320,
+          "h": 160,
+          "visible": true,
+          "enabled": true,
+          "background": "white",
+          "color": "black",
+          "border": {
+            "color": "black",
+            "width": 1
+          },
+          "text": "",
+          "alignment": "left",
+          "accepts_input": true,
+          "events": [
+            "changed"
+          ],
+          "font_type": "default",
+          "font_size": "default",
+          "bold": false,
+          "italic": false
+        },
+        {
+          "widget": "button",
+          "id": "button1",
+          "x": 20,
+          "y": 280,
+          "w": 320,
+          "h": 56,
+          "visible": true,
+          "enabled": true,
+          "background": "green",
+          "color": "white",
+          "border": {
+            "color": "black",
+            "width": 1
+          },
+          "text": "Clear",
+          "alignment": "center",
+          "accepts_input": false,
+          "events": [
+            "click"
+          ],
+          "font_type": "default",
+          "font_size": "default",
+          "bold": false,
+          "italic": false
+        }
+      ]
+    }
+  ]
+}

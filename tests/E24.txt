@@ -1,4 +1,7 @@
-E24 -- gauge, stepper, waveform, barchart made in the Editor
- LOOK   : a dial "SPEED" at 40, a "- 40 +" stepper, an empty waveform "Wave", an orange rainfall bar chart with years and numbers.
- DO     : tap + and - on the stepper (steps of 5): the needle moves and the waveform gets a new value each tap.
- PASS   : as in tests 31 and 33.
+TEST E24 -- two screens, two orientations (screen1 landscape 320 x 240, screen2 portrait 240 x 320)
+ LOOK : screen1 is WIDE: a title "screen1: LANDSCAPE", four corner buttons (TL, TR, BL, BR) and a blue "To portrait" button.
+ DO   : 1) tap each corner of screen1: the text names that corner.  2) tap "To portrait": the picture turns and screen2 is TALL.
+        3) tap each corner of screen2.  4) tap "To landscape": the picture turns back.  Repeat 2-4 a few times.
+ PASS : each screen is the right way up and fills the glass; every corner tap lands on the same corner in BOTH orientations;
+        the buttons keep working after several switches (no drift, no stuck touch).
+ FAIL : a screen upside down or mirrored, a tap landing on another corner, the picture not turning, or a crash on a switch.

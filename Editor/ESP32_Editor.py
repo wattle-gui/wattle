@@ -125,11 +125,14 @@ def main() -> int:
         path = Path(sys.argv[1])
         win.design = Design(load_design(path))
         win.design.path = str(path)
+        win._adopt_design_device()
         sc = win.design.first_screen()
         token = f"screen:{sc.get('id')}" if sc else "design"
         win._reload_view(token)
         win._mark_clean()
         win._set_status(win._opened_status(str(path)))
+        win.show()
+        win.zoom_for_new_design()
     win.show()
 
     replay_path = os.environ.get("WATTLE_REPLAY")

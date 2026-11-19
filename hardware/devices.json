@@ -1,0 +1,4 @@
+[
+ {"kind": "device", "id": "cyd", "name": "CYD 2.8\" board", "board": "board_cyd", "width": 320, "height": 240},
+ {"kind": "device", "id": "browser", "name": "Browser: phone, tablet or computer", "board": "board_browser", "width": 360, "height": 640}
+]

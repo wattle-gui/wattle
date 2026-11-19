@@ -8,10 +8,10 @@
 # It looks for: Python syntax errors (with Python's own precise message); widget names that are not in the design;
 # misspelt property names (label1.txt); handlers that do not match any widget or event, that can never be called
 # (the event is not in the widget's "events" list) or that take the wrong number of arguments; values of an obviously
-# wrong kind (label1.text = 5); code after run() that never runs.
+# wrong kind (label1.text = 5); a script that never calls run() (an ERROR: nothing would react); code after run() that never runs.
 import ast, builtins, difflib, json, re, sys
 
-API = {"Screen", "every", "stop", "set_poll_ms", "set_longpress_ms", "message", "save", "load", "fatal", "run", "get_event", "wait_event",
+API = {"Screen", "every", "stop", "set_poll_ms", "set_longpress_ms", "message", "save", "load", "fatal", "run", "quit", "get_event", "wait_event",
        "widgets", "widget_objs", "backlight", "screensaver", "power_button", "wifi", "wifi_ip", "wifi_off", "ntp",
        "timezone", "now"}
 METHODS = {"keyboard": {"show"}, "waveform": {"add", "clear"}, "barchart": {"set", "clear", "add"}}   # functions of a widget, not properties
@@ -29,6 +29,9 @@ def suggest(word, options):
 def analyse(design, script, script_name="Project_1.py"):
     """Returns a list of (severity, line, message); severity is 'ERROR' or 'WARNING'."""
     out = []
+    browser = (design.get("target") or {}).get("board") == "board_browser"     # the browser version has a few extras
+    api = (API | {"phone", "board", "deepsleep", "autosleep", "woke_by", "on_pin"}) if browser else API
+    ew = dict(EVENT_WIDGETS, changed=EVENT_WIDGETS["changed"] + ("memo",)) if browser else EVENT_WIDGETS    # a memo you can type into sends "changed"
 
     def add(sev, node_or_line, msg):
         line = node_or_line if isinstance(node_or_line, int) else getattr(node_or_line, "lineno", 0)
@@ -82,7 +85,7 @@ def analyse(design, script, script_name="Project_1.py"):
                 else:
                     bound.add(al.asname or al.name)
     if star:
-        bound |= API | set(widgets)
+        bound |= api | set(widgets)
     if not star and not aliases:
         add("WARNING", 1, "the script does not import the Runtime (add 'from Runtime import *' at the top)")
 
@@ -100,7 +103,7 @@ def analyse(design, script, script_name="Project_1.py"):
     for node in ast.walk(tree):
         if isinstance(node, ast.Name) and isinstance(node.ctx, ast.Load) and node.id not in bound and node.id not in reported:
             reported.add(node.id)
-            hint = suggest(node.id, set(widgets) | API) if (star or aliases) else ""
+            hint = suggest(node.id, set(widgets) | api) if (star or aliases) else ""
             add("ERROR", node, "name '%s' is not defined%s" % (node.id, hint))
 
     # ---- 3. properties of widgets: spelling and kind of value
@@ -143,36 +146,46 @@ def analyse(design, script, script_name="Project_1.py"):
         if not isinstance(node, ast.FunctionDef):
             continue
         if node.name in seen:
-            add("WARNING", node, "handler '%s' is defined twice (line %d and here): only the last one is used"
+            add("WARNING", node, "User-Function '%s' is defined twice (line %d and here): only the last one is used"
                 % (node.name, seen[node.name]))
         seen[node.name] = node.lineno
+        if node.name in ("on_start", "on_exit"):
+            a = node.args
+            if len(a.posonlyargs) + len(a.args) - len(a.defaults) != 0:
+                add("ERROR", node, "User-Function '%s' takes no arguments: def %s():" % (node.name, node.name))
+            continue
         base, _, event = node.name.rpartition("_")
-        if event not in EVENT_WIDGETS or not base:
+        if event not in ew or not base:
             continue
         if base not in widgets:
-            add("ERROR", node, "handler '%s': there is no widget '%s' in the design%s" %
+            add("ERROR", node, "User-Function '%s': there is no widget '%s' in the design%s" %
                 (node.name, base, suggest(base, set(widgets))))
             continue
         w = widgets[base]
-        if w["widget"] not in EVENT_WIDGETS[event]:
-            kinds = [e for e, ws in EVENT_WIDGETS.items() if w["widget"] in ws]
-            add("ERROR", node, "handler '%s': a %s never sends '%s' (it sends: %s)" %
+        if w["widget"] not in ew[event]:
+            kinds = [e for e, ws in ew.items() if w["widget"] in ws]
+            add("ERROR", node, "User-Function '%s': a %s never sends '%s' (it sends: %s)" %
                 (node.name, w["widget"], event, ", ".join(kinds) or "nothing"))
             continue
-        if event in NEEDS_LISTED and event not in w.get("events", []):
-            add("ERROR", node, "handler '%s' will never be called: '%s' is not in the events list of %s in the design"
+        if event in NEEDS_LISTED and event not in w.get("events", []) and not (browser and w["widget"] == "memo" and event == "changed"):
+            add("ERROR", node, "User-Function '%s' will never be called: '%s' is not in the events list of %s in the design"
                 % (node.name, event, base))
         if event == "input" and not w.get("input_event"):
             wrote = any(isinstance(n, ast.Attribute) and n.attr == "input_event" for n in ast.walk(tree))
             if not wrote:
-                add("WARNING", node, "handler '%s' is only called if input_event is true for %s" % (node.name, base))
+                add("WARNING", node, "User-Function '%s' is only called if input_event is true for %s" % (node.name, base))
         a = node.args
         n_args = len(a.posonlyargs) + len(a.args) - len(a.defaults)
         if not a.vararg and n_args != ARGS[event]:
-            add("ERROR", node, "handler '%s' must take %d argument(s) (it takes %d)%s" %
+            add("ERROR", node, "User-Function '%s' must take %d argument(s) (it takes %d)%s" %
                 (node.name, ARGS[event], n_args, "" if ARGS[event] == 0 else ": def %s(value):" % node.name))
 
-    # ---- 5. run() should be the last statement
+    # ---- 5. run() must be there, and it should be the last statement
+    calls_run = any(isinstance(n, ast.Call) and getattr(n.func, "id", getattr(n.func, "attr", "")) == "run" for n in ast.walk(tree))
+    sleeps = any(isinstance(n, ast.Call) and getattr(n.func, "id", getattr(n.func, "attr", "")) == "deepsleep" for n in ast.walk(tree))
+    if not calls_run and not sleeps:                      # a script that ends in deepsleep() needs no run(): it never serves a page
+        add("ERROR", tree.body[-1] if tree.body else tree, "this script never calls run(). Without it the screen is drawn but nothing "
+            "reacts and no timer fires: the script just ends. Add  run()  as the very last line")
     for i, node in enumerate(tree.body):
         if isinstance(node, ast.Expr) and isinstance(node.value, ast.Call) and \
                 getattr(node.value.func, "id", getattr(node.value.func, "attr", "")) == "run":
@@ -180,12 +193,18 @@ def analyse(design, script, script_name="Project_1.py"):
                 add("WARNING", tree.body[i + 1], "this code comes after run() and will never run: put run() last")
             break
 
+    for n in ast.walk(tree):                              # machine.deepsleep() works, but the pages then just lose the board
+        if browser and isinstance(n, ast.Call) and isinstance(n.func, ast.Attribute) and n.func.attr == "deepsleep" \
+                and getattr(n.func.value, "id", "") == "machine":
+            add("WARNING", n, "machine.deepsleep() does not tell the open pages. Use deepsleep(seconds) from the Runtime: the pages then show "
+                "'asleep' and join again by themselves")
+            break
     out.sort(key=lambda t: (t[1], t[0]))
     return out
 
 
 def report(problems, design_name, script_name):
-    print("Checked: design %s, script %s (both read from the board)" % (design_name, script_name))
+    print("Checked your design and script, as they are on the board.")
     if not problems:
         print("No problems found.")
         return 0

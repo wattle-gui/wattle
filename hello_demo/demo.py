@@ -39,5 +39,13 @@ def tick():                      # about 10 times a second
         gauge1.value = 50 + 40 * math.sin(phase)
         waveform1.add(50 + 35 * math.sin(phase * 1.7) + 10 * math.sin(phase * 0.5))
 
+try:                             # a name given at set-up (the file board_name.txt on the board) replaces the caption
+    with open("board_name.txt") as f:
+        board_name = f.readline().strip()
+    if board_name:
+        label3.text = "Board: " + board_name
+except OSError:
+    pass
+
 every(100, tick)
 run()                            # hand control to the Runtime (waits for taps)

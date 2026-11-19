@@ -32,6 +32,9 @@ if not exe:
 if not exe:
     sys.exit("mpy-cross not found. pip install mpy-cross==1.24.1.post3")
 
+_ls = subprocess.run(MPREMOTE + ["connect", PORT, "fs", "ls"], capture_output=True, text=True).stdout
+if "board_cyd.py" not in _ls and "Runtime.mpy" not in _ls and "Runtime.py" not in _ls:
+    sys.exit("This board has no Wattle Runtime of the CYD kind on it, so nothing was changed. Plug in the CYD board, with no other board, and try again.")
 for name in FILES:
     src, out = os.path.join(HERE, name + ".py"), os.path.join(HERE, name + ".mpy")
     subprocess.run([exe, "-march=" + arch, "-o", out, src], check=True)

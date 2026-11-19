@@ -705,7 +705,7 @@ def empty_design() -> dict[str, Any]:
         },
         "screens": [
             {
-                "id": "main",
+                "id": "screen1",
                 "orientation": "landscape",
                 "width": 320,
                 "height": 240,
@@ -714,6 +714,31 @@ def empty_design() -> dict[str, Any]:
             }
         ],
     }
+
+
+BROWSER_BOARD = "board_browser"
+
+
+def browser_design() -> dict[str, Any]:
+    """A new design for the browser flavour (any ESP32 with Wi-Fi; the screen is a web page): a portrait phone-sized screen, and a
+    target that says so (the same text hardware/board_browser.json and tools/picker.py write)."""
+    data = empty_design()
+    data["target"].update(
+        model="Browser (any ESP32 with Wi-Fi, no screen needed)",
+        processor="ESP32",
+        board=BROWSER_BOARD,
+        display={"model": "Browser", "width": 360, "height": 640, "interface": "Wi-Fi (web page)",
+                 "driver": "(none: the browser draws)"},
+        touch={"model": "Browser", "type": "finger or mouse", "interface": "Wi-Fi (web page)",
+               "driver": "(none: the browser sends the taps)"},
+    )
+    sc = data["screens"][0]
+    sc.update(orientation="portrait", width=360, height=640)
+    return data
+
+
+def is_browser(data: dict[str, Any]) -> bool:
+    return str((data.get("target") or {}).get("board") or "") == BROWSER_BOARD
 
 
 def test_design() -> dict[str, Any]:

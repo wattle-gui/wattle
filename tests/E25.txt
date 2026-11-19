@@ -1,4 +1,5 @@
-E25 -- the design from the Editor (NEW_widgets.json), with the barchart lists added by hand
- LOOK   : a dial SPEED at 40, a stepper, an empty waveform "Wave", a rainfall bar chart (colour #aa5500).
- DO     : tap + and - on the stepper.
- PASS   : as in tests 31 and 33.
+TEST E25 -- two screens, two orientations, ONE button each (designed in the Editor by Bob, 2026-11-01)
+ LOOK : screen1 is WIDE (landscape) with one button "Button1" in the middle.
+ DO   : tap Button1: the picture turns and screen2 appears TALL (portrait) with "Button2". Tap Button2: it turns back. Repeat a few times.
+ PASS : every switch turns the picture, each screen is the right way up and fills the glass, and the tap lands on the button in both orientations.
+ FAIL : the picture does not turn, a screen is upside down or mirrored, a tap misses the button, or the board stops after a few switches.
